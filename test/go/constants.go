@@ -7,5 +7,5 @@ var (
 
 	NFTContractAddressPlaceHolder = regexp.MustCompile(`"[^"\s].*/NFTContract.cdc"`)
 	nftAddressPlaceholder         = regexp.MustCompile(`"[^"\s].*/NonFungibleToken.cdc"`)
-	NowwherePlaceholder           = regexp.MustCompile(`"[^"\s].*/NowwhereContract.cdc"`)
+	NowwherePlaceholder           = regexp.MustCompile(`"[^"\s].*/NowWhereContract.cdc"`)
 )

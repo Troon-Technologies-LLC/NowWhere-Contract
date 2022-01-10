@@ -4,7 +4,7 @@ import { init, emulator, getAccountAddress, deployContractByName, getContractCod
 jest.setTimeout(10000);
 
 beforeAll(async () => {
-  const basePath = path.resolve(__dirname, "../../Cadence");
+  const basePath = path.resolve(__dirname, "../..");
   const port = 8080;
 
   await init(basePath, { port });
@@ -77,8 +77,8 @@ describe("Deployment", () => {
     expect(name).toBe("NFTContract");
 
   });
-  test("Deploy for NowwhereContract", async () => {
-    const name = "NowwhereContract";
+  test("Deploy for NowWhereContract", async () => {
+    const name = "NowWhereContract";
     const to = await getAccountAddress("Charlie");
     let update = true;
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
@@ -101,7 +101,7 @@ describe("Deployment", () => {
       console.log(e)
     }
 
-    expect(name).toBe("NowwhereContract");
+    expect(name).toBe("NowWhereContract");
   });
 
 });
@@ -119,11 +119,11 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
@@ -155,11 +155,11 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
@@ -180,11 +180,13 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
+
   test("test transaction add admin Account", async () => {
     const name = "addAdminAccount";
 
     // Import participating accounts
     const Bob = await getAccountAddress("Bob");
+    const Charlie = await getAccountAddress("Charlie");
 
     // Set transaction signers
     const signers = [Bob];
@@ -192,11 +194,11 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
@@ -206,8 +208,11 @@ describe("Transactions", () => {
 
     let txResult;
     try {
+      const args = [Charlie];
+
       txResult = await sendTransaction({
         code,
+        args,
         signers,
       });
     } catch (e) {
@@ -230,18 +235,18 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
       name,
       addressMap,
     });
-    const args = ["HondaNorth", "0x02", { name: "Alice" }];
+    const args = ["HondaNorth", { name: "Alice" }];
 
     let txResult;
     try {
@@ -257,6 +262,7 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
+
   test("test transaction  create Schema", async () => {
     const name = "createSchema";
 
@@ -269,18 +275,18 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
       name,
       addressMap,
     });
-    const args = ["Test Schema", "0x03"];
+    const args = ["Test Schema", Charlie];
 
     let txResult;
     try {
@@ -308,11 +314,11 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
@@ -323,7 +329,6 @@ describe("Transactions", () => {
     const args = [1, 1, 100];
     let txResult;
     try {
-      console.log(args)
       txResult = await sendTransaction({
         code,
         signers,
@@ -339,6 +344,7 @@ describe("Transactions", () => {
 
   test("test transaction  create drop", async () => {
     const name = "createDropStatic";
+    var currentTimeInSeconds=Math.floor(Date.now()/1000); //unix timestamp in seconds
 
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
@@ -349,11 +355,11 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
@@ -361,7 +367,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1
-    const args = [1, "0x04", "2269511522.0", "2369511522.0"];
+    const args = [1, currentTimeInSeconds, "1702996401.0"];
 
     let txResult;
     try {
@@ -377,6 +383,7 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
+  
   test("test transaction  purchase drop", async () => {
     const name = "purchaseDrop";
 
@@ -389,11 +396,11 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
@@ -401,7 +408,7 @@ describe("Transactions", () => {
       addressMap,
     });
 
-    const args = [1, 1, 4, "0xf3fcd2c1a78f5eee"];
+    const args = [1, 1, 4, Charlie];
 
     let txResult;
     try {
@@ -579,13 +586,18 @@ describe("Scripts", () => {
       const name = accounts[match];
       return `getAccount(${name})`;
     });
+  
 
+    console.log(typeof(myInt))
+    const args = [1];
     const result = await executeScript({
       code,
+      args,
     });
     console.log("result", result);
 
   });
+  
   test("get template data ", async () => {
 
     const name = "getAllTemplates";
@@ -643,9 +655,10 @@ describe("Scripts", () => {
       const name = accounts[match];
       return `getAccount(${name})`;
     });
-
+    const args=[1]
     const result = await executeScript({
       code,
+      args,
     });
     console.log("result", result);
 
@@ -682,6 +695,7 @@ describe("Scripts", () => {
     console.log("result", result);
 
   });
+
   test("get drop data by Id", async () => {
 
     const name = "getDropById";
@@ -689,12 +703,12 @@ describe("Scripts", () => {
 
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
 
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
     }
     let code = await getScriptCode({
       name,
@@ -713,13 +727,15 @@ describe("Scripts", () => {
       console.log("name", name);
       return `getAccount(${name})`;
     });
-
+    const args =[1]
     const result = await executeScript({
       code,
+      args,
     });
     console.log("result", result);
 
   });
+
   test("get all nfts  data", async () => {
 
     const name = "getAllNFTIds";
@@ -727,12 +743,12 @@ describe("Scripts", () => {
 
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    const NowwhereContract = await getContractAddress("NowwhereContract")
+    const NowWhereContract = await getContractAddress("NowWhereContract")
 
     const addressMap = {
       NonFungibleToken,
       NFTContract,
-      NowwhereContract,
+      NowWhereContract,
 
     }
 
@@ -748,13 +764,15 @@ describe("Scripts", () => {
       const name = accounts[match];
       return `getAccount(${name})`;
     });
-
+    const args = [Charlie]
     const result = await executeScript({
       code,
+      args,
     });
     console.log("result", result);
 
   });
+
   test("get nft template data", async () => {
 
     const name = "getNFTTemplateData";
@@ -780,8 +798,10 @@ describe("Scripts", () => {
       return `getAccount(${name})`;
     });
 
+      const args = [Charlie]
     const result = await executeScript({
       code,
+      args,
     });
     console.log("result", result);
 
@@ -811,9 +831,10 @@ describe("Scripts", () => {
       const name = accounts[match];
       return `getAccount(${name})`;
     });
-
+    const args = [1]
     const result = await executeScript({
       code,
+      args,
     });
     console.log("result", result);
 

@@ -20,12 +20,12 @@ import (
 )
 
 const (
-	nowwhereRootPath                  = "../../Cadence"
+	nowwhereRootPath                  = "../.."
 	NFTContractPath                   = nowwhereRootPath + "/contracts/NFTContract.cdc"
-	NowwhereContractPath              = nowwhereRootPath + "/contracts/NowwhereContract.cdc"
+	NowwhereContractPath              = nowwhereRootPath + "/contracts/NowWhereContract.cdc"
 	NFTContractTransferTokensPath     = nowwhereRootPath + "/transactions/transferNFT.cdc"
 	NFTContractDestroyTokensPath      = nowwhereRootPath + "/transactions/destroyNFT.cdc"
-	NFTContractMintTokensPath         = nowwhereRootPath + "/transactions/mint_template.cdc"
+	NFTContractMintTokensPath         = nowwhereRootPath + "/transactions/mintNFT.cdc"
 	NFTContractGetSupplyPath          = nowwhereRootPath + "/scripts/getTotalSupply.cdc"
 	NFTContractGetCollectionPath      = nowwhereRootPath + "/scripts/getBrand.cdc"
 	NFTContractGetCollectionCountPath = nowwhereRootPath + "/scripts/getBrandCount.cdc"
@@ -41,7 +41,7 @@ const (
 	NFTContractCreateTemplatePath     = nowwhereRootPath + "/transactions/createTemplate.cdc"
 	NFTContractSetupAccountPath       = nowwhereRootPath + "/transactions/setupAccount.cdc"
 	NFTContractSetupAdminAccountPath  = nowwhereRootPath + "/transactions/setupAdminAccount.cdc"
-	NFTContractAddAdminCapabilityPath = nowwhereRootPath + "/transactions/AddAdminCapability.cdc"
+	NFTContractAddAdminCapabilityPath = nowwhereRootPath + "/transactions/addAdminAccount.cdc"
 	NFTContractCreateDropPath         = nowwhereRootPath + "/transactions/createDrop.cdc"
 	NowwherePurchaseDropPath          = nowwhereRootPath + "/transactions/purchaseDrop.cdc"
 	NowwhereRemoveDropPath            = nowwhereRootPath + "/transactions/RemoveDrop.cdc"
@@ -377,9 +377,8 @@ func NFTContractCreateBrandTransaction(
 		AddAuthorizer(userAddress)
 
 	brand, _ := cadence.NewString(brandName)
-	author := cadence.NewAddress(userAddress)
+
 	_ = tx.AddArgument(brand)    // brandName
-	_ = tx.AddArgument(author)   // owner
 	_ = tx.AddArgument(metaData) // Metadata
 
 	signAndSubmit(

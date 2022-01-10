@@ -55,7 +55,7 @@ func NowwhereContractDeployContracts(b *emulator.Blockchain, testing *testing.T)
 	NowwhereAddr, err := b.CreateAccount(
 		[]*flow.AccountKey{adminAccountKey},
 		[]templates.Contract{templates.Contract{
-			Name:   "NowwhereContract",
+			Name:   "NowWhereContract",
 			Source: string(NowwhereCode),
 		}},
 	)
@@ -106,7 +106,6 @@ func NowwhereCreateDropTransaction(
 	dropId uint64,
 	startDate string,
 	endDate string,
-	creator sdk.Address,
 	metadata []cadence.KeyValuePair,
 ) {
 	tx := flow.NewTransaction().
@@ -118,10 +117,8 @@ func NowwhereCreateDropTransaction(
 
 	sDate, _ := cadence.NewUFix64(startDate)
 	eDate, _ := cadence.NewUFix64(endDate)
-	Creator := cadence.NewAddress(creator)
 
 	_ = tx.AddArgument(cadence.NewUInt64(dropId))
-	_ = tx.AddArgument(Creator)
 	_ = tx.AddArgument(sDate)
 	_ = tx.AddArgument(eDate)
 	_ = tx.AddArgument(cadence.NewDictionary(metadata))

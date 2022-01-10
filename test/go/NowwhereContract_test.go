@@ -90,7 +90,6 @@ func Test_CreateDrop_Success(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -138,7 +137,6 @@ func Test_CreateDrop_TwoDropswithSameTemplate(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -159,7 +157,6 @@ func Test_CreateDrop_TwoDropswithSameTemplate(test *testing.T) {
 		two,                     // drop ID
 		startDate,               // start date
 		endDate,                 // end date
-		NowwhereContractAddr,    // ownerAddress
 		metadatatemplateforDrop, // templateInformation
 	)
 
@@ -213,7 +210,6 @@ func Test_CreateDrop_withWrongStartDate(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -265,7 +261,6 @@ func Test_CreateDrop_withWrongEndDate(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -319,7 +314,6 @@ func Test_CreateDrop_withSameDates(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -366,7 +360,6 @@ func Test_CreateDrop_Duplicate(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -387,7 +380,6 @@ func Test_CreateDrop_Duplicate(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -436,7 +428,6 @@ func Test_CreateDrop_WithWrongTemplateID(test *testing.T) {
 		one,                     // drop ID
 		startDate,               // start date
 		endDate,                 // end date
-		NowwhereContractAddr,    // ownerAddress
 		metadatatemplateforDrop, // template ID and related information
 	)
 
@@ -461,7 +452,7 @@ func Test_PurchaseDrop_Success(test *testing.T) {
 
 	//time.Time to Unix Timestamp
 	// Add 0 Day
-	starttUnix := time.Now().AddDate(0, 0, 1).Unix()
+	starttUnix := time.Now().AddDate(0, 0, 0).Unix()
 	// Add 2 Days
 	endtUnix := time.Now().AddDate(0, 0, 2).Unix()
 	// Unix Timestamp
@@ -491,7 +482,6 @@ func Test_PurchaseDrop_Success(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -570,7 +560,6 @@ func Test_PurchaseDrop_morethansupply(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -648,7 +637,6 @@ func Test_PurchaseDrop_zerosupply(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -727,7 +715,6 @@ func Test_PurchaseDrop_nonexistentTemplate(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -806,7 +793,6 @@ func Test_RemoveDrop_Success(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -920,7 +906,6 @@ func Test_RemoveDrop_WithoutPermission(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
@@ -952,7 +937,6 @@ func Test_RemoveDrop_WithoutPermission(test *testing.T) {
 		templateCount := executeScriptAndCheck(test, emulator, NowwhereGenerateGetDropCountScript(nonfungibleAddr, NFTContractAddr, NowwhereContractAddr), nil)
 		assert.EqualValues(test, CadenceInt(one), templateCount)
 	})
-
 }
 
 // Description: Remove Drop without having permission(Who didn't create Template, schema and collection)
@@ -997,7 +981,6 @@ func Test_CreateDrop_WithoutPermission(test *testing.T) {
 		one,
 		startDate,
 		endDate,
-		NowwhereContractAddr, // ownerAddress
 		metadatatemplateforDrop,
 	)
 
