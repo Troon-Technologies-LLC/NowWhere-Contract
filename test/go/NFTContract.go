@@ -20,12 +20,12 @@ import (
 )
 
 const (
-	nowwhereRootPath                  = "../../Cadence"
+	nowwhereRootPath                  = "../.."
 	NFTContractPath                   = nowwhereRootPath + "/contracts/NFTContract.cdc"
-	NowwhereContractPath              = nowwhereRootPath + "/contracts/NowwhereContract.cdc"
+	NowwhereContractPath              = nowwhereRootPath + "/contracts/NowWhereContract.cdc"
 	NFTContractTransferTokensPath     = nowwhereRootPath + "/transactions/transferNFT.cdc"
 	NFTContractDestroyTokensPath      = nowwhereRootPath + "/transactions/destroyNFT.cdc"
-	NFTContractMintTokensPath         = nowwhereRootPath + "/transactions/mint_template.cdc"
+	NFTContractMintTokensPath         = nowwhereRootPath + "/transactions/mintNFT.cdc"
 	NFTContractGetSupplyPath          = nowwhereRootPath + "/scripts/getTotalSupply.cdc"
 	NFTContractGetCollectionPath      = nowwhereRootPath + "/scripts/getBrand.cdc"
 	NFTContractGetCollectionCountPath = nowwhereRootPath + "/scripts/getBrandCount.cdc"
@@ -41,7 +41,7 @@ const (
 	NFTContractCreateTemplatePath     = nowwhereRootPath + "/transactions/createTemplate.cdc"
 	NFTContractSetupAccountPath       = nowwhereRootPath + "/transactions/setupAccount.cdc"
 	NFTContractSetupAdminAccountPath  = nowwhereRootPath + "/transactions/setupAdminAccount.cdc"
-	NFTContractAddAdminCapabilityPath = nowwhereRootPath + "/transactions/AddAdminCapability.cdc"
+	NFTContractAddAdminCapabilityPath = nowwhereRootPath + "/transactions/addAdminAccount.cdc"
 	NFTContractCreateDropPath         = nowwhereRootPath + "/transactions/createDrop.cdc"
 	NowwherePurchaseDropPath          = nowwhereRootPath + "/transactions/purchaseDrop.cdc"
 	NowwhereRemoveDropPath            = nowwhereRootPath + "/transactions/RemoveDrop.cdc"
@@ -377,9 +377,8 @@ func NFTContractCreateBrandTransaction(
 		AddAuthorizer(userAddress)
 
 	brand, _ := cadence.NewString(brandName)
-	author := cadence.NewAddress(userAddress)
+
 	_ = tx.AddArgument(brand)    // brandName
-	_ = tx.AddArgument(author)   // owner
 	_ = tx.AddArgument(metaData) // Metadata
 
 	signAndSubmit(
@@ -438,10 +437,8 @@ func CreateSchema_Transaction(
 		SetPayer(emulator.ServiceKey().Address).
 		AddAuthorizer(userAddress)
 	schema, _ := cadence.NewString(schemaName)
-	author := cadence.NewAddress(userAddress)
 
 	_ = tx.AddArgument(schema)
-	_ = tx.AddArgument(author)
 
 	signAndSubmit(
 		testing, emulator, tx,
@@ -643,14 +640,14 @@ func NFTContractSetupAdminAccount(
 	testing *testing.T,
 	emulator *emulator.Blockchain,
 	nonfungibleAddr,
-	nowwhereAddr sdk.Address,
+	nftContractAddr sdk.Address,
 	shouldFail bool,
 	adminAddress sdk.Address,
 	Signer crypto.Signer,
 ) {
 
 	tx := flow.NewTransaction().
-		SetScript(NowwhereSetupAdminAccountScript(nonfungibleAddr, nowwhereAddr)).
+		SetScript(NowwhereSetupAdminAccountScript(nonfungibleAddr, nftContractAddr)).
 		SetGasLimit(100).
 		SetProposalKey(emulator.ServiceKey().Address, emulator.ServiceKey().Index, emulator.ServiceKey().SequenceNumber).
 		SetPayer(emulator.ServiceKey().Address).
@@ -670,24 +667,24 @@ func NFTContractAddAdminCapability(
 	testing *testing.T,
 	emulator *emulator.Blockchain,
 	nonfungibleAddr,
-	nowwhereAddr sdk.Address,
+	NFTContractAddr sdk.Address,
 	userSigner crypto.Signer,
 	shouldFail bool,
 	adminAddress sdk.Address,
 ) {
 
 	tx := flow.NewTransaction().
-		SetScript(NFTContractAddAdminCapabilityScript(nonfungibleAddr, nowwhereAddr)).
+		SetScript(NFTContractAddAdminCapabilityScript(nonfungibleAddr, NFTContractAddr)).
 		SetGasLimit(100).
 		SetProposalKey(emulator.ServiceKey().Address, emulator.ServiceKey().Index, emulator.ServiceKey().SequenceNumber).
 		SetPayer(emulator.ServiceKey().Address).
-		AddAuthorizer(nowwhereAddr)
+		AddAuthorizer(NFTContractAddr)
 
 	_ = tx.AddArgument(cadence.NewAddress(adminAddress))
 
 	signAndSubmit(
 		testing, emulator, tx,
-		[]flow.Address{emulator.ServiceKey().Address, nowwhereAddr},
+		[]flow.Address{emulator.ServiceKey().Address, NFTContractAddr},
 		[]crypto.Signer{emulator.ServiceKey().Signer(), userSigner},
 		false,
 	)
