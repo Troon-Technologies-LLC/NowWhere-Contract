@@ -107,42 +107,42 @@ describe("Deployment", () => {
 });
 
 describe("Transactions", () => {
-  test("test transaction setup Account", async () => {
-    const name = "setupAccount";
+  // test("test transaction setup Account", async () => {
+  //   const name = "setupAccount";
 
-    // Import participating accounts
-    const Bob = await getAccountAddress("Bob");
+  //   // Import participating accounts
+  //   const Bob = await getAccountAddress("Bob");
 
-    // Set transaction signers
-    const signers = [Bob];
+  //   // Set transaction signers
+  //   const signers = [Bob];
 
-    // Generate addressMap from import statements
-    const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
-    const NowWhereContract = await getContractAddress("NowWhereContract")
-    const addressMap = {
-      NonFungibleToken,
-      NFTContract,
-      NowWhereContract,
-    };
+  //   // Generate addressMap from import statements
+  //   const NonFungibleToken = await getContractAddress("NonFungibleToken");
+  //   const NFTContract = await getContractAddress("NFTContract");
+  //   const NowWhereContract = await getContractAddress("NowWhereContract")
+  //   const addressMap = {
+  //     NonFungibleToken,
+  //     NFTContract,
+  //     NowWhereContract,
+  //   };
 
-    let code = await getTransactionCode({
-      name,
-      addressMap,
-    });
+  //   let code = await getTransactionCode({
+  //     name,
+  //     addressMap,
+  //   });
 
-    let txResult;
-    try {
-      txResult = await sendTransaction({
-        code,
-        signers,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+  //   let txResult;
+  //   try {
+  //     txResult = await sendTransaction({
+  //       code,
+  //       signers,
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
 
-    // expect(txResult.errorMessage).toBe("");
-  });
+  //   // expect(txResult.errorMessage).toBe("");
+  // });
   test("test transaction setup admin Account", async () => {
     const name = "setupAdminAccount";
 
@@ -344,7 +344,7 @@ describe("Transactions", () => {
 
   test("test transaction  create drop", async () => {
     const name = "createDropStatic";
-    var currentTimeInSeconds=Math.floor(Date.now()/1000); //unix timestamp in seconds
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
 
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
@@ -383,7 +383,7 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
-  
+
   test("test transaction  purchase drop", async () => {
     const name = "purchaseDrop";
 
@@ -586,9 +586,9 @@ describe("Scripts", () => {
       const name = accounts[match];
       return `getAccount(${name})`;
     });
-  
 
-    console.log(typeof(myInt))
+
+    console.log(typeof (myInt))
     const args = [1];
     const result = await executeScript({
       code,
@@ -597,7 +597,7 @@ describe("Scripts", () => {
     console.log("result", result);
 
   });
-  
+
   test("get template data ", async () => {
 
     const name = "getAllTemplates";
@@ -655,7 +655,7 @@ describe("Scripts", () => {
       const name = accounts[match];
       return `getAccount(${name})`;
     });
-    const args=[1]
+    const args = [1]
     const result = await executeScript({
       code,
       args,
@@ -727,7 +727,7 @@ describe("Scripts", () => {
       console.log("name", name);
       return `getAccount(${name})`;
     });
-    const args =[1]
+    const args = [1]
     const result = await executeScript({
       code,
       args,
@@ -798,7 +798,7 @@ describe("Scripts", () => {
       return `getAccount(${name})`;
     });
 
-      const args = [Charlie]
+    const args = [Charlie]
     const result = await executeScript({
       code,
       args,
