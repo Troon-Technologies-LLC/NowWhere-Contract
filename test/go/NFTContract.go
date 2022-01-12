@@ -437,10 +437,8 @@ func CreateSchema_Transaction(
 		SetPayer(emulator.ServiceKey().Address).
 		AddAuthorizer(userAddress)
 	schema, _ := cadence.NewString(schemaName)
-	author := cadence.NewAddress(userAddress)
 
 	_ = tx.AddArgument(schema)
-	_ = tx.AddArgument(author)
 
 	signAndSubmit(
 		testing, emulator, tx,
@@ -642,14 +640,14 @@ func NFTContractSetupAdminAccount(
 	testing *testing.T,
 	emulator *emulator.Blockchain,
 	nonfungibleAddr,
-	nowwhereAddr sdk.Address,
+	nftContractAddr sdk.Address,
 	shouldFail bool,
 	adminAddress sdk.Address,
 	Signer crypto.Signer,
 ) {
 
 	tx := flow.NewTransaction().
-		SetScript(NowwhereSetupAdminAccountScript(nonfungibleAddr, nowwhereAddr)).
+		SetScript(NowwhereSetupAdminAccountScript(nonfungibleAddr, nftContractAddr)).
 		SetGasLimit(100).
 		SetProposalKey(emulator.ServiceKey().Address, emulator.ServiceKey().Index, emulator.ServiceKey().SequenceNumber).
 		SetPayer(emulator.ServiceKey().Address).
@@ -669,24 +667,24 @@ func NFTContractAddAdminCapability(
 	testing *testing.T,
 	emulator *emulator.Blockchain,
 	nonfungibleAddr,
-	nowwhereAddr sdk.Address,
+	NFTContractAddr sdk.Address,
 	userSigner crypto.Signer,
 	shouldFail bool,
 	adminAddress sdk.Address,
 ) {
 
 	tx := flow.NewTransaction().
-		SetScript(NFTContractAddAdminCapabilityScript(nonfungibleAddr, nowwhereAddr)).
+		SetScript(NFTContractAddAdminCapabilityScript(nonfungibleAddr, NFTContractAddr)).
 		SetGasLimit(100).
 		SetProposalKey(emulator.ServiceKey().Address, emulator.ServiceKey().Index, emulator.ServiceKey().SequenceNumber).
 		SetPayer(emulator.ServiceKey().Address).
-		AddAuthorizer(nowwhereAddr)
+		AddAuthorizer(NFTContractAddr)
 
 	_ = tx.AddArgument(cadence.NewAddress(adminAddress))
 
 	signAndSubmit(
 		testing, emulator, tx,
-		[]flow.Address{emulator.ServiceKey().Address, nowwhereAddr},
+		[]flow.Address{emulator.ServiceKey().Address, NFTContractAddr},
 		[]crypto.Signer{emulator.ServiceKey().Signer(), userSigner},
 		false,
 	)

@@ -43,11 +43,9 @@ func Test_ContractTestDeployment(test *testing.T) {
 func Test_Admin_CheckCapablity(test *testing.T) {
 	emulator := newEmulator()
 	nonfungibleAddr, NFTContractAddr, NowwhereContractAddr, signer, _ := NowwhereContractDeployContracts(emulator, test)
-
 	// 1st account(admin) configure
 	SetupAdminAndGiveCapabilityNowwhere(test, emulator, nonfungibleAddr, NFTContractAddr, NowwhereContractAddr, shouldNotFail, signer)
-	CheckCapabilityTransaction(test, emulator, nonfungibleAddr, NFTContractAddr, NowwhereContractAddr, signer, shouldNotFail)
-
+	//	CheckCapabilityTransaction(test, emulator, nonfungibleAddr, NFTContractAddr, NowwhereContractAddr, signer, shouldNotFail)
 }
 
 // Description: Create Drop of template
@@ -992,7 +990,9 @@ func Test_CreateDrop_WithoutPermission(test *testing.T) {
 }
 
 // Give capability to user after account setup
-func SetupAdminAndGiveCapabilityNowwhere(test *testing.T, emulator *emulator.Blockchain, nonfungibleAddr flow.Address, NFTContractAddr flow.Address, NowwhereAddress flow.Address, shouldNotFail bool, signer crypto.Signer) {
+//nonfungibleAddr, NFTContractAddr, NowwhereContractAddr
+func SetupAdminAndGiveCapabilityNowwhere(test *testing.T, emulator *emulator.Blockchain,
+	nonfungibleAddr flow.Address, NFTContractAddr flow.Address, NowwhereAddress flow.Address, shouldNotFail bool, signer crypto.Signer) {
 	NFTContractSetupAdminAccount(
 		test,
 		emulator,
@@ -1012,7 +1012,6 @@ func SetupAdminAndGiveCapabilityNowwhere(test *testing.T, emulator *emulator.Blo
 		shouldNotFail,
 		NowwhereAddress, // setup Admin account to that address
 	)
-
 }
 
 func CreateBrandSchemaTemplateTransaction(test *testing.T, emulator *emulator.Blockchain, nonfungibleAddr flow.Address, NFTContractAddr flow.Address, NowwhereContractAddr flow.Address, shouldNotFail bool, signer crypto.Signer) {

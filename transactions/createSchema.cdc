@@ -1,6 +1,6 @@
 import NFTContract from "./NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
-transaction (schemaName:String, author:Address){
+transaction (schemaName:String){
 
     prepare(acct: AuthAccount) {
       let actorResource = acct.getCapability
@@ -20,6 +20,6 @@ transaction (schemaName:String, author:Address){
             "contectValue":  NFTContract.SchemaType.String,
             "extras": NFTContract.SchemaType.Any
             }
-         actorResource.createSchema(schemaName: schemaName, format: format, author: author)
+         actorResource.createSchema(schemaName: schemaName, format: format)
    }
 }
