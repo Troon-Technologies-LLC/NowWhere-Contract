@@ -31,6 +31,7 @@ pub contract NowWhereContract {
         pub let dropId: UInt64
         pub let startDate: UFix64
         pub let endDate: UFix64
+        //Nasir kindly update this
         pub let templates: {UInt64:AnyStruct}
 
         init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64:AnyStruct}) {
@@ -42,7 +43,7 @@ pub contract NowWhereContract {
     }
 
     // DropAdmin
-    // This is the main resource to manage the NFTs that they are creating and purchasing.
+    // This is the main resource to manage the NFTs that will manage drop funtionality e.g: createDrop, removeDrop and purchaseNFT.
     pub resource DropAdmin {
         pub fun createDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64:AnyStruct}){
             pre{
@@ -103,17 +104,16 @@ pub contract NowWhereContract {
         }
     }
 
-        // getDropById returns the IDs that the specified Drop id
-        // is associated with.    
-        pub fun getDropById(dropId: UInt64):Drop {
-            return self.allDrops[dropId]!    
-        }
-
-        // getAllDrops returns all the Drops in NowWhereContract
-        // Returns: A dictionary of all the Drop that have been created
-        pub fun getAllDrops(): {UInt64: Drop} {
-            return self.allDrops
-        }
+    // getDropById returns the IDs that the specified Drop id
+    // is associated with.    
+    pub fun getDropById(dropId: UInt64):Drop {
+        return self.allDrops[dropId]!    
+    }
+    // getAllDrops returns all the Drops in NowWhereContract
+    // Returns: A dictionary of all the Drop that have been created
+    pub fun getAllDrops(): {UInt64: Drop} {
+        return self.allDrops
+    }
 
     init() {
         // Initialize contract fields
