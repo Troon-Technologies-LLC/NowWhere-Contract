@@ -1,4 +1,4 @@
-import NowWhereContract from "../contracts/NowWhereContract.cdc"
+import NowWhereContract from "./NowWhereContract.cdc"
 
 transaction(DropId: UInt64, StartDate: UFix64,EndDate: UFix64,Template: {UInt64:AnyStruct}){
     let adminRef: &NowWhereContract.DropAdmin

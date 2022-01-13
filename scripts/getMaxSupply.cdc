@@ -1,5 +1,5 @@
 import NFTContract from "./NFTContract.cdc"
-import NowWhereContract from "../contracts/NowWhereContract.cdc"
+import NowWhereContract from "./NowWhereContract.cdc"
 
 pub fun main(dropId: UInt64):{String:UInt64}{
 
@@ -13,7 +13,7 @@ pub fun main(dropId: UInt64):{String:UInt64}{
 
 
     var dropMetaData: {String:UInt64}= {}
-
+    
         dropMetaData["IssuedSupply"] = getTemplate.issuedSupply
         dropMetaData["MaxSupply"] =  getTemplate.maxSupply
 

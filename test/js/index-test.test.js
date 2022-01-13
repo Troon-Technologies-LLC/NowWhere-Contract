@@ -107,42 +107,6 @@ describe("Deployment", () => {
 });
 
 describe("Transactions", () => {
-  // test("test transaction setup Account", async () => {
-  //   const name = "setupAccount";
-
-  //   // Import participating accounts
-  //   const Bob = await getAccountAddress("Bob");
-
-  //   // Set transaction signers
-  //   const signers = [Bob];
-
-  //   // Generate addressMap from import statements
-  //   const NonFungibleToken = await getContractAddress("NonFungibleToken");
-  //   const NFTContract = await getContractAddress("NFTContract");
-  //   const NowWhereContract = await getContractAddress("NowWhereContract")
-  //   const addressMap = {
-  //     NonFungibleToken,
-  //     NFTContract,
-  //     NowWhereContract,
-  //   };
-
-  //   let code = await getTransactionCode({
-  //     name,
-  //     addressMap,
-  //   });
-
-  //   let txResult;
-  //   try {
-  //     txResult = await sendTransaction({
-  //       code,
-  //       signers,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-
-  //   // expect(txResult.errorMessage).toBe("");
-  // });
   test("test transaction setup admin Account", async () => {
     const name = "setupAdminAccount";
 
@@ -180,7 +144,6 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
-
   test("test transaction add admin Account", async () => {
     const name = "addAdminAccount";
 
@@ -222,7 +185,6 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
-
   test("test transaction  create brand", async () => {
     const name = "createBrand";
 
@@ -262,7 +224,6 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
-
   test("test transaction  create Schema", async () => {
     const name = "createSchema";
 
@@ -341,7 +302,6 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
-
   test("test transaction  create drop", async () => {
     const name = "createDropStatic";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
@@ -383,7 +343,6 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
-
   test("test transaction  purchase drop", async () => {
     const name = "purchaseDrop";
 
@@ -424,8 +383,6 @@ describe("Transactions", () => {
 
     // expect(txResult.errorMessage).toBe("");
   });
-
-
 })
 describe("Scripts", () => {
   test("get total supply", async () => {
@@ -560,7 +517,6 @@ describe("Scripts", () => {
     console.log("result", result);
 
   });
-
   test("get schema data by Id", async () => {
 
     const name = "getSchemaById";
@@ -597,7 +553,6 @@ describe("Scripts", () => {
     console.log("result", result);
 
   });
-
   test("get template data ", async () => {
 
     const name = "getAllTemplates";
@@ -695,7 +650,6 @@ describe("Scripts", () => {
     console.log("result", result);
 
   });
-
   test("get drop data by Id", async () => {
 
     const name = "getDropById";
@@ -735,7 +689,6 @@ describe("Scripts", () => {
     console.log("result", result);
 
   });
-
   test("get all nfts  data", async () => {
 
     const name = "getAllNFTIds";
@@ -772,7 +725,6 @@ describe("Scripts", () => {
     console.log("result", result);
 
   });
-
   test("get nft template data", async () => {
 
     const name = "getNFTTemplateData";

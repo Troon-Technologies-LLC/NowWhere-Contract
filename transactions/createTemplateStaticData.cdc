@@ -1,5 +1,4 @@
 import NFTContract from "./NFTContract.cdc"
-import NonFungibleToken from "./NonFungibleToken.cdc"
 
 transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
     prepare(acct: AuthAccount) {
@@ -32,6 +31,5 @@ transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
         }
         
         actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
-        log("Template created")
     }
 }

@@ -1,4 +1,4 @@
-import NFTContract from "../contracts/NFTContract.cdc"
+import NFTContract from "./NFTContract.cdc"
 
 transaction (){
     prepare(acct: AuthAccount) {

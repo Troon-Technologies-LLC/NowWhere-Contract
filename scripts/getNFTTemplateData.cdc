@@ -12,7 +12,7 @@ pub fun main(address: Address) : {UInt64: AnyStruct}{
         var nftData = NFTContract.getNFTDataById(nftId: nftId)
         var templateDataById =  NFTContract.getTemplateById(templateId: nftData.templateID)
         var nftMetaData : {String:AnyStruct} = {}
-        nftMetaData["templateId"] =nftData.templateID;
+        
         nftMetaData["mintNumber"] =nftData.mintNumber;
         nftMetaData["templateData"] = templateDataById;
         dict.insert(key: nftId,nftMetaData)

@@ -1,5 +1,4 @@
 import NFTContract from "./NFTContract.cdc"
-import NonFungibleToken from "./NonFungibleToken.cdc"
 
 transaction (brandName: String, data: {String:String}){
     prepare(acct: AuthAccount) {
@@ -12,6 +11,5 @@ transaction (brandName: String, data: {String:String}){
         actorResource.createNewBrand(
         brandName: brandName,
         data: data)
-        log("brand created:")
     }
 }
