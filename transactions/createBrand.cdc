@@ -1,9 +1,8 @@
 import NFTContract from "./NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
 
-transaction (brandName:String, data:{String:String}){
+transaction (brandName: String, data: {String:String}){
     prepare(acct: AuthAccount) {
-        
         let actorResource = acct.getCapability
             <&{NFTContract.NFTMethodsCapability}>
             (NFTContract.NFTMethodsCapabilityPrivatePath)

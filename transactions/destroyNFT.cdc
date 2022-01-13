@@ -12,8 +12,7 @@ import NonFungibleToken from "./NonFungibleToken.cdc"
 //
 // recipient: The Flow address of the account to receive the NFT.
 // withdrawID: The id of the NFT to be transferred
-
-transaction(withdrawID:UInt64) {
+transaction(withdrawID: UInt64) {
     // local variable for storing the transferred token
     let transferToken: @NonFungibleToken.NFT
     prepare(acct: AuthAccount) {
@@ -23,7 +22,6 @@ transaction(withdrawID:UInt64) {
     }
 
     execute {
-        
         destroy self.transferToken
     }
 }

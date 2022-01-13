@@ -1,6 +1,6 @@
 import NFTContract from "./NFTContract.cdc"
 
-transaction(templateId: UInt64, account:Address){
+transaction(templateId: UInt64, account: Address){
     prepare(acct: AuthAccount) {
         let actorResource = acct.getCapability
         <&{NFTContract.NFTMethodsCapability}>

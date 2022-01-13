@@ -1,7 +1,7 @@
 import NFTContract from "./NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
 
-transaction(admin:Address) {
+transaction(admin: Address) {
     prepare(signer: AuthAccount) {
 
         // get the public account object for the Admin

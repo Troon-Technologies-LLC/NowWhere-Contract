@@ -1,7 +1,7 @@
 import NFTContract from "./NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
 
-transaction (brandId:UInt64,brandName:String){
+transaction (brandId: UInt64, brandName: String){
   prepare(acct: AuthAccount) {
 
     let actorResource = acct.getCapability
@@ -13,7 +13,7 @@ transaction (brandId:UInt64,brandName:String){
     actorResource.updateBrandData(
     brandId: brandId,
     data:  {
-        "brandName":brandName
+        "brandName": brandName
       })
     log("brand data updated")
 

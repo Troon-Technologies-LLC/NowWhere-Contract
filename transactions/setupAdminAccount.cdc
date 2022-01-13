@@ -22,7 +22,7 @@ transaction() {
 
         let collection  <- NFTContract.createEmptyCollection()
         // store the empty NFT Collection in account storage
-        signer.save( <- collection, to:NFTContract.CollectionStoragePath)
+        signer.save( <- collection, to: NFTContract.CollectionStoragePath)
         log("Collection created for account".concat(signer.address.toString()))
         // create a public capability for the Collection
         signer.link<&{NonFungibleToken.CollectionPublic}>(NFTContract.CollectionPublicPath, target:NFTContract.CollectionStoragePath)

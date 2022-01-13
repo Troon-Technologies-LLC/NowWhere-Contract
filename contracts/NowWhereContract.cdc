@@ -7,17 +7,17 @@ pub contract NowWhereContract {
     // -----------------------------------------------------------------------
     pub event ContractInitialized()
     // Emitted when a new Drop is created
-    pub event DropCreated(dropId:UInt64,creator:Address,startDate:UFix64, endDate:UFix64)
+    pub event DropCreated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)
     // Emitted when a Drop is purchased
-    pub event DropPurchased(dropId:UInt64,templateId:UInt64,mintNumbers:UInt64, receiptAddress:Address)
+    pub event DropPurchased(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address)
     // Emitted when a Drop is removed
-    pub event DropRemoved(dropId:UInt64)
+    pub event DropRemoved(dropId: UInt64)
     // Contract level paths for storing resources
     pub let DropAdminStoragePath: StoragePath
     // The capability that is used for calling the admin functions 
-    access(contract) let adminRef : Capability<&{NFTContract.NFTMethodsCapability}>
+    access(contract) let adminRef: Capability<&{NFTContract.NFTMethodsCapability}>
     // Variable size dictionary of Drop structs
-    access(self) var allDrops :{UInt64:Drop}
+    access(self) var allDrops: {UInt64:Drop}
     // -----------------------------------------------------------------------
     // Nowwhere contract-level Composite Type definitions
     // -----------------------------------------------------------------------
@@ -28,12 +28,12 @@ pub contract NowWhereContract {
 
     // Drop is a struct 
     pub struct Drop {
-        pub let dropId:UInt64
-        pub let startDate:UFix64
-        pub let endDate:UFix64
-        pub let templates :{UInt64:AnyStruct}
+        pub let dropId: UInt64
+        pub let startDate: UFix64
+        pub let endDate: UFix64
+        pub let templates: {UInt64:AnyStruct}
 
-        init(dropId:UInt64, startDate:UFix64, endDate:UFix64, templates:{UInt64:AnyStruct}) {
+        init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64:AnyStruct}) {
             self.dropId = dropId
             self.startDate = startDate
             self.endDate = endDate
@@ -44,50 +44,53 @@ pub contract NowWhereContract {
     // DropAdmin
     // This is the main resource to manage the NFTs that they are creating and purchasing.
     pub resource DropAdmin {
-        pub fun createDrop(dropId:UInt64, startDate:UFix64, endDate:UFix64, templates:{UInt64:AnyStruct}){
+        pub fun createDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64:AnyStruct}){
             pre{
-                dropId != nil : "invalid drop id"
-                NowWhereContract.allDrops[dropId] ==nil : "drop id already exists"
-                startDate >= getCurrentBlock().timestamp:"Start Date should be greater or Equal than current time"
+                dropId != nil: "invalid drop id"
+                NowWhereContract.allDrops[dropId] == nil: "drop id already exists"
+                startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
                 endDate > startDate: "End date should be greater than start date"
                 templates != nil: "templates must not be null"
             }            
-            var areValidTemplates : Bool = true
+            var areValidTemplates: Bool = true
             for templateId in templates.keys {
                 var template = NFTContract.getTemplateById(templateId: templateId)
-                if(template ==nil){
+                if(template == nil){
                     areValidTemplates = false
                     break
                 }
             }
-            assert(areValidTemplates, message: "templateId is not valid")
-            var newDrop = Drop(dropId:dropId,startDate:startDate, endDate:endDate,templates:templates)
+            assert(areValidTemplates, message:"templateId is not valid")
+
+            var newDrop = Drop(dropId: dropId,startDate: startDate, endDate: endDate, templates: templates)
             NowWhereContract.allDrops[newDrop.dropId] = newDrop
-            emit DropCreated(dropId:dropId,creator:self.owner?.address!,startDate:startDate, endDate:endDate)
+            emit DropCreated(dropId: dropId, creator: self.owner?.address!, startDate: startDate, endDate: endDate)
         }
 
-        pub fun removeDrop(dropId:UInt64){
+        pub fun removeDrop(dropId: UInt64){
             pre {
                 dropId != nil : "invalid drop id"
                 NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
-                NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp : "Drop is not ended yet"
+                NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "Drop is not ended yet"
             }
+
             NowWhereContract.allDrops.remove(key: dropId)
-            emit DropRemoved(dropId:dropId)
+            emit DropRemoved(dropId: dropId)
         }
 
-        pub fun purchaseNFT(dropId:UInt64,templateId:UInt64,mintNumbers:UInt64, receiptAddress:Address){
+        pub fun purchaseNFT(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address){
             pre {
                 mintNumbers > 0: "mint number must be greater than zero"
                 mintNumbers <= 10: "mint numbers must be less than ten"
                 templateId > 0: "template id must be greater than zero"
                 dropId != nil : "invalid drop id"
-                receiptAddress !=nil :"invalid receipt Address"
+                receiptAddress !=nil: "invalid receipt Address"
                 NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
-                NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp:"drop not started yet"
+                NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
                 NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
                 NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
             }
+
             var template =  NFTContract.getTemplateById(templateId: templateId)
             assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply")
             
@@ -96,19 +99,19 @@ pub contract NowWhereContract {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
             }    
-            emit DropPurchased(dropId:dropId,templateId:templateId,mintNumbers:mintNumbers, receiptAddress:receiptAddress)
+            emit DropPurchased(dropId: dropId,templateId: templateId,mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
     }
 
         // getDropById returns the IDs that the specified Drop id
         // is associated with.    
-        pub fun getDropById(dropId:UInt64):Drop{
+        pub fun getDropById(dropId: UInt64):Drop {
             return self.allDrops[dropId]!    
         }
 
         // getAllDrops returns all the Drops in NowWhereContract
         // Returns: A dictionary of all the Drop that have been created
-        pub fun getAllDrops():{UInt64:Drop}{
+        pub fun getAllDrops(): {UInt64: Drop} {
             return self.allDrops
         }
 
@@ -119,7 +122,7 @@ pub contract NowWhereContract {
         self.DropAdminStoragePath = /storage/NowwhereDropAdmin
         // get the private capability to the admin resource interface
         // to call the functions of this interface.
-        self.adminRef =  self.account.getCapability
+        self.adminRef = self.account.getCapability
             <&{NFTContract.NFTMethodsCapability}>(NFTContract.NFTMethodsCapabilityPrivatePath)
 
         // Put the Drop Admin in storage

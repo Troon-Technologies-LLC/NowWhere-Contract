@@ -1,7 +1,7 @@
 import NFTContract from "./NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
-transaction(brandId:UInt64, schemaId:UInt64, maxSupply:UInt64,immutableData:{String: AnyStruct}) {
 
+transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}) {
     prepare(acct: AuthAccount) {
        let actorResource = acct.getCapability
             <&{NFTContract.NFTMethodsCapability}>

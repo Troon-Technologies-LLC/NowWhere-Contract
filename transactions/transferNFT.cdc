@@ -1,8 +1,8 @@
 import NFTContract from "./NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
-// This transaction transfers a template to a recipient
 
-// This transaction is how a  user would transfer an NFT
+// This transaction transfers a template to a recipient
+// This transaction is how a user would transfer an NFT
 // from their account to another account
 // The recipient must have a NFTContract Collection object stored
 // and a public TransferInterface capability stored at
@@ -12,8 +12,7 @@ import NonFungibleToken from "./NonFungibleToken.cdc"
 //
 // recipient: The Flow address of the account to receive the NFT.
 // withdrawID: The id of the NFT to be transferred
-
-transaction(recipient:Address, withdrawID:UInt64) {
+transaction(recipient: Address, withdrawID: UInt64) {
     // local variable for storing the transferred token
     let transferToken: @NonFungibleToken.NFT
     prepare(acct: AuthAccount) {
