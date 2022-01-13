@@ -106,6 +106,9 @@ pub contract NowWhereContract {
     // getDropById returns the IDs that the specified Drop id
     // is associated with.    
     pub fun getDropById(dropId: UInt64):Drop {
+        pre {
+            NowWhereContract.allDrops[dropId] != nil:"drop Id does not exists"  
+        }
         return self.allDrops[dropId]!    
     }
     // getAllDrops returns all the Drops in NowWhereContract
