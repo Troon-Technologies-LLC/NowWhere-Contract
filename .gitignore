@@ -5,3 +5,4 @@ node_modules/
 Credentials.md
 flow.json
 package-lock.json
+.env
