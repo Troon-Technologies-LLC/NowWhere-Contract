@@ -1,3 +1,4 @@
+//Saad kindly update this
 ## How to Deploy and Test the Top Shot Contract in VSCode
 The first step for using any smart contract is deploying it to the blockchain,
 or emulator in our case. Do these commands in vscode. 
@@ -31,7 +32,7 @@ the core functionality of the NFT.
 
 | Network | Contract Address     |
 |---------|----------------------|
-| Testnet | `0xeabdfe827c7db887` |
+| Testnet | `0x8f5c3c561b83eae3` |
 
 ## Instructions for creating Brand, Schema, Template and Mint Templates
 
@@ -40,10 +41,10 @@ A common order of creating NFT would be
 1. Creating new Brand with `transactions/createBrand.cdc`.
 2. Creating new Schema with `transactions/createSchema.cdc`.
 3. Creating new Template with `transactions/createTemplate.cdc`.
-4. Create NFT receiver with `transaction/setupAccount`.
-5. Create Mint of Templates and transfer to Address(having Setup Account) with `transaction/mint_template`
+4. Create NFT receiver with `transaction/setupAccount.cdc`.
+5. Create Mint of Templates and transfer to Address(having Setup Account) with `transaction/mintTemplate.cdc`
 
-You can also see the scripts in `transactions/scripts` to see how information
+You can also see the scripts in `transactions/scripts.cdc` to see how information
 can be read from the NFTContract. 
 
 ## NFTContract Events

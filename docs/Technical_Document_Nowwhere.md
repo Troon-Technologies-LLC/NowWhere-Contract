@@ -1,3 +1,4 @@
+//Saad kindly update this
 
 ## Technical Summary and Code Documentation
 ## Instructions for creating Brand, Schema, Template and Mint Templates
@@ -36,7 +37,7 @@ Emitted when a Drop will be Removed.
 
 | Network | Contract Address     |
 |---------|----------------------|
-| Testnet | `0xeabdfe827c7db887` |
+| Testnet | `0xb1295645abe1f315` |
 
 
 ## Drop Structure
