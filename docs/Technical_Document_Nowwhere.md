@@ -4,13 +4,17 @@
 
 ## Instructions for creating Brand, Schema, Template and Mint Templates
 
-A common order of creating NFT would be
+A common order of creating Drop would be
 
-- Create Admin Account with `transaction/setupAdminAccount.cdc`.
-- Owner then create that account Admin, and gives that account ability to create Drop, Purchase Drop and Remove Drop with `transactions/AddAdminCapability`
-- Create new Drop with `transactions/createDrop.cdc` using Admin Account.
-- Create NFT Receiver with `transaction/setupAccount` to recieve NFT .
-- Purcahse Drop and send to any address with `transactions/purchaseDrop.cdc` using Admin Account.
+- Create Admin Account with `transaction/setupAdminAccount`.
+- Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop 
+ and purchase Drop with `transactions/addAdminAccount` 
+- Create new Brand with `transactions/createBrand` using Admin Account.
+- Create new Schema with `transactions/createSchema` using Admin Account.
+- Create new Template with `transactions/createTemplate` using Admin Account.
+- Create NFT Receiver with `transaction/setupAccount` .
+- Create new Drop with `transactions/createDrop` using Admin Account.
+- Purchase Drop and send to any address with `transactions/purchaseDrop` using Admin Account.
 - Remove Drop `transactions/RemoveDrop.cdc` using Admin Account.
   You can also see the scripts in `transactions/scripts` to see how information
   can be read from the NowWhereContract.
@@ -22,11 +26,11 @@ A common order of creating NFT would be
   This event is emitted when the `Nowwhere` will be initialized.
 
 - Event for Creation of Drop ->
-  `pub event DropCreated(dropId:UInt64,creator:Address,startDate:UFix64, endDate:UFix64)`
+  `pub event DropCreated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)`
   Emitted when a new Drop will be created and added to the smart Contract.
 
 - Event for purchase Drop ->
-  `pub event DropPurchased(dropId:UInt64,templateId:UInt64,mintNumbers:UInt64, receiptAddress:Address)`
+  `pub event DropPurchased(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address)`
   Emitted when a Drop will be Purchased.
 
 - Event for Remove Drop ->
@@ -46,7 +50,6 @@ A common order of creating NFT would be
 In drops we have the following Information:
 
 - dropId:UInt64
-- creator:Address
 - startDate:UFix64
 - endDate:UFix64
 - templates :{UInt64:AnyStruct}
@@ -55,7 +58,7 @@ In drops we have the following Information:
 
 To Create a drop of specific Template, we have to give arguments shown above, after that our function will check that start and end time should be grater than present time, template must not be null, drop Ids should be unique.
 
-## Instruction of Purchase NFT
+## Instruction of Purchase Drop
 
 To Purchase NFT with any Drop we have to give the following fields:
 
@@ -80,6 +83,3 @@ After the contracts have been deployed, you can run the sample transactions
 to interact with the contracts. The sample transactions are meant to be used
 in an automated context, so they use transaction arguments and string template
 fields. These make it easier for a program to use and interact with them.
-If you are running these transactions manually in the Flow Playground or
-vscode extension, you will need to remove the transaction arguments and
-hard code the values that they are used for.
