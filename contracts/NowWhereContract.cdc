@@ -44,6 +44,11 @@ pub contract NowWhereContract {
     // DropAdmin
     // This is the main resource to manage the NFTs that will manage drop funtionality e.g: createDrop, removeDrop and purchaseNFT.
     pub resource DropAdmin {
+        access(contract) var ownerVault: Capability<&AnyResource{FungibleToken.Receiver}>?
+
+        pub fun addOwnerVault(_ownerVault: Capability<&AnyResource{FungibleToken.Receiver}>){
+             self.ownerVault = _ownerVault
+        }
         pub fun createDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64:AnyStruct}){
             pre{
                 dropId != nil: "invalid drop id"
@@ -102,6 +107,43 @@ pub contract NowWhereContract {
             emit DropPurchased(dropId: dropId,templateId: templateId,mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
     }
+
+    pub fun purchaseDropByFlow(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault){
+        
+        pre{
+            price > 0.0: "Price should be greater than zero"
+            receiptAddress !=nil: "invalid receipt Address"
+            flowPayment.balance == price: "Your vault doesnot have balance to buy NFT"
+            mintNumbers > 0: "mint number must be greater than zero"
+            mintNumbers <= 10: "mint numbers must be less than ten"
+            templateId > 0: "template id must be greater than zero"
+            dropId != nil : "invalid drop id"
+            receiptAddress !=nil: "invalid receipt Address"
+            NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
+            NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
+            NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
+            NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
+        }
+                
+        let vaultRef = self.ownerVault!.borrow()
+            ?? panic("Could not borrow reference to owner token vault")
+            
+        vaultRef.deposit(from: <-flowPayment)
+        var template =  NFTContract.getTemplateById(templateId: templateId)
+        assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply")
+        
+        var i: UInt64 = 0
+        while i < mintNumbers {
+            NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
+            i = i + 1
+        }    
+        
+        emit DropPurchased(dropId: dropId,templateId: templateId,mintNumbers: mintNumbers, receiptAddress: receiptAddress)
+
+    }
+        init(){
+            self.ownerVault = nil
+        }
 
     // getDropById returns the IDs that the specified Drop id
     // is associated with.    
