@@ -1,5 +1,7 @@
-import NFTContract from "./NFTContract.cdc"
-import NonFungibleToken from "./NonFungibleToken.cdc"
+import NonFungibleToken from  0xf8d6e0586b0a20c7
+import NFTContract from 0xf8d6e0586b0a20c7
+import FungibleToken from 0xee82856bf20e2aa6
+import FlowToken from 0x0ae53cb6e3f42a79    
 
 pub contract NowWhereContract {
     // -----------------------------------------------------------------------
@@ -31,7 +33,7 @@ pub contract NowWhereContract {
         pub let dropId: UInt64
         pub let startDate: UFix64
         pub let endDate: UFix64
-        pub var templates: {UInt64:AnyStruct}
+        pub let templates: {UInt64:AnyStruct}
 
         init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64:AnyStruct}) {
             self.dropId = dropId
@@ -42,7 +44,7 @@ pub contract NowWhereContract {
     }
 
     // DropAdmin
-    // This is the main resource to manage the NFTs that will manage drop funtionality e.g: createDrop, removeDrop and purchaseNFT.
+    // This is the main resource to manage the NFTs that they are creating and purchasing.
     pub resource DropAdmin {
         access(contract) var ownerVault: Capability<&AnyResource{FungibleToken.Receiver}>?
 
@@ -53,8 +55,8 @@ pub contract NowWhereContract {
             pre{
                 dropId != nil: "invalid drop id"
                 NowWhereContract.allDrops[dropId] == nil: "drop id already exists"
-                startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
-                endDate > startDate: "End date should be greater than start date"
+              //  startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
+               // endDate > startDate: "End date should be greater than start date"
                 templates != nil: "templates must not be null"
             }            
             var areValidTemplates: Bool = true
@@ -106,9 +108,8 @@ pub contract NowWhereContract {
             }    
             emit DropPurchased(dropId: dropId,templateId: templateId,mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
-    }
 
-    pub fun purchaseDropByFlow(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault){
+       pub fun purchaseDropByFlow(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault){
         
         pre{
             price > 0.0: "Price should be greater than zero"
@@ -120,8 +121,8 @@ pub contract NowWhereContract {
             dropId != nil : "invalid drop id"
             receiptAddress !=nil: "invalid receipt Address"
             NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
-            NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
-            NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
+           //     NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
+           //     NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
             NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
         }
                 
@@ -144,20 +145,19 @@ pub contract NowWhereContract {
         init(){
             self.ownerVault = nil
         }
+    }
 
-    // getDropById returns the IDs that the specified Drop id
-    // is associated with.    
-    pub fun getDropById(dropId: UInt64):Drop {
-        pre {
-            NowWhereContract.allDrops[dropId] != nil:"drop Id does not exists"  
+        // getDropById returns the IDs that the specified Drop id
+        // is associated with.    
+        pub fun getDropById(dropId: UInt64):Drop {
+            return self.allDrops[dropId]!    
         }
-        return self.allDrops[dropId]!    
-    }
-    // getAllDrops returns all the Drops in NowWhereContract
-    // Returns: A dictionary of all the Drop that have been created
-    pub fun getAllDrops(): {UInt64: Drop} {
-        return self.allDrops
-    }
+
+        // getAllDrops returns all the Drops in NowWhereContract
+        // Returns: A dictionary of all the Drop that have been created
+        pub fun getAllDrops(): {UInt64: Drop} {
+            return self.allDrops
+        }
 
     init() {
         // Initialize contract fields

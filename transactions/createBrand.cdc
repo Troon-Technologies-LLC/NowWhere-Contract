@@ -1,7 +1,8 @@
-import NFTContract from "./NFTContract.cdc"
+import NFTContract from 0xf8d6e0586b0a20c7
 
-transaction (brandName: String, data: {String:String}){
+transaction (){
     prepare(acct: AuthAccount) {
+    
         let actorResource = acct.getCapability
             <&{NFTContract.NFTMethodsCapability}>
             (NFTContract.NFTMethodsCapabilityPrivatePath)
@@ -9,7 +10,8 @@ transaction (brandName: String, data: {String:String}){
             panic("could not borrow a reference to the NFTMethodsCapability interface")
 
         actorResource.createNewBrand(
-        brandName: brandName,
-        data: data)
+        brandName: "saad",
+        data: {"saad":"test"})
+        log("ok")
     }
 }
