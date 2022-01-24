@@ -2,7 +2,7 @@ import NowWhereContract from 0xf8d6e0586b0a20c7
 import FungibleToken from 0xee82856bf20e2aa6
 import FlowToken from 0x0ae53cb6e3f42a79  
 
-transaction() {
+transaction(receiptAddress: Address) {
 //DropId: UInt64,TemplateId: UInt64,MintNumber: UInt64,Creator: Address
     let adminRef: &NowWhereContract.DropAdmin
     // Temporary Vault object that holds the balance that is being transferred
