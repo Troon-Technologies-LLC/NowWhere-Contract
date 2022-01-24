@@ -1,5 +1,5 @@
-import NonFungibleToken from  0xf8d6e0586b0a20c7
-import NFTContract from 0xf8d6e0586b0a20c7
+import NFTContract from "./NFTContract.cdc"
+import NonFungibleToken from "./NonFungibleToken.cdc"
 import FungibleToken from 0xee82856bf20e2aa6
 import FlowToken from 0x0ae53cb6e3f42a79    
 
@@ -55,8 +55,8 @@ pub contract NowWhereContract {
             pre{
                 dropId != nil: "invalid drop id"
                 NowWhereContract.allDrops[dropId] == nil: "drop id already exists"
-              //  startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
-               // endDate > startDate: "End date should be greater than start date"
+               startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
+               endDate > startDate: "End date should be greater than start date"
                 templates != nil: "templates must not be null"
             }            
             var areValidTemplates: Bool = true
@@ -121,8 +121,8 @@ pub contract NowWhereContract {
             dropId != nil : "invalid drop id"
             receiptAddress !=nil: "invalid receipt Address"
             NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
-           //     NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
-           //     NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
+            NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
+            NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
             NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
         }
                 

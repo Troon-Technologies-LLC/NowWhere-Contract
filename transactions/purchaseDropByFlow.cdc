@@ -14,14 +14,14 @@ transaction(receiptAddress: Address) {
  
          let vaultRef = acct1.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
                 ?? panic("Could not borrow buyer vault reference")
-        self.temporaryVault <- vaultRef.withdraw(amount: 100.0)
+        self.temporaryVault <- vaultRef.withdraw(amount: 10.0)
     //self.adminRef.purchaseNFT(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: Creator)
     
     }
   
     execute{
 
-      let dropResponse = self.adminRef.purchaseDropByFlow(dropId: 1, templateId: 1, mintNumbers: 5, receiptAddress: 0x179b6b1cb6755e31, price:100.0,flowPayment: <- self.temporaryVault)
+      let dropResponse = self.adminRef.purchaseDropByFlow(dropId: 1, templateId: 1, mintNumbers: 5, receiptAddress: receiptAddress, price:10.0,flowPayment: <- self.temporaryVault)
       
       log(dropResponse)
     }
