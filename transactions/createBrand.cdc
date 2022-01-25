@@ -1,6 +1,6 @@
 import NFTContract from 0xf8d6e0586b0a20c7
 
-transaction (){
+transaction (brandName: String, data: {String:String}){
     prepare(acct: AuthAccount) {
     
         let actorResource = acct.getCapability
@@ -10,8 +10,8 @@ transaction (){
             panic("could not borrow a reference to the NFTMethodsCapability interface")
 
         actorResource.createNewBrand(
-        brandName: "saad",
-        data: {"saad":"test"})
+         brandName: brandName,
+        data: data)
         log("ok")
     }
 }

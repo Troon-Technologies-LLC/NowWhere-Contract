@@ -1,6 +1,6 @@
 import NFTContract from 0xf8d6e0586b0a20c7
 
-transaction {
+transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
     prepare(acct: AuthAccount) {
         let actorResource = acct.getCapability
             <&{NFTContract.NFTMethodsCapability}>
@@ -28,7 +28,7 @@ transaction {
             "contectValue" : "https://troontechnologies.com/",
             "extras" : extra        
         }
-        actorResource.createTemplate(brandId: 1, schemaId: 1, maxSupply: 5, immutableData: immutableData)
+        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
         log("ok")
     }
 }
