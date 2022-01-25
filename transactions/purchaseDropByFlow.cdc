@@ -8,11 +8,11 @@ transaction(DropId: UInt64,TemplateId: UInt64,MintNumber: UInt64,receiptAddress:
     // Temporary Vault object that holds the balance that is being transferred
     var temporaryVault: @FungibleToken.Vault
 
-    prepare(acct: AuthAccount, acct1:AuthAccount) {
-        self.adminRef = acct.borrow<&NowWhereContract.DropAdmin>(from:NowWhereContract.DropAdminStoragePath)
+    prepare(providerAccount: AuthAccount, tokenRecipientAccount:AuthAccount) {
+        self.adminRef = providerAccount.borrow<&NowWhereContract.DropAdmin>(from:NowWhereContract.DropAdminStoragePath)
         ??panic("could not borrow admin reference")
  
-         let vaultRef = acct1.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+         let vaultRef = tokenRecipientAccount.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
                 ?? panic("Could not borrow buyer vault reference")
         self.temporaryVault <- vaultRef.withdraw(amount: 10.0)
     }
