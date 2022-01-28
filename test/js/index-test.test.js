@@ -453,7 +453,7 @@ describe("Transactions", () => {
     expect(updatedBalance2.toString()).toBe(user2);
   });
   test("purchase drop with flow", async () => {
-    const name = "purchaseDropByFlow";
+    const name = "purchaseNFTWithFlow";
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
     const Bob = await getAccountAddress("Bob");
@@ -490,7 +490,7 @@ describe("Transactions", () => {
 
   test("check final balance of both user owner and buyer", async () => {
     let userOne = "10.00100000";
-    let user2 = "32.00100000";
+    let userTwo = "32.00100000";
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
     const Bob = await getAccountAddress("Bob");
@@ -500,7 +500,7 @@ describe("Transactions", () => {
     const updatedBalance2 = await getFlowBalance(Bob);
     // console.log("Bob", { updatedBalance2 });
     expect(updatedBalance1.toString()).toBe(userOne);
-    expect(updatedBalance2.toString()).toBe(user2);
+    expect(updatedBalance2.toString()).toBe(userTwo);
   });
 });
 describe("Scripts", () => {
