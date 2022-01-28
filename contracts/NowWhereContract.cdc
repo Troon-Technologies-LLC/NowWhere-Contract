@@ -19,7 +19,7 @@ pub contract NowWhereContract {
     // The capability that is used for calling the admin functions 
     access(contract) let adminRef: Capability<&{NFTContract.NFTMethodsCapability}>
     // Variable size dictionary of Drop structs
-    access(self) var allDrops: {UInt64:Drop}
+    access(self) var allDrops: {UInt64: Drop}
     // -----------------------------------------------------------------------
     // Nowwhere contract-level Composite Type definitions
     // -----------------------------------------------------------------------
@@ -33,9 +33,9 @@ pub contract NowWhereContract {
         pub let dropId: UInt64
         pub let startDate: UFix64
         pub let endDate: UFix64
-        pub let templates: {UInt64:AnyStruct}
+        pub let templates: {UInt64: AnyStruct}
 
-        init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64:AnyStruct}) {
+        init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}) {
             self.dropId = dropId
             self.startDate = startDate
             self.endDate = endDate
@@ -51,7 +51,7 @@ pub contract NowWhereContract {
         pub fun addOwnerVault(_ownerVault: Capability<&AnyResource{FungibleToken.Receiver}>){
              self.ownerVault = _ownerVault
         }
-        pub fun createDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64:AnyStruct}){
+        pub fun createDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
             pre{
                 dropId != nil: "invalid drop id"
                 NowWhereContract.allDrops[dropId] == nil: "drop id already exists"
@@ -106,11 +106,10 @@ pub contract NowWhereContract {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
             }    
-            emit DropPurchased(dropId: dropId,templateId: templateId,mintNumbers: mintNumbers, receiptAddress: receiptAddress)
+            emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
 
-       pub fun purchaseDropByFlow(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault){
-        
+       pub fun purchaseDropByFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault) {
         pre{
             price > 0.0: "Price should be greater than zero"
             receiptAddress !=nil: "invalid receipt Address"
@@ -139,7 +138,7 @@ pub contract NowWhereContract {
             i = i + 1
         }    
         
-        emit DropPurchased(dropId: dropId,templateId: templateId,mintNumbers: mintNumbers, receiptAddress: receiptAddress)
+        emit DropPurchased(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
 
     }
         init(){
@@ -149,7 +148,7 @@ pub contract NowWhereContract {
 
         // getDropById returns the IDs that the specified Drop id
         // is associated with.    
-        pub fun getDropById(dropId: UInt64):Drop {
+        pub fun getDropById(dropId: UInt64): Drop {
             return self.allDrops[dropId]!    
         }
 

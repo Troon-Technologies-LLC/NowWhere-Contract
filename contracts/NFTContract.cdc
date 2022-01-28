@@ -67,7 +67,7 @@ pub contract NFTContract: NonFungibleToken {
             self.author = author
             self.data = data
         }
-        pub fun update(data: {String: String}){
+        pub fun update(data: {String: String}) {
             self.data = data
         }
     }
@@ -111,7 +111,7 @@ pub contract NFTContract: NonFungibleToken {
 
             // Before creating template, we need to check template data, if it is valid against given schema or not
             let schema = NFTContract.allSchemas[schemaId]!
-            var invalidKey : String = ""
+            var invalidKey: String = ""
             var isValidTemplate = true
 
             for key in immutableData.keys {
@@ -267,10 +267,10 @@ pub contract NFTContract: NonFungibleToken {
 
     // Interface, which contains all the methods that are called by any user to mint NFT and manage brand, schema and template funtionality
     pub resource interface NFTMethodsCapability {
-        pub fun createNewBrand(brandName: String, data: {String:String})
-        pub fun updateBrandData(brandId: UInt64, data: {String:String})
-        pub fun createSchema(schemaName: String , format: {String:SchemaType})
-        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64,  immutableData: {String: AnyStruct})
+        pub fun createNewBrand(brandName: String, data: {String: String})
+        pub fun updateBrandData(brandId: UInt64, data: {String: String})
+        pub fun createSchema(schemaName: String , format: {String: SchemaType})
+        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct})
         pub fun mintNFT(templateId: UInt64, account: Address)
     }
     
@@ -280,7 +280,7 @@ pub contract NFTContract: NonFungibleToken {
         priv var ownedBrands: {UInt64: Brand}
         // a variable which stores all Schema owned by a user
         priv var ownedSchemas: {UInt64: Schema}
-        // a variable which stores all Templates owned by a user       
+        // a variable which stores all Templates owned by a user
         priv var ownedTemplates: {UInt64: Template}
         // a variable that store user capability to utilize methods 
         access(contract) var capability: Capability<&{NFTMethodsCapability}>?
@@ -345,12 +345,12 @@ pub contract NFTContract: NonFungibleToken {
 
         //method to create new Template, only access by the verified user
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}) {
-            pre {   
+            pre { 
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
                 self.ownedBrands[brandId] != nil: "Collection Id Must be valid"
-                self.ownedSchemas[schemaId] != nil: "Schema Id Must be valid"     
+                self.ownedSchemas[schemaId] != nil: "Schema Id Must be valid"
             }
             let newTemplate = Template(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
             NFTContract.allTemplates[NFTContract.lastIssuedTemplateId] = newTemplate
@@ -365,7 +365,7 @@ pub contract NFTContract: NonFungibleToken {
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
-                self.ownedTemplates[templateId]!= nil : "Minter does not have specific template Id"     
+                self.ownedTemplates[templateId]!= nil : "Minter does not have specific template Id"
                 NFTContract.allTemplates[templateId] != nil: "Template Id must be valid"
                 }
             let receiptAccount = getAccount(account)
@@ -373,14 +373,14 @@ pub contract NFTContract: NonFungibleToken {
                 .getCapability(NFTContract.CollectionPublicPath)
                 .borrow<&{NonFungibleToken.CollectionPublic}>()
                 ?? panic("Could not get receiver reference to the NFT Collection")
-            var newNFT: @NFT <- create NFT(templateID:templateId,mintNumber:NFTContract.allTemplates[templateId]!.incrementIssuedSupply())  
+            var newNFT: @NFT <- create NFT(templateID:templateId,mintNumber:NFTContract.allTemplates[templateId]!.incrementIssuedSupply())
             recipientCollection.deposit(token: <-newNFT)
         }
 
         init() {
             self.ownedBrands = {}
             self.ownedSchemas = {}
-            self.ownedTemplates = {}    
+            self.ownedTemplates = {}
             self.capability = nil
         }
     }
@@ -392,7 +392,7 @@ pub contract NFTContract: NonFungibleToken {
 
     //method to create Admin Resources
     pub fun createAdminResource(): @AdminResource {
-        return <- create AdminResource()    
+        return <- create AdminResource()
     }
 
     //method to get all brands
@@ -403,7 +403,7 @@ pub contract NFTContract: NonFungibleToken {
     //method to get brand by id
     pub fun getBrandById(brandId: UInt64): Brand {
         pre {
-            NFTContract.allBrands[brandId] != nil: "brand Id does not exists"  
+            NFTContract.allBrands[brandId] != nil: "brand Id does not exists"
         }
         return NFTContract.allBrands[brandId]!
     }
@@ -453,7 +453,7 @@ pub contract NFTContract: NonFungibleToken {
         self.allTemplates = {}
         self.allNFTs = {}
 
-        self.AdminResourceStoragePath = /storage/TroonAdminResourcev01  
+        self.AdminResourceStoragePath = /storage/TroonAdminResourcev01
         self.CollectionStoragePath = /storage/TroonCollectionv01
         self.CollectionPublicPath = /public/TroonCollectionv01
 
