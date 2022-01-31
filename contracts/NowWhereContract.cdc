@@ -51,14 +51,16 @@ pub contract NowWhereContract {
         pub fun addOwnerVault(_ownerVault: Capability<&AnyResource{FungibleToken.Receiver}>){
              self.ownerVault = _ownerVault
         }
+
         pub fun createDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
             pre{
                 dropId != nil: "invalid drop id"
                 NowWhereContract.allDrops[dropId] == nil: "drop id already exists"
-               startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
-               endDate > startDate: "End date should be greater than start date"
+                startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
+                endDate > startDate: "End date should be greater than start date"
                 templates != nil: "templates must not be null"
-            }            
+            } 
+
             var areValidTemplates: Bool = true
             for templateId in templates.keys {
                 var template = NFTContract.getTemplateById(templateId: templateId)
@@ -71,6 +73,7 @@ pub contract NowWhereContract {
 
             var newDrop = Drop(dropId: dropId,startDate: startDate, endDate: endDate, templates: templates)
             NowWhereContract.allDrops[newDrop.dropId] = newDrop
+
             emit DropCreated(dropId: dropId, creator: self.owner?.address!, startDate: startDate, endDate: endDate)
         }
 
@@ -82,6 +85,7 @@ pub contract NowWhereContract {
             }
 
             NowWhereContract.allDrops.remove(key: dropId)
+
             emit DropRemoved(dropId: dropId)
         }
 
@@ -105,42 +109,43 @@ pub contract NowWhereContract {
             while i < mintNumbers {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
-            }    
+            } 
+
             emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
 
-       pub fun purchaseDropByFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault) {
-        pre{
-            price > 0.0: "Price should be greater than zero"
-            receiptAddress !=nil: "invalid receipt Address"
-            flowPayment.balance == price: "Your vault doesnot have balance to buy NFT"
-            mintNumbers > 0: "mint number must be greater than zero"
-            mintNumbers <= 10: "mint numbers must be less than ten"
-            templateId > 0: "template id must be greater than zero"
-            dropId != nil : "invalid drop id"
-            receiptAddress !=nil: "invalid receipt Address"
-            NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
-            NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
-            NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
-            NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
-        }
+        pub fun purchaseDropByFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault) {
+            pre{
+                price > 0.0: "Price should be greater than zero"
+                receiptAddress !=nil: "invalid receipt Address"
+                flowPayment.balance == price: "Your vault doesnot have balance to buy NFT"
+                mintNumbers > 0: "mint number must be greater than zero"
+                mintNumbers <= 10: "mint numbers must be less than ten"
+                templateId > 0: "template id must be greater than zero"
+                dropId != nil : "invalid drop id"
+                receiptAddress !=nil: "invalid receipt Address"
+                NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
+                NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
+                NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
+                NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
+            }
+                    
+            let vaultRef = self.ownerVault!.borrow()
+                ?? panic("Could not borrow reference to owner token vault")
                 
-        let vaultRef = self.ownerVault!.borrow()
-            ?? panic("Could not borrow reference to owner token vault")
+            vaultRef.deposit(from: <-flowPayment)
+            var template =  NFTContract.getTemplateById(templateId: templateId)
             
-        vaultRef.deposit(from: <-flowPayment)
-        var template =  NFTContract.getTemplateById(templateId: templateId)
-        assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply")
-        
-        var i: UInt64 = 0
-        while i < mintNumbers {
-            NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
-            i = i + 1
-        }    
-        
-        emit DropPurchased(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
-
-    }
+            assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply")
+            
+            var i: UInt64 = 0
+            while i < mintNumbers {
+                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
+                i = i + 1
+            }    
+            
+            emit DropPurchased(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
+        }
         init(){
             self.ownerVault = nil
         }
@@ -148,15 +153,15 @@ pub contract NowWhereContract {
 
         // getDropById returns the IDs that the specified Drop id
         // is associated with.    
-        pub fun getDropById(dropId: UInt64): Drop {
-            return self.allDrops[dropId]!    
-        }
+    pub fun getDropById(dropId: UInt64): Drop {
+        return self.allDrops[dropId]!    
+    }
 
-        // getAllDrops returns all the Drops in NowWhereContract
-        // Returns: A dictionary of all the Drop that have been created
-        pub fun getAllDrops(): {UInt64: Drop} {
-            return self.allDrops
-        }
+    // getAllDrops returns all the Drops in NowWhereContract
+    // Returns: A dictionary of all the Drop that have been created
+    pub fun getAllDrops(): {UInt64: Drop} {
+        return self.allDrops
+    }
 
     init() {
         // Initialize contract fields

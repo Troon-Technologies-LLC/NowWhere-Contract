@@ -376,6 +376,7 @@ pub contract NFTContract: NonFungibleToken {
                 self.ownedBrands[brandId] != nil: "Collection Id Must be valid"
                 self.ownedSchemas[schemaId] != nil: "Schema Id Must be valid"
             }
+
             let newTemplate = Template(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
             NFTContract.allTemplates[NFTContract.lastIssuedTemplateId] = newTemplate
             emit TemplateCreated(templateId: NFTContract.lastIssuedTemplateId, brandId: brandId, schemaId: schemaId, maxSupply: maxSupply)
@@ -482,9 +483,8 @@ pub contract NFTContract: NonFungibleToken {
         self.AdminResourceStoragePath = /storage/TroonAdminResourcev01
         self.CollectionStoragePath = /storage/TroonCollectionv01
         self.CollectionPublicPath = /public/TroonCollectionv01
-         self.AdminStorageCapability=   /storage/AdminCapability
+        self.AdminStorageCapability=   /storage/AdminCapability
         self.AdminCapabilityPrivate=   /private/AdminCapability
-
         self.NFTMethodsCapabilityPrivatePath = /private/NFTMethodsCapabilityv01
         
         self.account.save<@AdminCapability>(<- create AdminCapability(), to: /storage/AdminStorageCapability)
