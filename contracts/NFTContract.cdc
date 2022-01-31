@@ -390,12 +390,8 @@ pub contract NFTContract: NonFungibleToken {
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
-<<<<<<< HEAD
-                self.ownedTemplates[templateId]!= nil : "Minter does not have specific template Id"
-=======
                 NFTContract.whiteListedAccounts.contains(self.owner!.address) : "you are not authorize for this action"
                 self.ownedTemplates[templateId]!= nil : "Minter does not have specific template Id"     
->>>>>>> blocto-payment
                 NFTContract.allTemplates[templateId] != nil: "Template Id must be valid"
                 }
             let receiptAccount = getAccount(account)

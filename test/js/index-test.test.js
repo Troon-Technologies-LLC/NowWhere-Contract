@@ -453,7 +453,7 @@ describe("Transactions", () => {
     expect(updatedBalance2.toString()).toBe(user2);
   });
   test("purchase drop with flow", async () => {
-    const name = "purchaseDropByFlow";
+    const name = "purchaseNFTWithFlow";
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
     const Bob = await getAccountAddress("Bob");
