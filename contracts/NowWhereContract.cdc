@@ -109,7 +109,7 @@ pub contract NowWhereContract {
             emit DropPurchased(dropId: dropId,templateId: templateId,mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
 
-       pub fun purchaseDropByFlow(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault){
+       pub fun purchaseNFTWithFlow(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault){
         
         pre{
             price > 0.0: "Price should be greater than zero"
