@@ -115,7 +115,7 @@ pub contract NowWhereContract {
             pre{
                 price > 0.0: "Price should be greater than zero"
                 receiptAddress !=nil: "invalid receipt Address"
-                flowPayment.balance == price: "Your vault doesnot have balance to buy NFT"
+                flowPayment.balance == price: "Your vault does not have balance to buy NFT"
                 mintNumbers > 0: "mint number must be greater than zero"
                 mintNumbers <= 10: "mint numbers must be less than ten"
                 templateId > 0: "template id must be greater than zero"
@@ -128,7 +128,7 @@ pub contract NowWhereContract {
             }
                     
             let vaultRef = self.ownerVault!.borrow()
-                ?? panic("Could not borrow reference to owner token vault")      
+                ?? panic("Could not borrow reference to owner token vault")
             vaultRef.deposit(from: <-flowPayment)
             var template = NFTContract.getTemplateById(templateId: templateId)
             assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply")
