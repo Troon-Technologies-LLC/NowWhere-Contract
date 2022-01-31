@@ -289,7 +289,6 @@ pub contract NFTContract: NonFungibleToken {
             NFTContract.whiteListedAccounts.append(_user)
         }
         init(){}
-       
     }
 
     // AdminResource, where are defining all the methods related to Brands, Schema, Template and NFTs
