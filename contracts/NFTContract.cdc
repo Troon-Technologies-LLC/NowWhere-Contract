@@ -19,6 +19,8 @@ pub contract NFTContract: NonFungibleToken {
     pub let NFTMethodsCapabilityPrivatePath: PrivatePath
     pub let CollectionStoragePath: StoragePath
     pub let CollectionPublicPath: PublicPath
+    pub let AdminStorageCapability:StoragePath
+    pub let AdminCapabilityPrivate:PrivatePath
 
     // Latest brand-id
     pub var lastIssuedBrandId: UInt64
@@ -37,6 +39,9 @@ pub contract NFTContract: NonFungibleToken {
     access(self) var allSchemas: {UInt64: Schema}
     access(self) var allTemplates: {UInt64: Template}
     access(self) var allNFTs: {UInt64: NFTData}
+
+    // Accounts ability to add capability
+    access(self) var whiteListedAccounts: [Address]
 
     // Create Schema Support all the mentioned Types
     pub enum SchemaType: UInt8{
@@ -274,6 +279,19 @@ pub contract NFTContract: NonFungibleToken {
         pub fun mintNFT(templateId: UInt64, account: Address)
     }
     
+    //AdminCapability to add whiteListedAccounts
+     pub resource AdminCapability{
+        
+        pub fun addwhiteListedAccounts(_user: Address){
+            pre{
+                NFTContract.whiteListedAccounts.contains(_user) == false: "user already exist"
+            }
+            NFTContract.whiteListedAccounts.append(_user)
+        }
+        init(){}
+       
+    }
+
     // AdminResource, where are defining all the methods related to Brands, Schema, Template and NFTs
     pub resource AdminResource: UserSpecialCapability, NFTMethodsCapability {
         // a variable which stores all Brands owned by a user
@@ -291,6 +309,7 @@ pub contract NFTContract: NonFungibleToken {
                 // valid before executing the method
                 cap.borrow() != nil: "could not borrow a reference to the SpecialCapability"
                 self.capability == nil: "resource already has the SpecialCapability"
+                NFTContract.whiteListedAccounts.contains(self.owner!.address) : "you are not authorize for this action"
             }
             // add the SpecialCapability
             self.capability = cap
@@ -302,6 +321,7 @@ pub contract NFTContract: NonFungibleToken {
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
+                NFTContract.whiteListedAccounts.contains(self.owner!.address) : "you are not authorize for this action"
             }
 
             let newBrand = Brand(brandName: brandName, author: self.owner?.address!, data: data)
@@ -317,12 +337,15 @@ pub contract NFTContract: NonFungibleToken {
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
+                NFTContract.whiteListedAccounts.contains(self.owner!.address) : "you are not authorize for this action"
                 NFTContract.allBrands[brandId] != nil: "brand Id does not exists"   
             }
+
             let oldBrand = NFTContract.allBrands[brandId]
             if self.owner?.address! != oldBrand!.author {
                 panic("No permission to update others brand")
             }
+
             NFTContract.allBrands[brandId]!.update(data: data)  
             emit BrandUpdated(brandId: brandId, brandName: oldBrand!.brandName, author: oldBrand!.author, data: data)
         }
@@ -333,6 +356,7 @@ pub contract NFTContract: NonFungibleToken {
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
+                NFTContract.whiteListedAccounts.contains(self.owner!.address) : "you are not authorize for this action"
             }
 
             let newSchema = Schema(schemaName: schemaName, author: self.owner?.address!, format: format)
@@ -349,6 +373,7 @@ pub contract NFTContract: NonFungibleToken {
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
+                NFTContract.whiteListedAccounts.contains(self.owner!.address) : "you are not authorize for this action"
                 self.ownedBrands[brandId] != nil: "Collection Id Must be valid"
                 self.ownedSchemas[schemaId] != nil: "Schema Id Must be valid"     
             }
@@ -365,6 +390,7 @@ pub contract NFTContract: NonFungibleToken {
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
+                NFTContract.whiteListedAccounts.contains(self.owner!.address) : "you are not authorize for this action"
                 self.ownedTemplates[templateId]!= nil : "Minter does not have specific template Id"     
                 NFTContract.allTemplates[templateId] != nil: "Template Id must be valid"
                 }
@@ -452,13 +478,18 @@ pub contract NFTContract: NonFungibleToken {
         self.allSchemas = {}
         self.allTemplates = {}
         self.allNFTs = {}
+        self.whiteListedAccounts = [self.account.address]
 
         self.AdminResourceStoragePath = /storage/TroonAdminResourcev01  
         self.CollectionStoragePath = /storage/TroonCollectionv01
         self.CollectionPublicPath = /public/TroonCollectionv01
+         self.AdminStorageCapability=   /storage/AdminCapability
+        self.AdminCapabilityPrivate=   /private/AdminCapability
 
         self.NFTMethodsCapabilityPrivatePath = /private/NFTMethodsCapabilityv01
         
+        self.account.save<@AdminCapability>(<- create AdminCapability(), to: /storage/AdminStorageCapability)
+        self.account.link<&AdminCapability>(self.AdminCapabilityPrivate, target:/storage/AdminStorageCapability)
         self.account.save<@AdminResource>(<- create AdminResource(), to: self.AdminResourceStoragePath)
         self.account.link<&{NFTMethodsCapability}>(self.NFTMethodsCapabilityPrivatePath, target: self.AdminResourceStoragePath)
 
