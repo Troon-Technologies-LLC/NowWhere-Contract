@@ -1,7 +1,7 @@
 import NFTContract from "./NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
-import FungibleToken from 0xee82856bf20e2aa6
-import FlowToken from 0x0ae53cb6e3f42a79    
+import FungibleToken from "./Tokens.cdc"
+import FlowToken from "./Tokens.cdc"
 
 pub contract NowWhereContract {
     // -----------------------------------------------------------------------
@@ -85,7 +85,6 @@ pub contract NowWhereContract {
             }
 
             NowWhereContract.allDrops.remove(key: dropId)
-
             emit DropRemoved(dropId: dropId)
         }
 
@@ -102,15 +101,13 @@ pub contract NowWhereContract {
                 NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
             }
 
-            var template =  NFTContract.getTemplateById(templateId: templateId)
-            assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply")
-            
+            var template = NFTContract.getTemplateById(templateId: templateId)
+            assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply") 
             var i: UInt64 = 0
             while i < mintNumbers {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
             } 
-
             emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
 
@@ -131,19 +128,16 @@ pub contract NowWhereContract {
             }
                     
             let vaultRef = self.ownerVault!.borrow()
-                ?? panic("Could not borrow reference to owner token vault")
-                
+                ?? panic("Could not borrow reference to owner token vault")      
             vaultRef.deposit(from: <-flowPayment)
-            var template =  NFTContract.getTemplateById(templateId: templateId)
-            
+            var template = NFTContract.getTemplateById(templateId: templateId)
             assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply")
             
             var i: UInt64 = 0
             while i < mintNumbers {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
-            }    
-            
+            }
             emit DropPurchased(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
         init(){
@@ -151,10 +145,10 @@ pub contract NowWhereContract {
         }
     }
 
-        // getDropById returns the IDs that the specified Drop id
-        // is associated with.    
+    // getDropById returns the IDs that the specified Drop id
+    // is associated with 
     pub fun getDropById(dropId: UInt64): Drop {
-        return self.allDrops[dropId]!    
+        return self.allDrops[dropId]!
     }
 
     // getAllDrops returns all the Drops in NowWhereContract
