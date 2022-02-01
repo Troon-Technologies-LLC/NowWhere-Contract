@@ -12,6 +12,8 @@ pub contract NowWhereContract {
     pub event DropCreated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)
     // Emitted when a Drop is purchased
     pub event DropPurchased(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address)
+     // Emitted when a Drop is purchased using flow
+    pub event DropPurchasedWithFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64)
     // Emitted when a Drop is removed
     pub event DropRemoved(dropId: UInt64)
     // Contract level paths for storing resources
@@ -138,8 +140,10 @@ pub contract NowWhereContract {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
             }
-            emit DropPurchased(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
+            emit DropPurchasedWithFlow(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress,price: price)
         }
+
+       
         init(){
             self.ownerVault = nil
         }

@@ -17,8 +17,10 @@ transaction(DropId: UInt64, TemplateId: UInt64, MintNumber: UInt64, receiptAddre
         self.temporaryVault <- vaultRef.withdraw(amount: Price)
     }
   
-    execute{     
-      let dropResponse = self.adminRef.purchaseNFTWithFlow(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: receiptAddress, price: Price,flowPayment: <- self.temporaryVault)
- 
+    execute{
+      
+      let dropResponse = self.adminRef.purchaseNFTWithFlow(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: receiptAddress, price:Price,flowPayment: <- self.temporaryVault)
+      
+      log(dropResponse)
     }
 }
