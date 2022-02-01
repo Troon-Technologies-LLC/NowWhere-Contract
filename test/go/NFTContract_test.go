@@ -195,7 +195,7 @@ func Test_UpdateBrand_Success(test *testing.T) {
 	// Post Condition: Check Brand metadata updated initialized properly
 	test.Run("Should update Brands correctly", func(test *testing.T) {
 		ReturnedbrandModel := executeScriptAndCheck(test, emulator, NFTContractGenerateGetBrandNameScript(nonfungibleAddr, ownerAddr), [][]byte{jsoncdc.MustEncode(cadence.NewUInt64(one))})
-		assert.EqualValues(test, reg.ReplaceAllString(UpdateBrandMetadataValue, ""), reg.ReplaceAllString(ReturnedbrandModel.String(), ""))
+		assert.Contains(test, reg.ReplaceAllString(ReturnedbrandModel.String(), ""), reg.ReplaceAllString(UpdateBrandMetadataValue, ""))
 	})
 
 }
@@ -254,7 +254,7 @@ func Test_UpdateBrand_WithInvalidId(test *testing.T) {
 	test.Run("Should contains metadata Brands correctly", func(test *testing.T) {
 		ReturnedbrandModel := executeScriptAndCheck(test, emulator, NFTContractGenerateGetBrandNameScript(nonfungibleAddr, ownerAddr), [][]byte{jsoncdc.MustEncode(cadence.NewUInt64(one))})
 		/// remove all characters other than alphabets
-		assert.EqualValues(test, reg.ReplaceAllString(BrandMetadataValue, ""), reg.ReplaceAllString(ReturnedbrandModel.String(), ""))
+		assert.Contains(test, reg.ReplaceAllString(ReturnedbrandModel.String(), ""), reg.ReplaceAllString(BrandMetadataValue, ""))
 	})
 
 }
@@ -594,7 +594,7 @@ func Test_CreateTemplate_withOwnBrandIDandOthersSchemaID(test *testing.T) {
 		shouldNotFail, // if error arise throw error
 	)
 
-	NFTContractAddAdminCapability(
+	NFTContractAddNewAdminCapability(
 		test,
 		emulator,
 		nonfungibleAddr,

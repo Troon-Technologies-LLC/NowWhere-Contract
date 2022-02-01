@@ -505,13 +505,13 @@ func Test_PurchaseDrop_Success(test *testing.T) {
 		shouldNotFail,
 		latestdropID,         // drop ID
 		one,                  // templateID
-		two,                  // Mint numbers
+		one,                  // Mint numbers
 		NowwhereContractAddr, // ownerAddress
 	)
 	test.Run("Should Mint Template correctly", func(test *testing.T) {
 		MintCount := executeScriptAndCheck(test, emulator, NowwhereGenerateGetNFTAddressCountScript(nonfungibleAddr, NFTContractAddr),
 			[][]byte{jsoncdc.MustEncode(cadence.Address(NowwhereContractAddr))})
-		assert.EqualValues(test, CadenceInt(two), MintCount)
+		assert.EqualValues(test, CadenceInt(one), MintCount)
 	})
 }
 
@@ -1003,7 +1003,7 @@ func SetupAdminAndGiveCapabilityNowwhere(test *testing.T, emulator *emulator.Blo
 		signer,          // Signer of Admin Account
 	)
 
-	NFTContractAddAdminCapability(
+	NFTContractAddNewAdminCapability(
 		test,
 		emulator,
 		nonfungibleAddr,

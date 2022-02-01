@@ -20,35 +20,36 @@ import (
 )
 
 const (
-	nowwhereRootPath                  = "../.."
-	NFTContractPath                   = nowwhereRootPath + "/contracts/NFTContract.cdc"
-	NowwhereContractPath              = nowwhereRootPath + "/contracts/NowWhereContract.cdc"
-	NFTContractTransferTokensPath     = nowwhereRootPath + "/transactions/transferNFT.cdc"
-	NFTContractDestroyTokensPath      = nowwhereRootPath + "/transactions/destroyNFT.cdc"
-	NFTContractMintTokensPath         = nowwhereRootPath + "/transactions/mintNFT.cdc"
-	NFTContractGetSupplyPath          = nowwhereRootPath + "/scripts/getTotalSupply.cdc"
-	NFTContractGetCollectionPath      = nowwhereRootPath + "/scripts/getBrand.cdc"
-	NFTContractGetCollectionCountPath = nowwhereRootPath + "/scripts/getBrandCount.cdc"
-	NFTContractGetBrandNamePath       = nowwhereRootPath + "/scripts/getBrandName.cdc"
-	NFTContractGetBrandIDPath         = nowwhereRootPath + "/scripts/getBrandIDs.cdc"
-	NFTContractGetSchemaCountPath     = nowwhereRootPath + "/scripts/getSchemaCount.cdc"
-	NFTContractGetTemplateCountPath   = nowwhereRootPath + "/scripts/getTemplateCount.cdc"
-	NFTContractGetNFTAddressPath      = nowwhereRootPath + "/scripts/getNFTAddress.cdc"
-	NFTContractGetNFTAddressCountPath = nowwhereRootPath + "/scripts/getAddressOwnedNFTCount.cdc"
-	NFTContractCreateCollectionPath   = nowwhereRootPath + "/transactions/createBrand.cdc"
-	NFTContractUpdateBrandPath        = nowwhereRootPath + "/transactions/UpdateBrand.cdc"
-	NFTContractCreateSchemaPath       = nowwhereRootPath + "/transactions/createSchema.cdc"
-	NFTContractCreateTemplatePath     = nowwhereRootPath + "/transactions/createTemplate.cdc"
-	NFTContractSetupAccountPath       = nowwhereRootPath + "/transactions/setupAccount.cdc"
-	NFTContractSetupAdminAccountPath  = nowwhereRootPath + "/transactions/setupAdminAccount.cdc"
-	NFTContractAddAdminCapabilityPath = nowwhereRootPath + "/transactions/addAdminAccount.cdc"
-	NFTContractCreateDropPath         = nowwhereRootPath + "/transactions/createDrop.cdc"
-	NowwherePurchaseDropPath          = nowwhereRootPath + "/transactions/purchaseDrop.cdc"
-	NowwhereRemoveDropPath            = nowwhereRootPath + "/transactions/RemoveDrop.cdc"
-	CapabilityAdminCheck              = nowwhereRootPath + "/transactions/CheckAdminCapability.cdc"
-	NowwhereContractgetDropCountPath  = nowwhereRootPath + "/scripts/getDropCount.cdc"
-	NowwhereContractgetDropIdsPath    = nowwhereRootPath + "/scripts/getDropIds.cdc"
-	getDate                           = nowwhereRootPath + "/scripts/getDate.cdc"
+	nowwhereRootPath                      = "../.."
+	NFTContractPath                       = nowwhereRootPath + "/contracts/NFTContract.cdc"
+	NowwhereContractPath                  = nowwhereRootPath + "/contracts/NowWhereContract.cdc"
+	NFTContractTransferTokensPath         = nowwhereRootPath + "/transactions/transferNFT.cdc"
+	NFTContractDestroyTokensPath          = nowwhereRootPath + "/transactions/destroyNFT.cdc"
+	NFTContractMintTokensPath             = nowwhereRootPath + "/transactions/mintNFT.cdc"
+	NFTContractGetSupplyPath              = nowwhereRootPath + "/scripts/getTotalSupply.cdc"
+	NFTContractGetCollectionPath          = nowwhereRootPath + "/scripts/getBrand.cdc"
+	NFTContractGetCollectionCountPath     = nowwhereRootPath + "/scripts/getBrandCount.cdc"
+	NFTContractGetBrandNamePath           = nowwhereRootPath + "/scripts/getBrandName.cdc"
+	NFTContractGetBrandIDPath             = nowwhereRootPath + "/scripts/getBrandIDs.cdc"
+	NFTContractGetSchemaCountPath         = nowwhereRootPath + "/scripts/getSchemaCount.cdc"
+	NFTContractGetTemplateCountPath       = nowwhereRootPath + "/scripts/getTemplateCount.cdc"
+	NFTContractGetNFTAddressPath          = nowwhereRootPath + "/scripts/getNFTAddress.cdc"
+	NFTContractGetNFTAddressCountPath     = nowwhereRootPath + "/scripts/getAddressOwnedNFTCount.cdc"
+	NFTContractCreateCollectionPath       = nowwhereRootPath + "/transactions/createBrand.cdc"
+	NFTContractUpdateBrandPath            = nowwhereRootPath + "/transactions/UpdateBrand.cdc"
+	NFTContractCreateSchemaPath           = nowwhereRootPath + "/transactions/createSchema.cdc"
+	NFTContractCreateTemplatePath         = nowwhereRootPath + "/transactions/createTemplate.cdc"
+	NFTContractSetupAccountPath           = nowwhereRootPath + "/transactions/setupAccount.cdc"
+	NFTContractSetupAdminAccountPath      = nowwhereRootPath + "/transactions/setupAdminAccount.cdc"
+	NFTContractAddAdminCapabilityPath     = nowwhereRootPath + "/transactions/addAdminAccount.cdc"
+	NFTContractSelfAddAdminCapabilityPath = nowwhereRootPath + "/transactions/addNFTContractAdminAccount.cdc"
+	NFTContractCreateDropPath             = nowwhereRootPath + "/transactions/createDrop.cdc"
+	NowwherePurchaseDropPath              = nowwhereRootPath + "/transactions/purchaseDrop.cdc"
+	NowwhereRemoveDropPath                = nowwhereRootPath + "/transactions/RemoveDrop.cdc"
+	CapabilityAdminCheck                  = nowwhereRootPath + "/transactions/CheckAdminCapability.cdc"
+	NowwhereContractgetDropCountPath      = nowwhereRootPath + "/scripts/getDropCount.cdc"
+	NowwhereContractgetDropIdsPath        = nowwhereRootPath + "/scripts/getDropIds.cdc"
+	getDate                               = nowwhereRootPath + "/scripts/getDate.cdc"
 )
 
 func NFTContractDeployContracts(emulator *emulator.Blockchain, testing *testing.T) (flow.Address, flow.Address, crypto.Signer, sdk.Address) {
@@ -303,6 +304,14 @@ func NowwhereSetupAdminAccountScript(nonfungibleAddr, nowwhereAddr flow.Address)
 }
 
 func NFTContractAddAdminCapabilityScript(nonfungibleAddr, nowwhereAddr flow.Address) []byte {
+	return nowwhereReplaceAddressPlaceholders(
+		string(readFile(NFTContractSelfAddAdminCapabilityPath)),
+		nonfungibleAddr.String(),
+		nowwhereAddr.String(),
+	)
+}
+
+func NFTContractAddNewAdminCapabilityScript(nonfungibleAddr, nowwhereAddr flow.Address) []byte {
 	return nowwhereReplaceAddressPlaceholders(
 		string(readFile(NFTContractAddAdminCapabilityPath)),
 		nonfungibleAddr.String(),
@@ -675,6 +684,35 @@ func NFTContractAddAdminCapability(
 
 	tx := flow.NewTransaction().
 		SetScript(NFTContractAddAdminCapabilityScript(nonfungibleAddr, NFTContractAddr)).
+		SetGasLimit(100).
+		SetProposalKey(emulator.ServiceKey().Address, emulator.ServiceKey().Index, emulator.ServiceKey().SequenceNumber).
+		SetPayer(emulator.ServiceKey().Address).
+		AddAuthorizer(NFTContractAddr)
+
+	_ = tx.AddArgument(cadence.NewAddress(adminAddress))
+
+	signAndSubmit(
+		testing, emulator, tx,
+		[]flow.Address{emulator.ServiceKey().Address, NFTContractAddr},
+		[]crypto.Signer{emulator.ServiceKey().Signer(), userSigner},
+		false,
+	)
+
+	return
+}
+
+func NFTContractAddNewAdminCapability(
+	testing *testing.T,
+	emulator *emulator.Blockchain,
+	nonfungibleAddr,
+	NFTContractAddr sdk.Address,
+	userSigner crypto.Signer,
+	shouldFail bool,
+	adminAddress sdk.Address,
+) {
+
+	tx := flow.NewTransaction().
+		SetScript(NFTContractAddNewAdminCapabilityScript(nonfungibleAddr, NFTContractAddr)).
 		SetGasLimit(100).
 		SetProposalKey(emulator.ServiceKey().Address, emulator.ServiceKey().Index, emulator.ServiceKey().SequenceNumber).
 		SetPayer(emulator.ServiceKey().Address).

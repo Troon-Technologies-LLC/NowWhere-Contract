@@ -1,5 +1,4 @@
-import NFTContract from 0xf8d6e0586b0a20c7
-
+import NFTContract from "../contracts/NFTContract.cdc"
 transaction (brandName: String, data: {String:String}){
     prepare(acct: AuthAccount) {
     

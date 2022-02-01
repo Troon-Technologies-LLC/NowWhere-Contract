@@ -1,6 +1,5 @@
-import NFTContract from 0xf8d6e0586b0a20c7
-
-transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
+import NFTContract from "../contracts/NFTContract.cdc"
+transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData:{String: AnyStruct}) {
     prepare(acct: AuthAccount) {
         let actorResource = acct.getCapability
             <&{NFTContract.NFTMethodsCapability}>
@@ -16,18 +15,7 @@ transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
                 "startDate" : "",
                 "endDate" : ""             
         }
-        
-        let immutableData: {String: AnyStruct} = {
-            "artist" : "Nasir And Sham",
-            "artistEmail" : "sham&nasir@gmai.com",
-            "title" : "First NFT",
-            "mintType" : "MintOnSale",
-            "nftType" : "AR",
-            "rarity" : "Epic",
-            "contectType" : "Image",
-            "contectValue" : "https://troontechnologies.com/",
-            "extras" : extra        
-        }
+     
         actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
         log("ok")
     }
