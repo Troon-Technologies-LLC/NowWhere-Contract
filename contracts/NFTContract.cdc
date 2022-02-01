@@ -289,7 +289,7 @@ pub contract NFTContract: NonFungibleToken {
             NFTContract.whiteListedAccounts.append(_user)
         }
 
-        pub fun getwhiteListedAccounts(_user: Address): Bool {
+        pub fun isWhiteListedAccounts(_user: Address): Bool {
             return NFTContract.whiteListedAccounts.contains(_user)
         }
 

@@ -17,7 +17,7 @@ transaction(admin: Address) {
         //get admin refrence for adding AdminCapability
          let adminRef = signer.getCapability<&NFTContract.AdminCapability>(NFTContract.AdminCapabilityPrivate).borrow() 
                         ?? panic("could not get borrow the refrence")
-        let userResponse = adminRef.getwhiteListedAccounts(_user: admin) 
+        let userResponse = adminRef.isWhiteListedAccounts(_user: admin) 
         if(userResponse == false) {
             adminRef.addwhiteListedAccounts(_user: admin)
         }
