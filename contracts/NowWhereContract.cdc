@@ -1,7 +1,7 @@
 import NFTContract from "./NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
-import FungibleToken from "./Tokens.cdc"
-import FlowToken from "./Tokens.cdc"
+import FungibleToken from 0xee82856bf20e2aa6 // Emulator address
+import FlowToken from 0x0ae53cb6e3f42a79 // Emulator address
 
 pub contract NowWhereContract {
     // -----------------------------------------------------------------------
