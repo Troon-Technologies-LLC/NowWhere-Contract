@@ -14,7 +14,8 @@ A common order of creating Drop would be
 - Create new Template with `transactions/createTemplate` using Admin Account.
 - Create NFT Receiver with `transaction/setupAccount` .
 - Create new Drop with `transactions/createDrop` using Admin Account.
-- Purchase Drop and send to any address with `transactions/purchaseDrop` using Admin Account.
+- Purchase NFT and send to any address with `transactions/purchaseDrop` using Admin Account.
+- Purchase NFT with flow and send to any address with `transactions/purchaseNFTWithFlow` using Admin Account and User Account.
 - Remove Drop `transactions/RemoveDrop.cdc` using Admin Account.
   You can also see the scripts in `transactions/scripts` to see how information
   can be read from the NowWhereContract.
@@ -32,6 +33,10 @@ A common order of creating Drop would be
 - Event for purchase Drop ->
   `pub event DropPurchased(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address)`
   Emitted when a Drop will be Purchased.
+
+- Event for purchase Drop with flow->
+  `pub event DropPurchasedWithFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64)`
+  Emitted when a Drop will be Purchased using flow.
 
 - Event for Remove Drop ->
   `pub event DropRemoved(dropId:UInt64)`
@@ -66,6 +71,18 @@ To Purchase NFT with any Drop we have to give the following fields:
 - templateId
 - mintNumber(Mint Number of Template)
 - receiptAddress(Address which will recieve NFT)
+  Only Whitelisted Address can create Drops and Purchase NFTs with Drops.
+
+## Instruction of Purchase Drop With Flow
+
+To Purchase NFT with any Drop using flow we have to give the following fields:
+
+- dropId
+- templateId
+- mintNumber(Mint Number of Template)
+- receiptAddress(Address which will recieve NFT)
+- price(price of drop)
+- flowPayment(flow payment vault)
   Only Whitelisted Address can create Drops and Purchase NFTs with Drops.
 
 ## Instruction of Remove Drop
