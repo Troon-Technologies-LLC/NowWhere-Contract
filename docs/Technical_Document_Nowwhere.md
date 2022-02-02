@@ -58,11 +58,11 @@ In drops we have the following Information:
 - endDate: UFix64
 - templates: {UInt64: AnyStruct}
 
-## Instruction of Create Drops
+## Instructions for Create Drops
 
 To Create a drop of specific Template, we have to give arguments shown above, after that our function will check that start and end time should be grater than present time, template must not be null, drop Ids should be unique.
 
-## Instruction of Purchase Drop
+## Instructions for Purchase Drop
 
 To Purchase NFT with any Drop we have to give the following fields:
 
@@ -72,7 +72,7 @@ To Purchase NFT with any Drop we have to give the following fields:
 - receiptAddress(Address which will recieve NFT)
   Only Whitelisted Address can create Drops and Purchase NFTs with Drops.
 
-## Instruction of Purchase Drop With Flow
+## Instructions for Purchase Drop With Flow
 
 To Purchase NFT with any Drop using flow we have to give the following fields:
 
@@ -84,7 +84,7 @@ To Purchase NFT with any Drop using flow we have to give the following fields:
 - flowPayment(flow payment vault)
   
 
-## Instruction of Remove Drop
+## Instructions for Remove Drop
 
 We can remove old drops using this function. Those drops date should be ended and we can't delete active drops. To delete drop we have to give the following fields:
 - dropId
