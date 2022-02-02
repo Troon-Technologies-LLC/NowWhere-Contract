@@ -143,7 +143,6 @@ pub contract NowWhereContract {
             emit DropPurchasedWithFlow(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress,price: price)
         }
 
-       
         init(){
             self.ownerVault = nil
         }
@@ -168,8 +167,7 @@ pub contract NowWhereContract {
         self.DropAdminStoragePath = /storage/NowwhereDropAdmin
         // get the private capability to the admin resource interface
         // to call the functions of this interface.
-        self.adminRef = self.account.getCapability
-            <&{NFTContract.NFTMethodsCapability}>(NFTContract.NFTMethodsCapabilityPrivatePath)
+        self.adminRef = self.account.getCapability<&{NFTContract.NFTMethodsCapability}>(NFTContract.NFTMethodsCapabilityPrivatePath)
 
         // Put the Drop Admin in storage
         self.account.save(<- create DropAdmin(), to: self.DropAdminStoragePath)

@@ -274,7 +274,7 @@ pub contract NFTContract: NonFungibleToken {
     pub resource interface NFTMethodsCapability {
         pub fun createNewBrand(brandName: String, data: {String: String})
         pub fun updateBrandData(brandId: UInt64, data: {String: String})
-        pub fun createSchema(schemaName: String , format: {String: SchemaType})
+        pub fun createSchema(schemaName: String, format: {String: SchemaType})
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct})
         pub fun mintNFT(templateId: UInt64, account: Address)
     }
@@ -282,14 +282,14 @@ pub contract NFTContract: NonFungibleToken {
     //AdminCapability to add whiteListedAccounts
      pub resource AdminCapability{
         
-        pub fun addwhiteListedAccounts(_user: Address) {
+        pub fun addwhiteListedAccount(_user: Address) {
             pre{
                 NFTContract.whiteListedAccounts.contains(_user) == false: "user already exist"
             }
             NFTContract.whiteListedAccounts.append(_user)
         }
 
-        pub fun isWhiteListedAccounts(_user: Address): Bool {
+        pub fun isWhiteListedAccount(_user: Address): Bool {
             return NFTContract.whiteListedAccounts.contains(_user)
         }
 
