@@ -11,7 +11,7 @@ It offers a powerful set while keeping unnecessary complexity to a minimum and f
 Our Contract consists of different parts like Brand, Schema, Templates and NFTs, which serve different purposes and often reference each other.
 
 For more details of NFTContract use this link:
-[see Documentation](https://raw.githubusercontent.com/Troon-Technologies-LLC/Troon-NFT-Contract)
+[see Documentation](https://github.com/Troon-Technologies-LLC/Troon-NFT-Contract)
 
 ## ✨ Getting Started
 
