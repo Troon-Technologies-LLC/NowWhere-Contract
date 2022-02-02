@@ -1,4 +1,3 @@
-//Saad kindly update this
 
 ## Technical Summary and Code Documentation
 
@@ -54,10 +53,10 @@ A common order of creating Drop would be
 
 In drops we have the following Information:
 
-- dropId:UInt64
-- startDate:UFix64
-- endDate:UFix64
-- templates :{UInt64:AnyStruct}
+- dropId: UInt64
+- startDate: UFix64
+- endDate: UFix64
+- templates: {UInt64: AnyStruct}
 
 ## Instruction of Create Drops
 
@@ -83,12 +82,11 @@ To Purchase NFT with any Drop using flow we have to give the following fields:
 - receiptAddress(Address which will recieve NFT)
 - price(price of drop)
 - flowPayment(flow payment vault)
-  Only Whitelisted Address can create Drops and Purchase NFTs with Drops.
+  
 
 ## Instruction of Remove Drop
 
 We can remove old drops using this function. Those drops date should be ended and we can't delete active drops. To delete drop we have to give the following fields:
-
 - dropId
 
 ### Deployment Contract on Emulator
