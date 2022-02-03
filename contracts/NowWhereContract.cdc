@@ -109,7 +109,7 @@ pub contract NowWhereContract {
             while i < mintNumbers {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
-            } 
+            }
             emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
 
@@ -128,7 +128,7 @@ pub contract NowWhereContract {
                 NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
                 NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
             }
-                    
+                
             let vaultRef = self.ownerVault!.borrow()
                 ?? panic("Could not borrow reference to owner token vault")
             vaultRef.deposit(from: <-flowPayment)
