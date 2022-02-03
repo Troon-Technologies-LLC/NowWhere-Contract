@@ -493,7 +493,7 @@ pub contract NFTContract: NonFungibleToken {
         self.NFTMethodsCapabilityPrivatePath = /private/NFTMethodsCapabilityv01
         
         self.account.save<@AdminCapability>(<- create AdminCapability(), to: /storage/AdminStorageCapability)
-        self.account.link<&AdminCapability>(self.AdminCapabilityPrivate, target:/storage/AdminStorageCapability)
+        self.account.link<&AdminCapability>(self.AdminCapabilityPrivate, target: /storage/AdminStorageCapability)
         self.account.save<@AdminResource>(<- create AdminResource(), to: self.AdminResourceStoragePath)
         self.account.link<&{NFTMethodsCapability}>(self.NFTMethodsCapabilityPrivatePath, target: self.AdminResourceStoragePath)
 
