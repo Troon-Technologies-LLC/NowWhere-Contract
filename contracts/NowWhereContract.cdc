@@ -61,7 +61,7 @@ pub contract NowWhereContract {
                 startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
                 endDate > startDate: "End date should be greater than start date"
                 templates != nil: "templates must not be null"
-            } 
+            }
 
             var areValidTemplates: Bool = true
             for templateId in templates.keys {
