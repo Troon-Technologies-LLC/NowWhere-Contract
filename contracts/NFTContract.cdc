@@ -488,8 +488,8 @@ pub contract NFTContract: NonFungibleToken {
         self.AdminResourceStoragePath = /storage/TroonAdminResourcev01
         self.CollectionStoragePath = /storage/TroonCollectionv01
         self.CollectionPublicPath = /public/TroonCollectionv01
-        self.AdminStorageCapability= /storage/AdminCapability
-        self.AdminCapabilityPrivate= /private/AdminCapability
+        self.AdminStorageCapability = /storage/AdminCapability
+        self.AdminCapabilityPrivate = /private/AdminCapability
         self.NFTMethodsCapabilityPrivatePath = /private/NFTMethodsCapabilityv01
         
         self.account.save<@AdminCapability>(<- create AdminCapability(), to: /storage/AdminStorageCapability)
