@@ -2,7 +2,7 @@
 
 ## Summary of NowWhereContract
 
-NowWhereContract is a drop contract that is used for the purpose to release or sale a non-fungible token. We can create a Drop(A drop refers to the exact start datetime and end datetime) for sale in this Contract. In Drops, we have Template/s having NFTs for sale which user can purchase. To purchase Drop user can use Stripe Payment method(Fiat) or Flow Payment method(Crypto) and we have also implemented multisignature functionality for Flow payment to add user signature for payment verification and admin signature for confirmation of user payment. As new brands and businesses begin to take advantage of this technology you will see even more drops.
+NowWhereContract is a drop contract that is used for the purpose to release or sell a non-fungible token. We can create a Drop(A drop refers to the exact start date time and end date time) for sale in this Contract. In Drops, we have Template/s having NFTs for sale which users can purchase. To purchase Drop users can use Stripe Payment method(Fiat) or Flow Payment method(Crypto) and we have also implemented multisignature functionality for Flow payment to add user signature for payment verification and admin signature for confirmation of user payment. As new brands and businesses begin to take advantage of this technology you will see even more drops.
 
 ## Summary of NFTContract
 
