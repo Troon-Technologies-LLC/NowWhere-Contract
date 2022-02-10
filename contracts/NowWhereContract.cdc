@@ -51,7 +51,7 @@ pub contract NowWhereContract {
         access(contract) var ownerVault: Capability<&AnyResource{FungibleToken.Receiver}>?
 
         pub fun addOwnerVault(_ownerVault: Capability<&AnyResource{FungibleToken.Receiver}>){
-             self.ownerVault = _ownerVault
+            self.ownerVault = _ownerVault
         }
 
         pub fun createDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){

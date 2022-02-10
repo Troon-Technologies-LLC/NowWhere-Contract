@@ -114,6 +114,12 @@ pub contract NFTContract: NonFungibleToken {
                 immutableData != nil: "ImmutableData must not be nil"
             }
 
+            self.templateId = NFTContract.lastIssuedTemplateId
+            self.brandId = brandId
+            self.schemaId = schemaId
+            self.maxSupply = maxSupply
+            self.immutableData = immutableData
+            self.issuedSupply = 0
             // Before creating template, we need to check template data, if it is valid against given schema or not
             let schema = NFTContract.allSchemas[schemaId]!
             var invalidKey: String = ""
@@ -175,13 +181,6 @@ pub contract NFTContract: NonFungibleToken {
                 }
             }
             assert(isValidTemplate, message: "invalid template data. Error: ".concat(invalidKey))
-
-            self.templateId = NFTContract.lastIssuedTemplateId
-            self.brandId = brandId
-            self.schemaId = schemaId
-            self.maxSupply = maxSupply
-            self.immutableData = immutableData
-            self.issuedSupply = 0
         }
 
         // a method to increment issued supply for template
@@ -280,7 +279,7 @@ pub contract NFTContract: NonFungibleToken {
     }
     
     //AdminCapability to add whiteListedAccounts
-     pub resource AdminCapability{
+    pub resource AdminCapability {
         
         pub fun addwhiteListedAccount(_user: Address) {
             pre{
@@ -485,12 +484,12 @@ pub contract NFTContract: NonFungibleToken {
         self.allNFTs = {}
         self.whiteListedAccounts = [self.account.address]
 
-        self.AdminResourceStoragePath = /storage/TroonAdminResourcev01
-        self.CollectionStoragePath = /storage/TroonCollectionv01
-        self.CollectionPublicPath = /public/TroonCollectionv01
+        self.AdminResourceStoragePath = /storage/TroonAdminResource
+        self.CollectionStoragePath = /storage/TroonCollection
+        self.CollectionPublicPath = /public/TroonCollection
         self.AdminStorageCapability = /storage/AdminCapability
         self.AdminCapabilityPrivate = /private/AdminCapability
-        self.NFTMethodsCapabilityPrivatePath = /private/NFTMethodsCapabilityv01
+        self.NFTMethodsCapabilityPrivatePath = /private/NFTMethodsCapability
         
         self.account.save<@AdminCapability>(<- create AdminCapability(), to: /storage/AdminStorageCapability)
         self.account.link<&AdminCapability>(self.AdminCapabilityPrivate, target: /storage/AdminStorageCapability)
