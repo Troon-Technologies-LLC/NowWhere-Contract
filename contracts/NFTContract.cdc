@@ -251,7 +251,6 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT {
-            emit NFTBorrowed(id:id)
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
 
