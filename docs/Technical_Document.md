@@ -61,7 +61,7 @@ the core functionality of the NFT.
 | Network | Contract Address     |
 |---------|----------------------|
 | Testnet | `0x8f5c3c561b83eae3` |
-
+| Mainnet | `0x1e075b24abe6eca6` |
 
 ## NFTContract Overview Technical
 
