@@ -224,7 +224,13 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
+<<<<<<< Updated upstream
     pub resource interface NFTContractCollectionPublic {
+=======
+
+    pub resource interface NFTContractCollectionPublic {
+        pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
+>>>>>>> Stashed changes
         pub fun borrowNFTContract(id: UInt64): &NFTContract.NFT? {
             // If the result isn't nil, the id of the returned reference
             // should be the same as the argument to the function
@@ -238,7 +244,11 @@ pub contract NFTContract: NonFungibleToken {
     // Collection is a resource that every user who owns NFTs 
     // will store in their account to manage their NFTS
     //
+<<<<<<< Updated upstream
     pub resource Collection: NFTContractCollectionPublic, NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic {
+=======
+    pub resource Collection: NFTContractCollectionPublic,NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic {
+>>>>>>> Stashed changes
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
 
         pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
@@ -266,6 +276,14 @@ pub contract NFTContract: NonFungibleToken {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
 
+        pub fun borrowNFTContract(id: UInt64): &NFTContract.NFT? {
+            if self.ownedNFTs[id] != nil {
+                let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+                return ref as! &NFTContract.NFT
+            } else {
+                return nil
+            }
+        }
         init() {
             self.ownedNFTs <- {}
         }
