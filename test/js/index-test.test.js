@@ -149,7 +149,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("test transaction add admin Account", async () => {
     const name = "addAdminAccount";
@@ -186,7 +186,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx result ", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("test transaction  create brand", async () => {
     const name = "createBrand";
@@ -221,7 +221,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("test transaction  create Schema", async () => {
     const name = "createSchema";
@@ -256,53 +256,8 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
-  // test("test transaction  create template", async () => {
-  //   const name = "createTemplate";
-  //   // Import participating accounts
-  //   const Charlie = await getAccountAddress("Charlie");
-  //   // Set transaction signers
-  //   const signers = [Charlie];
-  //   // Generate addressMap from import statements
-  //   const NonFungibleToken = await getContractAddress("NonFungibleToken");
-  //   const NFTContract = await getContractAddress("NFTContract");
-  //   const NowWhereContract = await getContractAddress("NowWhereContract");
-  //   const addressMap = {
-  //     NonFungibleToken,
-  //     NFTContract,
-  //     NowWhereContract,
-  //   };
-
-  //   let code = await getTransactionCode({
-  //     name,
-  //     addressMap,
-  //   });
-  //   let immutableData  = {
-  //     "artist" : "Nasir And Sham",
-  //     "artistEmail" : "sham&nasir@gmai.com",
-  //     "title" : "First NFT",
-  //     "mintType" : "MintOnSale",
-  //     "nftType" : "AR",
-  //     "rarity" : "Epic",
-  //     "contectType" : "Image",
-  //     "contectValue" : "https://troontechnologies.com/"       
-  //   }
-  //   // brandId, schemaId, maxSupply,immutableData
-  //   const args = [1, 1, 100,immutableData];
-  //   let txResult;
-  //   try {
-  //     txResult = await sendTransaction({
-  //       code,
-  //       signers,
-  //       args,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  //   console.log("tx Result", txResult);
-  //   // expect(txResult.errorMessage).toBe("");
-  // });
 
   test("test transaction  create template", async () => {
     const name = "createTemplateStaticData";
@@ -337,60 +292,15 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
-  // test("test transaction  create drop", async () => {
-  //   const name = "createDrop";
-  //   var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
-
-  //   // Import participating accounts
-  //   const Charlie = await getAccountAddress("Charlie");
-
-  //   // Set transaction signers
-  //   const signers = [Charlie];
-
-  //   // Generate addressMap from import statements
-  //   const NonFungibleToken = await getContractAddress("NonFungibleToken");
-  //   const NFTContract = await getContractAddress("NFTContract");
-  //   const NowWhereContract = await getContractAddress("NowWhereContract");
-  //   const addressMap = {
-  //     NonFungibleToken,
-  //     NFTContract,
-  //     NowWhereContract,
-  //   };
-
-  //   let code = await getTransactionCode({
-  //     name,
-  //     addressMap,
-  //   });
-  //   var test = 1;
-  //   let template = {1:"3"}
-  //   const args = [1, currentTimeInSeconds, "1702996401.0", template];
-
-  //   let txResult;
-  //   try {
-  //     txResult = await sendTransaction({
-  //       code,
-  //       signers,
-  //       args,
-  //     });
-  //   } catch (e) {
-  //     console.log("Error", e);
-  //   }
-  //   console.log("tx Result", txResult);
-  //   // expect(txResult.errorMessage).toBe("");
-  // });
-
   test("test transaction  create drop", async () => {
     const name = "createDropStaticData";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
-
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
-
     // Set transaction signers
     const signers = [Charlie];
-
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
@@ -419,16 +329,14 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("add owner vault", async () => {
     const name = "addOwnerVault";
-
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
     // Set transaction signers
     const signers = [Charlie];
-
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
@@ -453,7 +361,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("create user empty collection", async () => {
     const name = "createUserEmptyCollection";
@@ -485,17 +393,16 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
+  
+  //nfts purchase by Charlie
   test("test transaction  purchase drop", async () => {
     const name = "purchaseDrop";
-
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
-
     // Set transaction signers
     const signers = [Charlie];
-
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
@@ -524,7 +431,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
 
   test("check intial balance of both user owner and buyer", async () => {
@@ -540,6 +447,8 @@ describe("Transactions", () => {
     expect(updatedBalance1.toString()).toBe(userOne);
     expect(updatedBalance2.toString()).toBe(user2);
   });
+
+ //nfts purchase by Bob
   test("purchase drop with flow", async () => {
     const name = "purchaseNFTWithFlow";
     // Import participating accounts
@@ -573,7 +482,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
 
   test("check final balance of both user owner and buyer", async () => {
@@ -584,9 +493,8 @@ describe("Transactions", () => {
     const Bob = await getAccountAddress("Bob");
     // Check updated balance
     const updatedBalance1 = await getFlowBalance(Charlie);
-    // console.log("Charlie", { updatedBalance1 });
     const updatedBalance2 = await getFlowBalance(Bob);
-    // console.log("Bob", { updatedBalance2 });
+    // expected results
     expect(updatedBalance1.toString()).toBe(userOne);
     expect(updatedBalance2.toString()).toBe(userTwo);
   });
@@ -620,12 +528,12 @@ describe("Transactions", () => {
     }
     console.log("tx Result", txResult);
     console.log("unlinking done")
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
 
 });
 describe("Scripts", () => {
-
+  //get bob nft with id 8
   test("get user NFT by new link", async () => {
     const name = "getNFTs";
     const Bob = await getAccountAddress("Bob");
@@ -651,6 +559,7 @@ describe("Scripts", () => {
     console.log("done nfts")
   });
 
+  //get all the nfts of Bob
   test("get user NFT", async () => {
     const name = "getUserNFT";
     const Bob = await getAccountAddress("Bob");
