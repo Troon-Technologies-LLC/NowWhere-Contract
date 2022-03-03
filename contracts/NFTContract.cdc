@@ -233,7 +233,7 @@ pub contract NFTContract: NonFungibleToken {
             // If the result isn't nil, the id of the returned reference
             // should be the same as the argument to the function
             post {
-                (result == nil) || (result?.id == id): 
+                (result == nil) || (result?.id == id):
                     "Cannot borrow Reward reference: The ID of the returned reference is incorrect"
             }
         }

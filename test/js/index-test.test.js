@@ -50,7 +50,9 @@ describe("Replicate Playground Accounts", () => {
     const updatedBalance = await getFlowBalance(Bob);
   });
 });
+
 describe("Deployment", () => {
+
   test("Deploy for NonFungibleToken", async () => {
     const name = "NonFungibleToken";
     const to = await getAccountAddress("Alice");
@@ -68,6 +70,7 @@ describe("Deployment", () => {
     }
     expect(name).toBe("NonFungibleToken");
   });
+
   test("Deploy for NFTContract", async () => {
     const name = "NFTContract";
     const to = await getAccountAddress("Bob");
