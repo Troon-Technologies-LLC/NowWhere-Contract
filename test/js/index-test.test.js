@@ -534,6 +534,78 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
+
+  test("test transaction create another drop", async () => {
+    const name = "createDropStaticData";
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    const args = [2, currentTimeInSeconds, "1702996401.0"];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+
+  test("test transaction Remove drop", async () => {
+    const name = "RemoveDrop";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    const args = [2];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result of Remove Drop", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+
 });
 describe("Scripts", () => {
   //get bob nft with id 8
@@ -618,6 +690,7 @@ describe("Scripts", () => {
     });
     console.log("result", result);
   });
+
   test("get brand data", async () => {
     const name = "getAllBrands";
     const Bob = await getAccountAddress("Bob");

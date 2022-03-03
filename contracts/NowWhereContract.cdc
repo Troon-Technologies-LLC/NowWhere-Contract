@@ -83,7 +83,6 @@ pub contract NowWhereContract {
             pre {
                 dropId != nil : "invalid drop id"
                 NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
-                NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "Drop is not ended yet"
             }
 
             NowWhereContract.allDrops.remove(key: dropId)
