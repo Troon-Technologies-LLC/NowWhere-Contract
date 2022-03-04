@@ -503,7 +503,7 @@ describe("Transactions", () => {
   });
 
   //testcases for remove drop 
-  //first senario
+  //first scenario
   //create the drop
   test("test transaction create another drop", async () => {
     const name = "createDropStaticData";
@@ -616,7 +616,7 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-  //second senario
+  //second scenario
   //create the new drop
   test("test transaction create another drop", async () => {
     const name = "createDropStaticData";
@@ -729,7 +729,7 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-  //third senario
+  //third scenario
   //remove the drop which is not created yet
   test("test transaction Remove drop", async () => {
     const name = "RemoveDrop";
@@ -1112,7 +1112,6 @@ describe("Scripts", () => {
       code,
     });
     console.log("result", result);
-    console.log("getAllDrops")
   });
   test("get drop data by Id", async () => {
     const name = "getDropById";
