@@ -502,39 +502,122 @@ describe("Transactions", () => {
     expect(updatedBalance2.toString()).toBe(userTwo);
   });
 
-  test("Unlink collectionpublic and create new link", async () => {
-    const name = "UnlinkCollectionPath";
+  //testcases for remove drop 
+  //first senario
+  //create the drop
+  test("test transaction create another drop", async () => {
+    const name = "createDropStaticData";
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
     // Import participating accounts
-    const Bob = await getAccountAddress("Bob");
+    const Charlie = await getAccountAddress("Charlie");
     // Set transaction signers
-    const signers = [Bob];
+    const signers = [Charlie];
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
     const addressMap = {
       NonFungibleToken,
       NFTContract,
+      NowWhereContract,
     };
 
     let code = await getTransactionCode({
       name,
       addressMap,
     });
+    const args = [4, currentTimeInSeconds, "1702996401.0"];
+
     let txResult;
     try {
       txResult = await sendTransaction({
         code,
-        signers
+        signers,
+        args,
       });
     } catch (e) {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    console.log("unlinking done")
+    expect(txResult.errorMessage).toBe(undefined);
+    console.log("created new drop with id 4")
+  });
+
+  //remove the drop with given id 
+  test("test transaction Remove drop by id 4", async () => {
+    const name = "RemoveDrop";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    const args = [4];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result of Remove Drop", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+  //try to purchase the drop which has been removed
+  test("test transaction  aother purchase drop", async () => {
+    const name = "purchaseDrop";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    const Bob = await getAccountAddress("Bob");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+
+    const args = [4, 1, 4, Bob];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-
+  //second senario
+  //create the new drop
   test("test transaction create another drop", async () => {
     const name = "createDropStaticData";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
@@ -572,6 +655,45 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
+  //purchase another drop by bob
+  test("test transaction  aother purchase drop", async () => {
+    const name = "purchaseDrop";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    const Bob = await getAccountAddress("Bob");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+
+    const args = [2, 1, 4, Bob];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+  //remove drop after purchase by bob
   test("test transaction Remove drop", async () => {
     const name = "RemoveDrop";
     // Import participating accounts
@@ -603,10 +725,80 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result of Remove Drop", txResult);
+    console.log("remove drop with id 2")
     expect(txResult.errorMessage).toBe(undefined);
   });
 
+  //third senario
+  //remove the drop which is not created yet
+  test("test transaction Remove drop", async () => {
+    const name = "RemoveDrop";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    const args = [3];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result of Remove Drop", txResult);
+    console.log("remove drop with id 3")
+    // expect(txResult.errorMessage).toBe(undefined);
+  });
+  test("Unlink collectionpublic and create new link", async () => {
+    const name = "UnlinkCollectionPath";
+    // Import participating accounts
+    const Bob = await getAccountAddress("Bob");
+    // Set transaction signers
+    const signers = [Bob];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+    };
+  
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result", txResult);
+    console.log("unlinking done")
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+  
 });
+
 describe("Scripts", () => {
   //get bob nft with id 8
   test("get user NFT by new link", async () => {
@@ -920,6 +1112,7 @@ describe("Scripts", () => {
       code,
     });
     console.log("result", result);
+    console.log("getAllDrops")
   });
   test("get drop data by Id", async () => {
     const name = "getDropById";
