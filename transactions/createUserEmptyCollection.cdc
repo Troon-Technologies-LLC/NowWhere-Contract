@@ -1,5 +1,5 @@
 import NFTContract from "../contracts/NFTContract.cdc"
-import NonFungibleToken from 0xf8d6e0586b0a20c7
+import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
 transaction {
     prepare(acct: AuthAccount) {
 
@@ -8,8 +8,8 @@ transaction {
         acct.save( <- collection, to:NFTContract.CollectionStoragePath)
         log("Collection created for account".concat(acct.address.toString()))
         // create a public capability for the Collection
-        acct.link<&{NonFungibleToken.CollectionPublic}>(NFTContract.CollectionPublicPath, target:NFTContract.CollectionStoragePath)
-        log("Capability created")
+        acct.link<&{NFTContract.NFTContractCollectionPublic}>(NFTContract.CollectionPublicPath, target:NFTContract.CollectionStoragePath)
+       log("Capability created")
 
     }
 }

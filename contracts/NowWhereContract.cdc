@@ -10,6 +10,8 @@ pub contract NowWhereContract {
     pub event ContractInitialized()
     // Emitted when a new Drop is created
     pub event DropCreated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)
+    // Emitted when a new Drop is updated
+    pub event DropUpdated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)
     // Emitted when a Drop is purchased
     pub event DropPurchased(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address)
      // Emitted when a Drop is purchased using flow
@@ -32,13 +34,18 @@ pub contract NowWhereContract {
 
     // Drop is a struct 
     pub struct Drop {
-        pub let dropId: UInt64
-        pub let startDate: UFix64
-        pub let endDate: UFix64
-        pub let templates: {UInt64: AnyStruct}
+        pub var dropId: UInt64
+        pub var startDate: UFix64
+        pub var endDate: UFix64
+        access(contract) var templates: {UInt64: AnyStruct}
 
         init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}) {
             self.dropId = dropId
+            self.startDate = startDate
+            self.endDate = endDate
+            self.templates = templates
+        }
+        pub fun updateDrop(startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
             self.startDate = startDate
             self.endDate = endDate
             self.templates = templates
@@ -77,6 +84,18 @@ pub contract NowWhereContract {
             NowWhereContract.allDrops[newDrop.dropId] = newDrop
 
             emit DropCreated(dropId: dropId, creator: self.owner?.address!, startDate: startDate, endDate: endDate)
+        }
+        pub fun updateNowWhereDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
+            pre{
+                dropId != nil: "invalid drop id"
+                NowWhereContract.allDrops[dropId] != nil: "drop id not exists"
+                startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
+                endDate > startDate: "End date should be greater than start date"
+                templates != nil: "templates must not be null"
+            }
+            NowWhereContract.allDrops[dropId]!.updateDrop(startDate: startDate, endDate: endDate, templates: templates)
+
+            emit DropUpdated(dropId: dropId, creator: self.owner!.address, startDate: startDate, endDate: endDate)
         }
 
         pub fun removeDrop(dropId: UInt64){
