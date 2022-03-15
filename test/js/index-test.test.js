@@ -398,6 +398,42 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
+  test("test transaction  reserve user mints", async () => {
+    const name = "reserveUsermints";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const TriQuetaNFT = await getContractAddress("TriQuetaNFT");
+    const TriQueta = await getContractAddress("TriQueta");
+    const addressMap = {
+      NonFungibleToken,
+      TriQuetaNFT,
+      TriQueta,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+
+    const args = [1, 1, Charlie, 1];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
   //nfts purchase by Charlie
   test("test transaction  purchase drop", async () => {
     const name = "purchaseDrop";
@@ -450,6 +486,42 @@ describe("Transactions", () => {
     expect(updatedBalance2.toString()).toBe(user2);
   });
 
+  test("test transaction  reserve user mints", async () => {
+    const name = "reserveUsermints";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    const Bob = await getAccountAddress("Bob");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const TriQuetaNFT = await getContractAddress("TriQuetaNFT");
+    const TriQueta = await getContractAddress("TriQueta");
+    const addressMap = {
+      NonFungibleToken,
+      TriQuetaNFT,
+      TriQueta,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+
+    const args = [1, 1, Bob, 1];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
   //nfts purchase by Bob
   test("purchase drop with flow", async () => {
     const name = "purchaseNFTWithFlow";
@@ -537,6 +609,7 @@ describe("Transactions", () => {
     } catch (e) {
       console.log("Error", e);
     }
+    console.log("remove drop testcases")
     console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
     console.log("created new drop with id 4")
