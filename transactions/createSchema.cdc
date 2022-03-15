@@ -1,7 +1,5 @@
-import NFTContract from "../contracts/NFTContract.cdc"
-
+import NFTContract from 0x43862bd2c9f32864
 transaction (schemaName:String){
-
    prepare(acct: AuthAccount) {
       let actorResource = acct.getCapability
             <&{NFTContract.NFTMethodsCapability}>
@@ -20,7 +18,7 @@ transaction (schemaName:String){
             "contectValue":  NFTContract.SchemaType.String,
             "extras": NFTContract.SchemaType.Any
             }
-         actorResource.createSchema(schemaName: schemaName, format: format)
+         actorResource.createSchema(schemaName: "nft-series", format: format)
          log("ok")
    }
 }

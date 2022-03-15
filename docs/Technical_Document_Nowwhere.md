@@ -49,7 +49,7 @@ A common order of creating Drop would be
 
 | Network | Contract Address     |
 | ------- | -------------------- |
-| Testnet | `0xb1295645abe1f315` |
+| Testnet | `0x4613329e2fb27afe` |
 | Mainnet | `0x1e075b24abe6eca6` |
 
 ## Drop Structure
