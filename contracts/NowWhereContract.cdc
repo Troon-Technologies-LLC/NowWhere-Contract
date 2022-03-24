@@ -26,8 +26,10 @@ pub contract NowWhereContract {
     access(contract) let adminRef: Capability<&{NFTContract.NFTMethodsCapability}>
     // Variable size dictionary of Drop structs
     access(self) var allDrops: {UInt64: Drop}
-    // The capability that is used for calling the admin functions 
+    // The dictionary to store the reserved mint for user address
     access(contract) var allReserved: {UInt64: {Address:RserveMints}}
+    // The dictionary to store the reserved mint for drops
+    access(contract) var reservedMints: {UInt64: UInt64}
     // -----------------------------------------------------------------------
     // Nowwhere contract-level Composite Type definitions
     // -----------------------------------------------------------------------
@@ -162,6 +164,8 @@ pub contract NowWhereContract {
             }
             let mintsData = NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address.remove(key: "mintNumber")
             let reserveData = NowWhereContract.allReserved[dropId]!.remove(key: receiptAddress)
+            let mints = NowWhereContract.reservedMints[dropId]!
+            NowWhereContract.reservedMints[dropId] = mints.saturatingSubtract(mintNumbers)
 
             emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
@@ -198,6 +202,8 @@ pub contract NowWhereContract {
             }
             let mintsData = NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address.remove(key: "mintNumber")
             let reserveData = NowWhereContract.allReserved[dropId]!.remove(key: receiptAddress)
+            let mints = NowWhereContract.reservedMints[dropId]!
+            NowWhereContract.reservedMints[dropId] = mints.saturatingSubtract(mintNumbers)
 
             emit DropPurchasedWithFlow(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress,price: price)
         }
@@ -216,14 +222,25 @@ pub contract NowWhereContract {
             let templateData = NFTContract.getTemplateById(templateId: templateId)
             let mintAvailble = templateData.maxSupply
             let issuedSupply = templateData.issuedSupply
-            assert(issuedSupply + mintNumbers < mintAvailble, message: "mints not available")
+            assert(issuedSupply + mintNumbers <= mintAvailble, message: "mints not available")
+            let mintdata =  NowWhereContract.reservedMints[dropId]
+            if  mintdata == nil {
+                assert(issuedSupply + mintNumbers <= mintAvailble, message: "mints reached")
+                NowWhereContract.reservedMints[dropId] = mintNumbers
+            }
+            else{
+                let mints =  NowWhereContract.reservedMints[dropId]!
+                assert(issuedSupply + mints <= mintAvailble, message: "mints reached")
+                assert(issuedSupply + mints + mintNumbers  <= mintAvailble, message: "mints not available") 
+                NowWhereContract.reservedMints[dropId] = mints.saturatingAdd(mintNumbers)
+            }
             let userData: {String : UInt64} = {"mintNumber": mintNumbers}
             let data = NowWhereContract.RserveMints(user_address: userData)
             NowWhereContract.allReserved.insert(key: dropId, {receiptAddress: data})
             emit MintNumberReserved(dropId: dropId, receiptAddress: receiptAddress)
         }
 
-        pub fun removeReservedUserNFT(dropId: UInt64, receiptAddress:Address): Bool{
+        pub fun removeReservedUserNFT(dropId: UInt64, receiptAddress:Address, mintNumbers: UInt64): Bool{
             pre {
                 dropId != nil : "invalid drop id"
                 receiptAddress !=nil: "invalid receipt Address"
@@ -234,6 +251,8 @@ pub contract NowWhereContract {
             }
             let mintsData = NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address.remove(key: "mintNumber")
             let reserveData = NowWhereContract.allReserved[dropId]!.remove(key: receiptAddress)
+            let mints = NowWhereContract.reservedMints[dropId]!
+            NowWhereContract.reservedMints[dropId] = mints.saturatingSubtract(mintNumbers)
             return true
         }
 
@@ -272,6 +291,7 @@ pub contract NowWhereContract {
         // Initialize contract fields
         self.allDrops = {}
         self.allReserved = {}
+        self.reservedMints = {}
 
         self.DropAdminStoragePath = /storage/NowwhereDropAdmin
         // get the private capability to the admin resource interface
