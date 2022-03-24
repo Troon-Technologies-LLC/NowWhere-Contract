@@ -26,9 +26,9 @@ pub contract NowWhereContract {
     access(contract) let adminRef: Capability<&{NFTContract.NFTMethodsCapability}>
     // Variable size dictionary of Drop structs
     access(self) var allDrops: {UInt64: Drop}
-    // The dictionary to store the reserved mint for user address
+    // The dictionary to store the reserved mints for user address
     access(contract) var allReserved: {UInt64: {Address:RserveMints}}
-    // The dictionary to store the reserved mint for drops
+    // The dictionary to store the reserved mints for drops
     access(contract) var reservedMints: {UInt64: UInt64}
     // -----------------------------------------------------------------------
     // Nowwhere contract-level Composite Type definitions
