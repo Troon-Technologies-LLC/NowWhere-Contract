@@ -1,4 +1,4 @@
-import NFTContract from 0x43862bd2c9f32864
+import NFTContract from 0x9d23081cde9dd45b
 import NonFungibleToken from 0x631e88ae7f1d7c20
 
 transaction(admin: Address) {
