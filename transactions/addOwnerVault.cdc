@@ -1,4 +1,4 @@
-import NowWhereContract from 0x4613329e2fb27afe
+import NowWhereContract from 0x7944b1c1cf67d484
 import FungibleToken from  0x9a0766d93b6608b7
 import FlowToken from 0x7e60df042a9c0868
 
