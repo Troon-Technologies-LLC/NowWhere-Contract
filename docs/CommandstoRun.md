@@ -33,7 +33,8 @@ the core functionality of the NFT.
 
 | Network | Contract Address     |
 | ------- | -------------------- |
-| Testnet | `0x8f5c3c561b83eae3` |
+| Testnet | `0x7172dabff94b6047` |
+| Mainnet | `0x1e075b24abe6eca6` |
 
 ## Instructions for creating Brand, Schema, Template and Mint Templates
 
