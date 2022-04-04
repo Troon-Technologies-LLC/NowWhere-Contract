@@ -573,7 +573,8 @@ describe("Transactions", () => {
     });
     var test = 1;
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
-    const args = [2, currentTimeInSeconds, currentTimeInSeconds+1659593395.0];
+    currentTimeInSeconds = currentTimeInSeconds + 10000000.0
+    const args = [2, currentTimeInSeconds, currentTimeInSeconds+20000000.0];
 
     let txResult;
     try {
