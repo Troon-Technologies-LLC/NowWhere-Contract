@@ -222,6 +222,11 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
+    /** NFTContractCollectionPublic
+
+        A public interface extending the standard NFT Collection with type information specific
+        to NowWhere NFTs.
+    */
     pub resource interface NFTContractCollectionPublic {
         pub fun deposit(token: @NonFungibleToken.NFT)
         pub fun getIDs(): [UInt64]
@@ -267,7 +272,7 @@ pub contract NFTContract: NonFungibleToken {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
 
-        // borrowNowWhereNFT returns a borrowed reference to a NFTContractV02
+        // borrowNowWhereNFT returns a borrowed reference to a NFTContract
         // so that the caller can read data and call methods from it.
         //
         // Parameters: id: The ID of the NFT to get the reference for
