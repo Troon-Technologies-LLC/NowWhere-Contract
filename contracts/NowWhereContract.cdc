@@ -1,4 +1,4 @@
-import NFTContract from "./NFTContract.cdc"
+import NFTContract from 0x1e075b24abe6eca6
 import NonFungibleToken from 0x1d7e57aa55817448
 import FungibleToken from 0xf233dcee88fe0abe
 import FlowToken from 0x1654653399040a61
@@ -83,7 +83,7 @@ pub contract NowWhereContract {
             pre {
                 dropId != nil : "invalid drop id"
                 NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
-                NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "Drop is not ended yet"
+                getCurrentBlock().timestamp < NowWhereContract.allDrops[dropId]!.startDate: "Drop sale is started"
             }
 
             NowWhereContract.allDrops.remove(key: dropId)

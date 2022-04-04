@@ -1,5 +1,4 @@
 import NonFungibleToken from 0x1d7e57aa55817448
-
 pub contract NFTContract: NonFungibleToken {
 
     // Events
@@ -223,10 +222,24 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
+    pub resource interface NFTContractCollectionPublic {
+        pub fun deposit(token: @NonFungibleToken.NFT)
+        pub fun getIDs(): [UInt64]
+        pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
+        pub fun borrowNowWhereNFT(id: UInt64): &NFTContract.NFT? {
+            // If the result isn't nil, the id of the returned reference
+            // should be the same as the argument to the function
+            post {
+                (result == nil) || (result?.id == id):
+                    "Cannot borrow NFT reference: The ID of the returned reference is incorrect"
+            }
+        }
+    }
+
     // Collection is a resource that every user who owns NFTs 
     // will store in their account to manage their NFTS
     //
-    pub resource Collection: NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic {
+    pub resource Collection: NFTContractCollectionPublic, NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic {
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
 
         pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
@@ -252,6 +265,21 @@ pub contract NFTContract: NonFungibleToken {
 
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
+        }
+
+        // borrowNowWhereNFT returns a borrowed reference to a NFTContractV02
+        // so that the caller can read data and call methods from it.
+        //
+        // Parameters: id: The ID of the NFT to get the reference for
+        //
+        // Returns: A reference to the NFT
+        pub fun borrowNowWhereNFT(id: UInt64): &NFTContract.NFT? {
+            if self.ownedNFTs[id] != nil {
+                let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
+                return ref as! &NFTContract.NFT
+            } else {
+                return nil
+            }
         }
 
         init() {
