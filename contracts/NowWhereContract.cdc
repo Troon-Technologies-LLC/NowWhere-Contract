@@ -35,18 +35,12 @@ pub contract NowWhereContract {
     // Drop is a struct 
     pub struct Drop {
         pub let dropId: UInt64
-        pub var startDate: UFix64
-        pub var endDate: UFix64
-        pub var templates: {UInt64: AnyStruct}
+        pub let startDate: UFix64
+        pub let endDate: UFix64
+        pub let templates: {UInt64: AnyStruct}
 
         init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}) {
             self.dropId = dropId
-            self.startDate = startDate
-            self.endDate = endDate
-            self.templates = templates
-        }
-
-         pub fun updateDropData(startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
             self.startDate = startDate
             self.endDate = endDate
             self.templates = templates
@@ -85,29 +79,6 @@ pub contract NowWhereContract {
             NowWhereContract.allDrops[newDrop.dropId] = newDrop
 
             emit DropCreated(dropId: dropId, creator: self.owner?.address!, startDate: startDate, endDate: endDate)
-        }
-
-        pub fun updateDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
-            pre{
-                dropId != nil: "invalid drop id"
-                NowWhereContract.allDrops[dropId] != nil: "drop id does not exists"
-                startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
-                endDate > startDate: "End date should be greater than start date"
-                templates != nil: "templates must not be null"
-            }
-
-            var areValidTemplates: Bool = true
-            for templateId in templates.keys {
-                var template = NFTContract.getTemplateById(templateId: templateId)
-                if(template == nil){
-                    areValidTemplates = false
-                    break
-                }
-            }
-            assert(areValidTemplates, message:"templateId is not valid")
-            NowWhereContract.allDrops[dropId]!.updateDropData(startDate: startDate, endDate: endDate, templates: templates)
-
-            emit DropUpdated(dropId: dropId, creator: self.owner!.address, startDate: startDate, endDate: endDate)
         }
 
         pub fun removeDrop(dropId: UInt64){
