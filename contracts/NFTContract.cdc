@@ -399,7 +399,7 @@ pub contract NFTContract: NonFungibleToken {
 
         //method to create new Template, only access by the verified user
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}) {
-            pre { 
+            pre {
                 // the transaction will instantly revert if 
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
