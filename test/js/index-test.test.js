@@ -395,7 +395,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [1, currentTimeInSeconds, "1648984995.0"];
+    const args = [1, currentTimeInSeconds, currentTimeInSeconds+10000000.0];
 
     let txResult;
     try {
@@ -572,7 +572,8 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [2, "1648984995.0", "1649593395.0"];
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+    const args = [2, currentTimeInSeconds, currentTimeInSeconds+1659593395.0];
 
     let txResult;
     try {

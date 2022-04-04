@@ -227,7 +227,7 @@ pub contract NFTContract: NonFungibleToken {
         pub fun deposit(token: @NonFungibleToken.NFT)
         pub fun getIDs(): [UInt64]
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT
-        pub fun borrowNFTContract(id: UInt64): &NFTContract.NFT? {
+        pub fun borrowNowWhereNFT(id: UInt64): &NFTContract.NFT? {
             // If the result isn't nil, the id of the returned reference
             // should be the same as the argument to the function
             post {
@@ -268,13 +268,13 @@ pub contract NFTContract: NonFungibleToken {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
 
-        // borrowNFTContract returns a borrowed reference to a NFTContractV02
+        // borrowNowWhereNFT returns a borrowed reference to a NFTContractV02
         // so that the caller can read data and call methods from it.
         //
         // Parameters: id: The ID of the NFT to get the reference for
         //
         // Returns: A reference to the NFT
-        pub fun borrowNFTContract(id: UInt64): &NFTContract.NFT? {
+        pub fun borrowNowWhereNFT(id: UInt64): &NFTContract.NFT? {
             if self.ownedNFTs[id] != nil {
                 let ref = &self.ownedNFTs[id] as auth &NonFungibleToken.NFT
                 return ref as! &NFTContract.NFT

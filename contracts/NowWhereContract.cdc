@@ -46,7 +46,7 @@ pub contract NowWhereContract {
             self.templates = templates
         }
 
-         pub fun updateDrop(startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
+         pub fun updateDropData(startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
             self.startDate = startDate
             self.endDate = endDate
             self.templates = templates
@@ -87,7 +87,7 @@ pub contract NowWhereContract {
             emit DropCreated(dropId: dropId, creator: self.owner?.address!, startDate: startDate, endDate: endDate)
         }
 
-        pub fun updateNowWhereDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
+        pub fun updateDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
             pre{
                 dropId != nil: "invalid drop id"
                 NowWhereContract.allDrops[dropId] != nil: "drop id does not exists"
@@ -105,7 +105,7 @@ pub contract NowWhereContract {
                 }
             }
             assert(areValidTemplates, message:"templateId is not valid")
-            NowWhereContract.allDrops[dropId]!.updateDrop(startDate: startDate, endDate: endDate, templates: templates)
+            NowWhereContract.allDrops[dropId]!.updateDropData(startDate: startDate, endDate: endDate, templates: templates)
 
             emit DropUpdated(dropId: dropId, creator: self.owner!.address, startDate: startDate, endDate: endDate)
         }
