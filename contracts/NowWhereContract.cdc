@@ -35,13 +35,17 @@ pub contract NowWhereContract {
         pub let dropId: UInt64
         pub let startDate: UFix64
         pub let endDate: UFix64
-        pub let templates: {UInt64: AnyStruct}
+        access(contract) var templates: {UInt64: AnyStruct}
 
         init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}) {
             self.dropId = dropId
             self.startDate = startDate
             self.endDate = endDate
             self.templates = templates
+        }
+
+        pub fun getDropTemplates(): {UInt64: AnyStruct} {
+            return self.templates
         }
     }
 
