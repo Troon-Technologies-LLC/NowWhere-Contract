@@ -4,7 +4,7 @@ import NowWhereContract from "./NowWhereContract.cdc"
 pub fun main(dropId: UInt64):{String:UInt64}{
 
     let outdropId = NowWhereContract.getDropById(dropId: dropId)
-    let templateid = outdropId.templates.keys
+    let templateid = outdropId.getDropTemplates().keys
 
     let getTemplate = NFTContract.getTemplateById(templateId: templateid[0])
     let issuedSupply = getTemplate.issuedSupply
@@ -19,5 +19,4 @@ pub fun main(dropId: UInt64):{String:UInt64}{
 
 
     return  dropMetaData
-
 }

@@ -103,7 +103,7 @@ pub contract NFTContract: NonFungibleToken {
         pub let schemaId: UInt64
         pub var maxSupply: UInt64
         pub var issuedSupply: UInt64
-        pub var immutableData: {String: AnyStruct}
+        access(contract) var immutableData: {String: AnyStruct}
 
         init(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}) {
             pre {
@@ -180,6 +180,11 @@ pub contract NFTContract: NonFungibleToken {
                 }
             }
             assert(isValidTemplate, message: "invalid template data. Error: ".concat(invalidKey))
+        }
+
+        // getter Template ImmutableData
+        pub fun getImmutableData(): {String:AnyStruct} {
+            return self.immutableData
         }
 
         // a method to increment issued supply for template
