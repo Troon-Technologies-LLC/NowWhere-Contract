@@ -1,4 +1,5 @@
 import NonFungibleToken from 0x1d7e57aa55817448
+
 pub contract NFTContract: NonFungibleToken {
 
     // Events
@@ -182,7 +183,7 @@ pub contract NFTContract: NonFungibleToken {
             assert(isValidTemplate, message: "invalid template data. Error: ".concat(invalidKey))
         }
 
-        // getter Template ImmutableData
+        // a method to get ImmutableData field of Template
         pub fun getImmutableData(): {String:AnyStruct} {
             return self.immutableData
         }
