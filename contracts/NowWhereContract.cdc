@@ -18,12 +18,18 @@ pub contract NowWhereContract {
     pub event DropPurchasedWithFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64)
     // Emitted when a Drop is removed
     pub event DropRemoved(dropId: UInt64)
+    // Emitted when a user mintNumber is reserved
+    pub event MintNumberReserved(dropId: UInt64, receiptAddress: Address)
     // Contract level paths for storing resources
     pub let DropAdminStoragePath: StoragePath
     // The capability that is used for calling the admin functions 
     access(contract) let adminRef: Capability<&{NFTContract.NFTMethodsCapability}>
     // Variable size dictionary of Drop structs
     access(self) var allDrops: {UInt64: Drop}
+    // The dictionary to store the reserved mints for user address
+    access(contract) var allReserved: {UInt64: {Address: ReserveMints}}
+    // The dictionary to store the reserved mints for drops
+    access(contract) var reservedMints: {UInt64: UInt64}
     // -----------------------------------------------------------------------
     // Nowwhere contract-level Composite Type definitions
     // -----------------------------------------------------------------------
@@ -54,6 +60,18 @@ pub contract NowWhereContract {
         
         pub fun getDropTemplates(): {UInt64: AnyStruct} {
             return self.templates
+        }
+    }
+
+    // ReserveMints is a struct
+    pub struct ReserveMints {
+        pub let user_address: {String: UInt64}
+
+        init(user_address: {String: UInt64}) {
+            self.user_address = user_address
+        }
+         pub fun addUserMint(mintNumber: String, mintNumberValue :UInt64){
+            self.user_address.insert(key: mintNumber, mintNumberValue)
         }
     }
 
@@ -136,6 +154,9 @@ pub contract NowWhereContract {
                 NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
                 NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
                 NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
+                NowWhereContract.allReserved[dropId] != nil: "drop id does not exist in reserved"
+                NowWhereContract.allReserved[dropId]![receiptAddress] != nil: "given address does not exist in reserved"
+                NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address["mintNumber"]! > 0: "mint for this address is not reserved"
             }
 
             var template = NFTContract.getTemplateById(templateId: templateId)
@@ -145,6 +166,10 @@ pub contract NowWhereContract {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
             }
+            NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address.remove(key: "mintNumber")
+            NowWhereContract.allReserved[dropId]!.remove(key: receiptAddress)
+            let mints = NowWhereContract.reservedMints[dropId]!
+            NowWhereContract.reservedMints[dropId] = mints.saturatingSubtract(mintNumbers)
             emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
 
@@ -162,6 +187,9 @@ pub contract NowWhereContract {
                 NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
                 NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
                 NowWhereContract.allDrops[dropId]!.templates[templateId] != nil: "template id does not exist"
+                NowWhereContract.allReserved[dropId] != nil: "drop id does not exist in reserved"
+                NowWhereContract.allReserved[dropId]![receiptAddress] != nil: "given address does not exist in reserved"
+                NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address["mintNumber"]! > 0: "mint for this address is not reserved"
             }
                 
             let vaultRef = self.ownerVault!.borrow()
@@ -175,8 +203,74 @@ pub contract NowWhereContract {
                 NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
                 i = i + 1
             }
+            NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address.remove(key: "mintNumber")
+            NowWhereContract.allReserved[dropId]!.remove(key: receiptAddress)
+            let mints = NowWhereContract.reservedMints[dropId]!
+            NowWhereContract.reservedMints[dropId] = mints.saturatingSubtract(mintNumbers)
             emit DropPurchasedWithFlow(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress,price: price)
         }
+
+        pub fun ReserveUserNFT(dropId: UInt64, templateId: UInt64, receiptAddress: Address, mintNumbers: UInt64) {
+             pre {
+                mintNumbers > 0: "mint number must be greater than zero"
+                mintNumbers <= 10: "mint numbers must be less than ten"
+                dropId != nil : "invalid drop id"
+                receiptAddress != nil: "invalid receipt Address"
+                NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
+                NowWhereContract.allDrops[dropId]!.startDate <= getCurrentBlock().timestamp: "drop not started yet"
+                NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "drop already ended"
+            }
+
+            let templateData = NFTContract.getTemplateById(templateId: templateId)
+            let mintAvailble = templateData.maxSupply
+            let issuedSupply = templateData.issuedSupply
+            assert(issuedSupply + mintNumbers <= mintAvailble, message: "mints not available")
+            let mintdata =  NowWhereContract.reservedMints[dropId]
+            if  mintdata == nil {
+                assert(issuedSupply + mintNumbers <= mintAvailble, message: "mints reached")
+                NowWhereContract.reservedMints[dropId] = mintNumbers
+            }
+            else{
+                let mints =  NowWhereContract.reservedMints[dropId]!
+                assert(issuedSupply + mints <= mintAvailble, message: "mints reached")
+                assert(issuedSupply + mints + mintNumbers  <= mintAvailble, message: "mints not available") 
+                NowWhereContract.reservedMints[dropId] = mints.saturatingAdd(mintNumbers)
+            }
+            let userData: {String : UInt64} = {"mintNumber": mintNumbers}
+            let data = NowWhereContract.ReserveMints(user_address: userData)
+            NowWhereContract.allReserved.insert(key: dropId, {receiptAddress: data})
+            emit MintNumberReserved(dropId: dropId, receiptAddress: receiptAddress)
+        }
+
+        pub fun removeReservedUserNFT(dropId: UInt64, receiptAddress:Address, mintNumbers: UInt64){
+            pre {
+                dropId != nil : "invalid drop id"
+                receiptAddress !=nil: "invalid receipt Address"
+                NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
+                NowWhereContract.allReserved[dropId] != nil: "drop id does not exist in reserved"
+                NowWhereContract.allReserved[dropId]![receiptAddress] != nil: "given address does not exist in reserved"
+                NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address["mintNumber"]! > 0: "mint for this address is not reserved"
+            }
+            NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address.remove(key: "mintNumber")
+            NowWhereContract.allReserved[dropId]!.remove(key: receiptAddress)
+            let mints = NowWhereContract.reservedMints[dropId]!
+            NowWhereContract.reservedMints[dropId] = mints.saturatingSubtract(mintNumbers)
+        }
+
+        pub fun getUserMintsByDropId(dropId: UInt64, receiptAddress:Address): Bool{
+             pre {
+                dropId != nil : "invalid drop id"
+                receiptAddress !=nil: "invalid receipt Address"
+                NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
+                NowWhereContract.allReserved[dropId] != nil: "drop id does not exist in reserved"
+                NowWhereContract.allReserved[dropId]![receiptAddress] != nil: "given address does not exist in reserved"
+                NowWhereContract.allReserved[dropId]![receiptAddress]!.user_address["mintNumber"]! > 0: "mint for this address is not reserved"
+            }
+            let reserveData = NowWhereContract.allReserved[dropId]!
+            let userMintData = reserveData[receiptAddress]!.user_address["mintNumber"]
+            return userMintData! > 0
+        }
+
 
         init(){
             self.ownerVault = nil
@@ -198,6 +292,8 @@ pub contract NowWhereContract {
     init() {
         // Initialize contract fields
         self.allDrops = {}
+        self.allReserved = {}
+        self.reservedMints = {}
 
         self.DropAdminStoragePath = /storage/NowwhereDropAdmin
         // get the private capability to the admin resource interface
