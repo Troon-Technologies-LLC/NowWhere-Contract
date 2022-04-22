@@ -258,51 +258,6 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     // expect(txResult.errorMessage).toBe("");
   });
-  test("test transaction  create template", async () => {
-    const name = "createTemplate";
-    // Import participating accounts
-    const Charlie = await getAccountAddress("Charlie");
-    // Set transaction signers
-    const signers = [Charlie];
-    // Generate addressMap from import statements
-    const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
-    const NowWhereContract = await getContractAddress("NowWhereContract");
-    const addressMap = {
-      NonFungibleToken,
-      NFTContract,
-      NowWhereContract,
-    };
-
-    let code = await getTransactionCode({
-      name,
-      addressMap,
-    });
-    let immutableData  = {
-      "artist" : "Nasir And Sham",
-      "artistEmail" : "sham&nasir@gmai.com",
-      "title" : "First NFT",
-      "mintType" : "MintOnSale",
-      "nftType" : "AR",
-      "rarity" : "Epic",
-      "contectType" : "Image",
-      "contectValue" : "https://troontechnologies.com/"       
-    }
-    // brandId, schemaId, maxSupply,immutableData
-    const args = [1, 1, 100,immutableData];
-    let txResult;
-    try {
-      txResult = await sendTransaction({
-        code,
-        signers,
-        args,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
-  });
 
   test("test transaction  create template", async () => {
     const name = "createTemplateStaticData";
@@ -339,47 +294,6 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     // expect(txResult.errorMessage).toBe("");
   });
-  test("test transaction  create drop", async () => {
-    const name = "createDrop";
-    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
-
-    // Import participating accounts
-    const Charlie = await getAccountAddress("Charlie");
-
-    // Set transaction signers
-    const signers = [Charlie];
-
-    // Generate addressMap from import statements
-    const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
-    const NowWhereContract = await getContractAddress("NowWhereContract");
-    const addressMap = {
-      NonFungibleToken,
-      NFTContract,
-      NowWhereContract,
-    };
-
-    let code = await getTransactionCode({
-      name,
-      addressMap,
-    });
-    var test = 1;
-    let template = {1:"3"}
-    const args = [1, currentTimeInSeconds, "1702996401.0", template];
-
-    let txResult;
-    try {
-      txResult = await sendTransaction({
-        code,
-        signers,
-        args,
-      });
-    } catch (e) {
-      console.log("Error", e);
-    }
-    console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
-  });
 
   test("test transaction  create drop", async () => {
     const name = "createDropStaticData";
@@ -396,11 +310,8 @@ describe("Transactions", () => {
     const NFTContract = await getContractAddress("NFTContract");
     const NowWhereContract = await getContractAddress("NowWhereContract");
     const addressMap = {
-      NonFungibleToken,
-      NFTContract,
       NowWhereContract,
     };
-
     let code = await getTransactionCode({
       name,
       addressMap,
@@ -419,7 +330,46 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+
+  test("test transaction  Update drop", async () => {
+    const name = "updateDrop";
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    var test = 1;
+    const args = [1, currentTimeInSeconds,  currentTimeInSeconds+20000000.0];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("add owner vault", async () => {
     const name = "addOwnerVault";
@@ -528,8 +478,8 @@ describe("Transactions", () => {
   });
 
   test("check intial balance of both user owner and buyer", async () => {
-    let userOne = "0.00100000";
-    let user2 = "42.00100000";
+    let userOne = "0.00100000,";
+    let user2 = "42.00100000,";
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
     const Bob = await getAccountAddress("Bob");
@@ -577,8 +527,8 @@ describe("Transactions", () => {
   });
 
   test("check final balance of both user owner and buyer", async () => {
-    let userOne = "10.00100000";
-    let userTwo = "32.00100000";
+    let userOne = "10.00100000,";
+    let userTwo = "32.00100000,";
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
     const Bob = await getAccountAddress("Bob");
@@ -589,6 +539,165 @@ describe("Transactions", () => {
     // console.log("Bob", { updatedBalance2 });
     expect(updatedBalance1.toString()).toBe(userOne);
     expect(updatedBalance2.toString()).toBe(userTwo);
+  });
+
+  //remove template testcases
+  test("test transaction  create template", async () => {
+    const name = "createTemplateStaticData";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [1, 1, 100];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+  
+  test("test transaction remove template", async () => {
+    const name = "removeTemplate";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [2];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+      console.log("remove Template result:", txResult);
+    } catch (e) {
+      console.log(e);
+    }
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+
+
+  //remove drop test case
+  test("test transaction  create drop", async () => {
+    const name = "createDropStaticData";
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    var test = 1;
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+    currentTimeInSeconds = currentTimeInSeconds + 10000000.0
+    const args = [2, currentTimeInSeconds, currentTimeInSeconds+20000000.0];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+
+  test("test transaction  remove drop", async () => {
+    const name = "RemoveDrop";
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    var test = 1;
+    const args = [2];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
   });
 });
 describe("Scripts", () => {

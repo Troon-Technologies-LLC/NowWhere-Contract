@@ -1,4 +1,4 @@
-import NonFungibleToken from 0x1d7e57aa55817448
+import NonFungibleToken from 0x631e88ae7f1d7c20
 
 pub contract NFTContract: NonFungibleToken {
 
@@ -13,6 +13,7 @@ pub contract NFTContract: NonFungibleToken {
     pub event BrandUpdated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
     pub event SchemaCreated(schemaId: UInt64, schemaName: String, author: Address)
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
+    pub event TemplateRemoved(templateId: UInt64)
 
     // Paths
     pub let AdminResourceStoragePath: StoragePath
@@ -275,6 +276,7 @@ pub contract NFTContract: NonFungibleToken {
         pub fun createSchema(schemaName: String, format: {String: SchemaType})
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct})
         pub fun mintNFT(templateId: UInt64, account: Address)
+        pub fun removeTemplateById(templateId: UInt64)
     }
     
     //AdminCapability to add whiteListedAccounts
@@ -404,6 +406,17 @@ pub contract NFTContract: NonFungibleToken {
                 ?? panic("Could not get receiver reference to the NFT Collection")
             var newNFT: @NFT <- create NFT(templateID: templateId, mintNumber: NFTContract.allTemplates[templateId]!.incrementIssuedSupply())
             recipientCollection.deposit(token: <-newNFT)
+        }
+
+         //method to remove template by id
+        pub fun removeTemplateById(templateId: UInt64) {
+            pre {
+                templateId != nil: "invalid template id"
+                NFTContract.allTemplates[templateId]!=nil: "template id does not exist"
+                NFTContract.allTemplates[templateId]!.issuedSupply == 0: "could not remove template with given id"   
+            }
+            NFTContract.allTemplates.remove(key: templateId)
+            emit TemplateRemoved(templateId: templateId)
         }
 
         init() {

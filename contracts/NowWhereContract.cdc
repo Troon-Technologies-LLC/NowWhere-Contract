@@ -1,7 +1,7 @@
 import NFTContract from "./NFTContract.cdc"
-import NonFungibleToken from 0x1d7e57aa55817448
-import FungibleToken from 0xf233dcee88fe0abe
-import FlowToken from 0x1654653399040a61
+import NonFungibleToken from 0x631e88ae7f1d7c20
+import FungibleToken from 0x9a0766d93b6608b7
+import FlowToken from 0x7e60df042a9c0868
 
 pub contract NowWhereContract {
     // -----------------------------------------------------------------------
@@ -10,6 +10,8 @@ pub contract NowWhereContract {
     pub event ContractInitialized()
     // Emitted when a new Drop is created
     pub event DropCreated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)
+    // Emitted when a new Drop is updated
+    pub event DropUpdated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)
     // Emitted when a Drop is purchased
     pub event DropPurchased(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address)
      // Emitted when a Drop is purchased using flow
@@ -33,15 +35,25 @@ pub contract NowWhereContract {
     // Drop is a struct 
     pub struct Drop {
         pub let dropId: UInt64
-        pub let startDate: UFix64
-        pub let endDate: UFix64
-        pub let templates: {UInt64: AnyStruct}
+        pub var startDate: UFix64
+        pub var endDate: UFix64
+        access(contract) var templates: {UInt64: AnyStruct}
 
         init(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}) {
             self.dropId = dropId
             self.startDate = startDate
             self.endDate = endDate
             self.templates = templates
+        }
+
+        access(contract) fun updateDrop(startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
+            self.startDate = startDate
+            self.endDate = endDate
+            self.templates = templates
+        }
+        
+        pub fun getDropTemplates(): {UInt64: AnyStruct} {
+            return self.templates
         }
     }
 
@@ -79,11 +91,34 @@ pub contract NowWhereContract {
             emit DropCreated(dropId: dropId, creator: self.owner?.address!, startDate: startDate, endDate: endDate)
         }
 
+        pub fun updateDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}) {
+            pre{
+                dropId != nil: "invalid drop id"
+                NowWhereContract.allDrops[dropId] != nil: "drop id does not exists"
+                startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
+                endDate > startDate: "End date should be greater than start date"
+                templates != nil: "templates must not be null"
+            }
+
+            var areValidTemplates: Bool = true
+            for templateId in templates.keys {
+                var template = NFTContract.getTemplateById(templateId: templateId)
+                if(template == nil){
+                    areValidTemplates = false
+                    break
+                }
+            }
+            assert(areValidTemplates, message:"templateId is not valid")
+            NowWhereContract.allDrops[dropId]!.updateDrop(startDate: startDate, endDate: endDate, templates: templates)
+
+            emit DropUpdated(dropId: dropId, creator: self.owner!.address, startDate: startDate, endDate: endDate)
+        }
+
         pub fun removeDrop(dropId: UInt64){
             pre {
                 dropId != nil : "invalid drop id"
                 NowWhereContract.allDrops[dropId] != nil: "drop id does not exist"
-                NowWhereContract.allDrops[dropId]!.endDate > getCurrentBlock().timestamp: "Drop is not ended yet"
+                getCurrentBlock().timestamp < NowWhereContract.allDrops[dropId]!.startDate: "Drop sale is started"
             }
 
             NowWhereContract.allDrops.remove(key: dropId)

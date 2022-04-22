@@ -1,10 +1,10 @@
-import NFTContract from "./NFTContract.cdc"
-import NowWhereContract from "./NowWhereContract.cdc"
+import NFTContract from "../contracts/NFTContract.cdc"
+import NowWhereContract from "../contracts/NowWhereContract.cdc"
 
 pub fun main(dropId: UInt64):{String:UInt64}{
 
     let outdropId = NowWhereContract.getDropById(dropId: dropId)
-    let templateid = outdropId.templates.keys
+    let templateid = outdropId.getDropTemplates().keys
 
     let getTemplate = NFTContract.getTemplateById(templateId: templateid[0])
     let issuedSupply = getTemplate.issuedSupply
