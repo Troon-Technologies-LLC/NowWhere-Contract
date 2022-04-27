@@ -333,44 +333,6 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-  test("test transaction  Update drop", async () => {
-    const name = "updateDrop";
-    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
-
-    // Import participating accounts
-    const Charlie = await getAccountAddress("Charlie");
-
-    // Set transaction signers
-    const signers = [Charlie];
-
-    // Generate addressMap from import statements
-    const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
-    const NowWhereContract = await getContractAddress("NowWhereContract");
-    const addressMap = {
-      NowWhereContract,
-    };
-
-    let code = await getTransactionCode({
-      name,
-      addressMap,
-    });
-    var test = 1;
-    const args = [1, currentTimeInSeconds,  currentTimeInSeconds+20000000.0];
-
-    let txResult;
-    try {
-      txResult = await sendTransaction({
-        code,
-        signers,
-        args,
-      });
-    } catch (e) {
-      console.log("Error", e);
-    }
-    console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
-  });
   test("add owner vault", async () => {
     const name = "addOwnerVault";
 
@@ -611,6 +573,84 @@ describe("Transactions", () => {
     } catch (e) {
       console.log(e);
     }
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+
+  //update drop test case
+  test("test transaction  create drop", async () => {
+    const name = "createDropStaticData";
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NowWhereContract,
+    };
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    var test = 1;
+    const args = [3, currentTimeInSeconds+10000000.0, currentTimeInSeconds+20000000.0];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
+
+  test("test transaction  Update drop", async () => {
+    const name = "updateDrop";
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    var test = 1;
+    const args = [3, currentTimeInSeconds,  currentTimeInSeconds+40000000.0];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
 

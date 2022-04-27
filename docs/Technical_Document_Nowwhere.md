@@ -1,4 +1,3 @@
-
 ## Technical Summary and Code Documentation
 
 ## Instructions for creating Brand, Schema, Template and Mint Templates
@@ -6,13 +5,14 @@
 A common order of creating Drop would be
 
 - Create Admin Account with `transaction/setupAdminAccount`.
-- Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop 
- and purchase Drop with `transactions/addAdminAccount` 
+- Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop
+  and purchase Drop with `transactions/addAdminAccount`
 - Create new Brand with `transactions/createBrand` using Admin Account.
 - Create new Schema with `transactions/createSchema` using Admin Account.
 - Create new Template with `transactions/createTemplate` using Admin Account.
 - Create NFT Receiver with `transaction/setupAccount` .
 - Create new Drop with `transactions/createDrop` using Admin Account.
+- update Drop `transactions/updateDrop.cdc` using Admin Account.
 - Purchase NFT and send to any address with `transactions/purchaseDrop` using Admin Account.
 - Purchase NFT with flow and send to any address with `transactions/purchaseNFTWithFlow` using Admin Account and User Account.
 - Remove Drop `transactions/RemoveDrop.cdc` using Admin Account.
@@ -28,6 +28,10 @@ A common order of creating Drop would be
 - Event for Creation of Drop ->
   `pub event DropCreated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)`
   Emitted when a new Drop will be created and added to the smart Contract.
+
+- Event for update of Drop ->
+  `pub event DropUpdated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)`
+  Emitted when a Drop will be Updated.
 
 - Event for purchase Drop ->
   `pub event DropPurchased(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address)`
@@ -62,6 +66,10 @@ In drops we have the following Information:
 
 To Create a drop of specific Template, we have to give arguments shown above, after that our function will check that start and end time should be grater than present time, template must not be null, drop Ids should be unique.
 
+## Instruction of Update Drops
+
+To Update a drop of specific Template, we have to give arguments dropId, startDate, templates, drop Id need to be exist in all drops.
+
 ## Instructions for Purchase Drop
 
 To Purchase NFT with any Drop we have to give the following fields:
@@ -82,11 +90,11 @@ To Purchase NFT with any Drop using flow we have to give the following fields:
 - receiptAddress(Address which will recieve NFT)
 - price(price of drop)
 - flowPayment(flow payment vault)
-  
 
 ## Instructions for Remove Drop
 
 We can remove old drops using this function. Those drops date should be ended and we can't delete active drops. To delete drop we have to give the following fields:
+
 - dropId
 
 ### Deployment Contract on Emulator

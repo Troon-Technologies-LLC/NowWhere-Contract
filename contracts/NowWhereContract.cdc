@@ -46,10 +46,39 @@ pub contract NowWhereContract {
             self.templates = templates
         }
 
-        access(contract) fun updateDrop(startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
-            self.startDate = startDate
-            self.endDate = endDate
-            self.templates = templates
+       pub fun updateDrop(startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
+            let dropStartDate = self.startDate
+            let dropEndDate = self.endDate
+            if(startDate != 0.0 && startDate >= getCurrentBlock().timestamp && endDate == 0.0 && templates.keys.length == 0 && getCurrentBlock().timestamp < dropStartDate){
+                self.startDate = startDate
+            }
+            else if(endDate != 0.0 && endDate >= dropEndDate && startDate == 0.0 && templates.keys.length == 0 && getCurrentBlock().timestamp < dropStartDate) {
+                self.endDate = endDate
+            }
+            else if(templates.keys.length != 0 && endDate == 0.0  && startDate == 0.0 && getCurrentBlock().timestamp < dropStartDate) {
+                self.templates = templates
+            }
+            else if(startDate != 0.0 && startDate >= getCurrentBlock().timestamp && endDate != 0.0 && templates.keys.length == 0 && getCurrentBlock().timestamp < dropStartDate) {
+                self.endDate = endDate
+                self.startDate = startDate
+            }
+            else if(endDate != 0.0 && endDate >= dropEndDate && startDate != 0.0 && templates.keys.length != 0 &&  getCurrentBlock().timestamp > dropStartDate ) {
+                self.endDate = endDate
+            }
+            else if(endDate != 0.0 && endDate >= dropEndDate && startDate == 0.0 && templates.keys.length == 0 &&  getCurrentBlock().timestamp > dropStartDate ) {
+                self.endDate = endDate
+            }
+            else if(endDate != 0.0 && endDate >= dropEndDate && startDate == 0.0 && templates.keys.length != 0 && getCurrentBlock().timestamp < dropStartDate) {
+                self.endDate = endDate
+                self.templates = templates
+            }
+            else if(startDate != 0.0  && endDate != 0.0 && endDate >= dropEndDate && templates.keys.length != 0 && getCurrentBlock().timestamp < dropStartDate) {
+                self.startDate = startDate
+                self.endDate = endDate
+                self.templates = templates
+            }else{
+                panic("could not update the drop")
+            }
         }
         
         pub fun getDropTemplates(): {UInt64: AnyStruct} {
@@ -95,20 +124,19 @@ pub contract NowWhereContract {
             pre{
                 dropId != nil: "invalid drop id"
                 NowWhereContract.allDrops[dropId] != nil: "drop id does not exists"
-                startDate >= getCurrentBlock().timestamp: "Start Date should be greater or Equal than current time"
-                endDate > startDate: "End date should be greater than start date"
-                templates != nil: "templates must not be null"
             }
 
-            var areValidTemplates: Bool = true
-            for templateId in templates.keys {
-                var template = NFTContract.getTemplateById(templateId: templateId)
-                if(template == nil){
-                    areValidTemplates = false
-                    break
+            if(templates !=nil && templates.keys.length != 0){
+                var areValidTemplates: Bool = true
+                for templateId in templates.keys {
+                    var template = NFTContract.getTemplateById(templateId: templateId)
+                    if(template == nil){
+                        areValidTemplates = false
+                        break
+                    }
                 }
+                assert(areValidTemplates, message:"templateId is not valid")
             }
-            assert(areValidTemplates, message:"templateId is not valid")
             NowWhereContract.allDrops[dropId]!.updateDrop(startDate: startDate, endDate: endDate, templates: templates)
 
             emit DropUpdated(dropId: dropId, creator: self.owner!.address, startDate: startDate, endDate: endDate)
