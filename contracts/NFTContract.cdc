@@ -450,6 +450,8 @@ pub contract NFTContract: NonFungibleToken {
          //method to remove template by id
         pub fun removeTemplateById(templateId: UInt64) {
             pre {
+                self.capability != nil: "I don't have the special capability :("
+                NFTContract.whiteListedAccounts.contains(self.owner!.address): "you are not authorized for this action"
                 templateId != nil: "invalid template id"
                 NFTContract.allTemplates[templateId]!=nil: "template id does not exist"
                 NFTContract.allTemplates[templateId]!.issuedSupply == 0: "could not remove template with given id"   
