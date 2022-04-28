@@ -51,7 +51,8 @@ A common order of creating Drop would be
 
 | Network | Contract Address     |
 | ------- | -------------------- |
-| Testnet | `0xb1295645abe1f315` |
+| Testnet | `0x95156362e8b16098` |
+| Mainnet | `0x1272fc57f20604b9` |
 
 ## Drop Structure
 
@@ -64,7 +65,8 @@ In drops we have the following Information:
 
 ## Instructions for Create Drops
 
-To Create a drop of specific Template, we have to give arguments shown above, after that our function will check that start and end time should be grater than present time, template must not be null, drop Ids should be unique.
+To Create a drop of specific Template, we have to give arguments shown above, after that our function will check that start and end time should be greater than present time, template must not be null, drop Ids should be unique.
+
 
 ## Instruction of Update Drops
 

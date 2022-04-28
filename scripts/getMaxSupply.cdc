@@ -19,5 +19,4 @@ pub fun main(dropId: UInt64):{String:UInt64}{
 
 
     return  dropMetaData
-
 }

@@ -149,7 +149,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("test transaction add admin Account", async () => {
     const name = "addAdminAccount";
@@ -186,7 +186,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx result ", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("test transaction  create brand", async () => {
     const name = "createBrand";
@@ -221,7 +221,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("test transaction  create Schema", async () => {
     const name = "createSchema";
@@ -256,7 +256,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
 
   test("test transaction  create template", async () => {
@@ -292,7 +292,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
 
   test("test transaction  create drop", async () => {
@@ -332,7 +332,6 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
-
   test("add owner vault", async () => {
     const name = "addOwnerVault";
 
@@ -365,7 +364,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
   test("create user empty collection", async () => {
     const name = "createUserEmptyCollection";
@@ -403,11 +402,9 @@ describe("Transactions", () => {
     const name = "purchaseDrop";
 
     // Import participating accounts
-    const Charlie = await getAccountAddress("Charlie");
-
+    const Bob = await getAccountAddress("Bob");
     // Set transaction signers
-    const signers = [Charlie];
-
+    const signers = [Bob];
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
@@ -430,13 +427,12 @@ describe("Transactions", () => {
       txResult = await sendTransaction({
         code,
         signers,
-        args,
       });
     } catch (e) {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
 
   test("check intial balance of both user owner and buyer", async () => {
@@ -482,10 +478,10 @@ describe("Transactions", () => {
         args,
       });
     } catch (e) {
-      console.log("Error", e);
+      console.log(e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    expect(txResult.errorMessage).toBe(undefined);
   });
 
   test("check final balance of both user owner and buyer", async () => {
