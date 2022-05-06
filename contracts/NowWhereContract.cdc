@@ -49,34 +49,17 @@ pub contract NowWhereContract {
        pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
             let dropStartDate = self.startDate
             let dropEndDate = self.endDate
-            if(startDate != nil && endDate == nil && templates == nil){
+            if(startDate != nil){
                 assert(startDate! >= getCurrentBlock().timestamp && getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
                 self.startDate = startDate!
             }
-            else if(startDate == nil && endDate != nil && templates == nil) {
+            if(endDate != nil) {
                 assert(endDate! > dropEndDate && endDate! > getCurrentBlock().timestamp, message: "end data should be valid")
                 self.endDate = endDate!
             }
-            else if(startDate == nil && endDate == nil && templates != nil) {
+            if(templates != nil && templates!.keys.length != 0) {
                 assert(getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
                 self.templates = templates!
-            }
-            else if(startDate != nil && endDate != nil && templates == nil) {
-                assert(getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
-                self.startDate = startDate!
-                self.endDate = endDate!
-            }
-            else if(startDate == nil && endDate != nil && templates != nil) {
-                assert(getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
-                self.endDate = endDate!
-                self.templates = templates!
-            }
-            else if(startDate != nil && endDate != nil && templates != nil) {
-                self.startDate = startDate!
-                self.endDate = endDate!
-                self.templates = templates!
-            }else{
-                panic("could not update the drop")
             }
         }
         
