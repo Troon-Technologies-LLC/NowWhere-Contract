@@ -46,36 +46,35 @@ pub contract NowWhereContract {
             self.templates = templates
         }
 
-       pub fun updateDrop(startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}){
+       pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
             let dropStartDate = self.startDate
             let dropEndDate = self.endDate
-            if(startDate != 0.0 && startDate >= getCurrentBlock().timestamp && endDate == 0.0 && templates.keys.length == 0 && getCurrentBlock().timestamp < dropStartDate){
-                self.startDate = startDate
+            if(startDate != nil && endDate == nil && templates == nil){
+                assert(startDate! >= getCurrentBlock().timestamp && getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
+                self.startDate = startDate!
             }
-            else if(endDate != 0.0 && endDate >= dropEndDate && startDate == 0.0 && templates.keys.length == 0 && getCurrentBlock().timestamp < dropStartDate) {
-                self.endDate = endDate
+            else if(startDate == nil && endDate != nil && templates == nil) {
+                assert(endDate! > dropEndDate && endDate! > getCurrentBlock().timestamp, message: "end data should be valid")
+                self.endDate = endDate!
             }
-            else if(templates.keys.length != 0 && endDate == 0.0  && startDate == 0.0 && getCurrentBlock().timestamp < dropStartDate) {
-                self.templates = templates
+            else if(startDate == nil && endDate == nil && templates != nil) {
+                assert(getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
+                self.templates = templates!
             }
-            else if(startDate != 0.0 && startDate >= getCurrentBlock().timestamp && endDate != 0.0 && templates.keys.length == 0 && getCurrentBlock().timestamp < dropStartDate) {
-                self.endDate = endDate
-                self.startDate = startDate
+            else if(startDate != nil && endDate != nil && templates == nil) {
+                assert(getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
+                self.startDate = startDate!
+                self.endDate = endDate!
             }
-            else if(endDate != 0.0 && endDate >= dropEndDate && startDate != 0.0 && templates.keys.length != 0 &&  getCurrentBlock().timestamp > dropStartDate ) {
-                self.endDate = endDate
+            else if(startDate == nil && endDate != nil && templates != nil) {
+                assert(getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
+                self.endDate = endDate!
+                self.templates = templates!
             }
-            else if(endDate != 0.0 && endDate >= dropEndDate && startDate == 0.0 && templates.keys.length == 0 &&  getCurrentBlock().timestamp > dropStartDate ) {
-                self.endDate = endDate
-            }
-            else if(endDate != 0.0 && endDate >= dropEndDate && startDate == 0.0 && templates.keys.length != 0 && getCurrentBlock().timestamp < dropStartDate) {
-                self.endDate = endDate
-                self.templates = templates
-            }
-            else if(startDate != 0.0  && endDate != 0.0 && endDate >= dropEndDate && templates.keys.length != 0 && getCurrentBlock().timestamp < dropStartDate) {
-                self.startDate = startDate
-                self.endDate = endDate
-                self.templates = templates
+            else if(startDate != nil && endDate != nil && templates != nil) {
+                self.startDate = startDate!
+                self.endDate = endDate!
+                self.templates = templates!
             }else{
                 panic("could not update the drop")
             }
@@ -120,15 +119,16 @@ pub contract NowWhereContract {
             emit DropCreated(dropId: dropId, creator: self.owner?.address!, startDate: startDate, endDate: endDate)
         }
 
-        pub fun updateDrop(dropId: UInt64, startDate: UFix64, endDate: UFix64, templates: {UInt64: AnyStruct}) {
+        pub fun updateDrop(dropId: UInt64, startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?) {
             pre{
                 dropId != nil: "invalid drop id"
                 NowWhereContract.allDrops[dropId] != nil: "drop id does not exists"
+                startDate != 0.0 || endDate != 0.0: "please provide valid dates"
             }
 
-            if(templates !=nil && templates.keys.length != 0){
+            if(templates !=nil && templates!.keys.length != 0){
                 var areValidTemplates: Bool = true
-                for templateId in templates.keys {
+                for templateId in templates!.keys {
                     var template = NFTContract.getTemplateById(templateId: templateId)
                     if(template == nil){
                         areValidTemplates = false
@@ -138,9 +138,10 @@ pub contract NowWhereContract {
                 assert(areValidTemplates, message:"templateId is not valid")
             }
             NowWhereContract.allDrops[dropId]!.updateDrop(startDate: startDate, endDate: endDate, templates: templates)
-
-            emit DropUpdated(dropId: dropId, creator: self.owner!.address, startDate: startDate, endDate: endDate)
+            
+            emit DropUpdated(dropId: dropId, creator: self.owner!.address, startDate: startDate!, endDate: endDate!)
         }
+
 
         pub fun removeDrop(dropId: UInt64){
             pre {
