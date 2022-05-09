@@ -1,7 +1,8 @@
-import NFTContract from "./NFTContract.cdc"
-import NonFungibleToken from 0x631e88ae7f1d7c20
-import FungibleToken from 0x9a0766d93b6608b7
-import FlowToken from 0x7e60df042a9c0868
+import NFTContract from 0x1e075b24abe6eca6
+import NonFungibleToken from 0x1d7e57aa55817448
+import FungibleToken from 0xf233dcee88fe0abe
+import FlowToken from 0x1654653399040a61
+
 
 pub contract NowWhereContract {
     // -----------------------------------------------------------------------
@@ -47,6 +48,9 @@ pub contract NowWhereContract {
         }
 
        pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
+           pre{
+                startDate != 0.0 || endDate != 0.0: "please provide valid dates"
+           }
             let dropStartDate = self.startDate
             let dropEndDate = self.endDate
             if(startDate != nil){
@@ -54,7 +58,7 @@ pub contract NowWhereContract {
                 self.startDate = startDate!
             }
             if(endDate != nil) {
-                assert(endDate! > dropEndDate && endDate! > getCurrentBlock().timestamp, message: "end data should be valid")
+                assert(endDate! > dropEndDate && endDate! > dropStartDate && endDate! > getCurrentBlock().timestamp, message: "end data should be valid")
                 self.endDate = endDate!
             }
             if(templates != nil && templates!.keys.length != 0) {
@@ -113,7 +117,8 @@ pub contract NowWhereContract {
                 var areValidTemplates: Bool = true
                 for templateId in templates!.keys {
                     var template = NFTContract.getTemplateById(templateId: templateId)
-                    if(template == nil){
+                    var templateSupply = template.issuedSupply
+                    if(template == nil || templateSupply != 0){
                         areValidTemplates = false
                         break
                     }
