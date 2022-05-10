@@ -51,18 +51,16 @@ pub contract NowWhereContract {
            pre{
                 startDate != 0.0 || endDate != 0.0: "please provide valid dates"
            }
-            let dropStartDate = self.startDate
-            let dropEndDate = self.endDate
             if(startDate != nil){
-                assert(startDate! >= getCurrentBlock().timestamp && getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
+                assert(startDate! >= getCurrentBlock().timestamp && getCurrentBlock().timestamp < self.startDate, message: "could't update public sale started")
                 self.startDate = startDate!
             }
             if(endDate != nil) {
-                assert(endDate! > dropEndDate && endDate! > dropStartDate && endDate! > getCurrentBlock().timestamp, message: "end data should be valid")
+                assert(endDate! > self.endDate && endDate! > self.startDate && endDate! > getCurrentBlock().timestamp, message: "end data should be valid")
                 self.endDate = endDate!
             }
             if(templates != nil && templates!.keys.length != 0) {
-                assert(getCurrentBlock().timestamp < dropStartDate, message: "could't update public sale started")
+                assert(getCurrentBlock().timestamp < self.startDate, message: "could't update public sale started")
                 self.templates = templates!
             }
         }
