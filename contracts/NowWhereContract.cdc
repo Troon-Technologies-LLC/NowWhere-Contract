@@ -60,7 +60,7 @@ pub contract NowWhereContract {
             if(endDate != nil) {
                 self.endDate = endDate!
             }
-            if(templates != nil && templates!.keys.length != 0) {
+            if(templates != nil) {
                 self.templates = templates!
             }
             emit DropUpdated(dropId: self.dropId, startDate: self.startDate, endDate: self.endDate)
