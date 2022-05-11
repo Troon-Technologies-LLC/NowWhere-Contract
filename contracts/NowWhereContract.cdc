@@ -47,13 +47,14 @@ pub contract NowWhereContract {
             self.templates = templates
         }
 
-       pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
-           pre{
+        pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
+            pre{
                 startDate != 0.0 || endDate != 0.0: "please provide valid dates"
                 (startDate==nil) || (startDate!=nil &&  getCurrentBlock().timestamp < self.startDate &&  startDate! >= getCurrentBlock().timestamp): "can't update start date"
                 (endDate==nil) || (endDate!=nil && endDate! > self.endDate && endDate! > self.startDate && endDate! > getCurrentBlock().timestamp): "can't update end date"
                 (templates==nil || templates!.keys.length == 0) || (templates != nil && templates!.keys.length != 0 && getCurrentBlock().timestamp < self.startDate): "can't update templates"
-           }
+                !(startDate ==nil && endDate ==nil && templates ==nil): "all the values are nil"
+            }
             if(startDate != nil){
                 self.startDate = startDate!
             }
