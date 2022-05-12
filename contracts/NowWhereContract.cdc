@@ -47,25 +47,43 @@ pub contract NowWhereContract {
             self.templates = templates
         }
 
+        //Admin can update start-date, end-date and templates of a drop
+        // start-date only updated if sale is not started yet
+        // end-date can updated any-way, Admin need to check if templates are soldout than no need to active that drop 
+        // templates can be updated, if sale is not started yet
         pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
             pre{
-                startDate != 0.0 || endDate != 0.0: "please provide valid dates"
-                (startDate==nil) || (startDate!=nil &&  getCurrentBlock().timestamp < self.startDate &&  startDate! >= getCurrentBlock().timestamp): "can't update start date"
-                (endDate==nil) || (endDate!=nil && endDate! > self.endDate && endDate! > self.startDate && endDate! > getCurrentBlock().timestamp): "can't update end date"
-                (templates==nil || templates!.keys.length == 0) || (templates != nil && templates!.keys.length != 0 && getCurrentBlock().timestamp < self.startDate): "can't update templates"
-                !(startDate ==nil && endDate ==nil && templates ==nil): "all the values are nil"
-            }
-            if(startDate != nil){
+                (startDate==nil) || (startDate!=nil &&  self.startDate > getCurrentBlock().timestamp && startDate! >= getCurrentBlock().timestamp): "can't update start date"
+                (endDate==nil) || (endDate!=nil && endDate! > getCurrentBlock().timestamp): "can't update end date"
+                (templates==nil) || (templates != nil && templates!.keys.length != 0 && self.startDate > getCurrentBlock().timestamp) : "can't update templates"
+           }
+
+            var isUpdated:Bool = true;
+            var errorMessage:String = "";
+
+            if(startDate != nil && startDate! < self.endDate){
                 self.startDate = startDate!
+            }else{
+                isUpdated = false;
+                errorMessage = "start-date should be greater than end-date"
             }
-            if(endDate != nil) {
+
+            if(endDate != nil && endDate! > self.startDate) {
                 self.endDate = endDate!
+            }else{
+                isUpdated = false;
+                errorMessage = "end-date should be greater than end-date"
             }
+
             if(templates != nil) {
                 self.templates = templates!
             }
+
+            assert(isUpdated, message: errorMessage);
+            
             emit DropUpdated(dropId: self.dropId, startDate: self.startDate, endDate: self.endDate)
         }
+        
         
         pub fun getDropTemplates(): {UInt64: AnyStruct} {
             return self.templates
