@@ -1,4 +1,4 @@
-import NonFungibleToken from 0x1d7e57aa55817448
+import NonFungibleToken from 0xf8d6e0586b0a20c7
 
 pub contract NFTContract: NonFungibleToken {
 
@@ -53,6 +53,71 @@ pub contract NFTContract: NonFungibleToken {
         pub case Array
         pub case Any
     }
+    
+// method to validate data against related schema forma
+    pub fun validateData(format:{String: SchemaType},data: {String: AnyStruct}){
+       // let schema = TroonAtomicStandard.allSchemas[schemaId]!
+            var invalidKey: String = ""
+            var isValidTemplate = true
+
+            for key in data.keys {
+                let value = data[key]!
+                if(format[key] == nil) {
+                    isValidTemplate = false
+                    invalidKey = "key $".concat(key.concat(" not found"))
+                    break
+                }
+                if format[key] == NFTContract.SchemaType.String {
+                    if(value as? String == nil) {
+                        isValidTemplate = false
+                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
+                        break
+                    }
+                }
+                else if format[key] == NFTContract.SchemaType.Int {
+                    if(value as? Int == nil) {
+                        isValidTemplate = false
+                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
+                        break
+                    }
+                } 
+                else if format[key] == NFTContract.SchemaType.Fix64 {
+                    if(value as? Fix64 == nil) {
+                        isValidTemplate = false
+                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
+                        break
+                    }
+                }else if format[key] == NFTContract.SchemaType.Bool {
+                    if(value as? Bool == nil) {
+                        isValidTemplate = false
+                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
+                        break
+                    }
+                }else if format[key] == NFTContract.SchemaType.Address {
+                    if(value as? Address == nil) {
+                        isValidTemplate = false
+                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
+                        break
+                    }
+                }
+                else if format[key] == NFTContract.SchemaType.Array {
+                    if(value as? [AnyStruct] == nil) {
+                        isValidTemplate = false
+                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
+                        break
+                    }
+                }
+                else if format[key] == NFTContract.SchemaType.Any {
+                    if(value as? {String:AnyStruct} ==nil) {
+                        isValidTemplate = false
+                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
+                        break
+                    }
+                }
+            }
+            assert(isValidTemplate, message: "invalid template data. Error: ".concat(invalidKey))
+    }
+
 
     // A structure that contain all the data related to a Brand
     pub struct Brand {
@@ -77,12 +142,13 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
-    // A structure that contain all the data related to a Schema
+       // A structure that contain all the data related to a Schema
     pub struct Schema {
         pub let schemaId: UInt64
         pub let schemaName: String
         pub let author: Address
         access(contract) let format: {String: SchemaType}
+     
 
         init(schemaName: String, author: Address, format: {String: SchemaType}){
             pre {
@@ -94,9 +160,11 @@ pub contract NFTContract: NonFungibleToken {
             self.schemaName = schemaName
             self.author = author
             self.format = format
+           
         }
     }
 
+    
     // A structure that contain all the data and methods related to Template
     pub struct Template {
         pub let templateId: UInt64
@@ -105,13 +173,15 @@ pub contract NFTContract: NonFungibleToken {
         pub var maxSupply: UInt64
         pub var issuedSupply: UInt64
         access(contract) var immutableData: {String: AnyStruct}
+        access(contract) var mutableData: {String: AnyStruct}
 
-        init(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}) {
+        init(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}) {
             pre {
                 NFTContract.allBrands[brandId] != nil:"Brand Id must be valid"
                 NFTContract.allSchemas[schemaId] != nil:"Schema Id must be valid"
                 maxSupply > 0 : "MaxSupply must be greater than zero"
                 immutableData != nil: "ImmutableData must not be nil"
+                mutableData != nil: "MutableData must not be nil"
             }
 
             self.templateId = NFTContract.lastIssuedTemplateId
@@ -119,68 +189,20 @@ pub contract NFTContract: NonFungibleToken {
             self.schemaId = schemaId
             self.maxSupply = maxSupply
             self.immutableData = immutableData
+            self.mutableData = mutableData
             self.issuedSupply = 0
+           
             // Before creating template, we need to check template data, if it is valid against given schema or not
-            let schema = NFTContract.allSchemas[schemaId]!
-            var invalidKey: String = ""
-            var isValidTemplate = true
 
-            for key in immutableData.keys {
-                let value = immutableData[key]!
-                if(schema.format[key] == nil) {
-                    isValidTemplate = false
-                    invalidKey = "key $".concat(key.concat(" not found"))
-                    break
-                }
-                if schema.format[key] == NFTContract.SchemaType.String {
-                    if(value as? String == nil) {
-                        isValidTemplate = false
-                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
-                        break
-                    }
-                }
-                else if schema.format[key] == NFTContract.SchemaType.Int {
-                    if(value as? Int == nil) {
-                        isValidTemplate = false
-                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
-                        break
-                    }
-                } 
-                else if schema.format[key] == NFTContract.SchemaType.Fix64 {
-                    if(value as? Fix64 == nil) {
-                        isValidTemplate = false
-                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
-                        break
-                    }
-                }else if schema.format[key] == NFTContract.SchemaType.Bool {
-                    if(value as? Bool == nil) {
-                        isValidTemplate = false
-                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
-                        break
-                    }
-                }else if schema.format[key] == NFTContract.SchemaType.Address {
-                    if(value as? Address == nil) {
-                        isValidTemplate = false
-                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
-                        break
-                    }
-                }
-                else if schema.format[key] == NFTContract.SchemaType.Array {
-                    if(value as? [AnyStruct] == nil) {
-                        isValidTemplate = false
-                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
-                        break
-                    }
-                }
-                else if schema.format[key] == NFTContract.SchemaType.Any {
-                    if(value as? {String:AnyStruct} ==nil) {
-                        isValidTemplate = false
-                        invalidKey = "key $".concat(key.concat(" has type mismatch"))
-                        break
-                    }
-                }
-            }
-            assert(isValidTemplate, message: "invalid template data. Error: ".concat(invalidKey))
+            let schema = NFTContract.allSchemas[schemaId]!
+
+            NFTContract.validateData(format:schema.format, data: immutableData)
+           // NFTContract.validateData(format:schema.formatMutable, data: mutableData)
+        }
+
+
+        pub fun updateMutableData(key:String,value:AnyStruct) {
+             self.mutableData[key]=value
         }
 
         // a method to get ImmutableData field of Template
@@ -312,7 +334,8 @@ pub contract NFTContract: NonFungibleToken {
         pub fun createNewBrand(brandName: String, data: {String: String})
         pub fun updateBrandData(brandId: UInt64, data: {String: String})
         pub fun createSchema(schemaName: String, format: {String: SchemaType})
-        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct})
+        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct})
+        pub fun updateTemplateMutableData(templateId: UInt64, key: String, value:AnyStruct)
         pub fun mintNFT(templateId: UInt64, account: Address)
     }
     
@@ -409,7 +432,7 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         //method to create new Template, only access by the verified user
-        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}) {
+        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}) {
             pre {
                 // the transaction will instantly revert if 
                 // the capability has not been added
@@ -419,11 +442,31 @@ pub contract NFTContract: NonFungibleToken {
                 self.ownedSchemas[schemaId] != nil: "Schema Id Must be valid"
             }
 
-            let newTemplate = Template(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
+            let newTemplate = Template(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData, mutableData: mutableData)
             NFTContract.allTemplates[NFTContract.lastIssuedTemplateId] = newTemplate
             emit TemplateCreated(templateId: NFTContract.lastIssuedTemplateId, brandId: brandId, schemaId: schemaId, maxSupply: maxSupply)
             self.ownedTemplates[NFTContract.lastIssuedTemplateId] = newTemplate
             NFTContract.lastIssuedTemplateId = NFTContract.lastIssuedTemplateId + 1
+        }
+
+         //method to update the existing template's mutable data, only author of brand can update this templa
+        pub fun updateTemplateMutableData(templateId: UInt64, key: String, value:AnyStruct) {
+            pre{
+                // the transaction will instantly revert if
+                // the capability has not been added
+                self.capability != nil: "I don't have the special capability :("
+                NFTContract.whiteListedAccounts.contains(self.owner!.address): "you are not authorized for this action"
+                NFTContract.allTemplates[templateId] != nil: "brand Id does not exists"
+                
+            }
+
+            let oldTemplate = NFTContract.allTemplates[templateId]
+            if self.owner?.address! != NFTContract.allBrands[oldTemplate!.brandId]!.author {
+                panic("No permission to update others Template's Mutable Data")
+            }
+
+            NFTContract.allTemplates[templateId]!.updateMutableData(key: key, value: value)
+           // emit BrandUpdated(brandId: brandId, brandName: oldBrand!.brandName, author: oldBrand!.author, data: data)
         }
 
         //method to mint NFT, only access by the verified user

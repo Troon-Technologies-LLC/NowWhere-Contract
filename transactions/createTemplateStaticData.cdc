@@ -18,16 +18,19 @@ transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
         
         let immutableData: {String: AnyStruct} = {
             "artist" : "Nasir And Sham",
-            "artistEmail" : "sham&nasir@gmai.com",
-            "title" : "First NFT",
-            "mintType" : "MintOnSale",
-            "nftType" : "AR",
-            "rarity" : "Epic",
-            "contectType" : "Image",
-            "contectValue" : "https://troontechnologies.com/",
-            "extras" : extra        
+            "artistEmail" : "sham&nasir@gmai.com"
+          
         }
-        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
-        log("ok")
+       
+       
+
+           let mutableData : {String: AnyStruct} = {   
+            "mmm" : "ooo",
+            "qqq" : "rrr"
+           
+        }
+        
+        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData, mutableData: mutableData)
+        log("Template created")
     }
 }
