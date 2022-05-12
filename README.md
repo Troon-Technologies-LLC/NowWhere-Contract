@@ -10,6 +10,8 @@ NFTContract is a Non Fungible Token (NFT) standard for Flow blockchain.
 It offers a powerful set while keeping unnecessary complexity to a minimum and focus on efficiency.
 Our Contract consists of different parts like Brand, Schema, Templates and NFTs, which serve different purposes and often reference each other.
 
+Adding extra layer in template data mutable data
+
 For more details of NFTContract use this link:
 [see Documentation](https://github.com/Troon-Technologies-LLC/Troon-NFT-Contract)
 
