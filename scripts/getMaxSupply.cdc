@@ -1,5 +1,5 @@
-import NFTContract from "./NFTContract.cdc"
-import NowWhereContract from "./NowWhereContract.cdc"
+import NFTContract from "../contracts/NFTContract.cdc"
+import NowWhereContract from "../contracts/NowWhereContract.cdc"
 
 pub fun main(dropId: UInt64):{String:UInt64}{
 
