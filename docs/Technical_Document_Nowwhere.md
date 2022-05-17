@@ -5,7 +5,7 @@
 A common order of creating Drop would be
 
 - Create Admin Account with `transaction/setupAdminAccount`.
-- Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop
+- The owner then makes this account Admin and gives that accountability to create its Brand, Schema, Template, Drop
   and purchase Drop with `transactions/addAdminAccount`
 - Create new Brand with `transactions/createBrand` using Admin Account.
 - Create new Schema with `transactions/createSchema` using Admin Account.
@@ -13,7 +13,7 @@ A common order of creating Drop would be
 - Remove Template with `transactions/removeTemplate` using Admin Account.
 - Create NFT Receiver with `transaction/setupAccount` .
 - Create new Drop with `transactions/createDrop` using Admin Account.
-- update Drop `transactions/updateDrop.cdc` using Admin Account.
+- update Drop with `transactions/updateDrop.cdc` using Admin Account.
 - Purchase NFT and send to any address with `transactions/purchaseDrop` using Admin Account.
 - Purchase NFT with flow and send to any address with `transactions/purchaseNFTWithFlow` using Admin Account and User Account.
 - Remove Drop `transactions/RemoveDrop.cdc` using Admin Account.

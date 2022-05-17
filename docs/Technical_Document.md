@@ -5,7 +5,7 @@
 A common order of creating NFT would be
 
 - Create Admin Account with `transaction/setupAdminAccount`.
-- Owner then make this account Admin, and gives that account ability to create own Brand, Schema and Template with `transactions/addAdminAccount`
+- The owner then makes this account Admin and gives that accountability to create its Brand, Schema, and Template with `transactions/addAdminAccount`
 - Create new Brand with `transactions/createBrand` using Admin Account.
 - Create new Schema with `transactions/createSchema` using Admin Account.
 - Create new Template with `transactions/createTemplate` using Admin Account.
