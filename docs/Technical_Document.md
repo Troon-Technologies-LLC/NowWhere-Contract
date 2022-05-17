@@ -4,14 +4,14 @@
 
 A common order of creating NFT would be
 
-- Create Admin Account with `transaction/setupAdminAccount`.
+- Create Admin Account with `transactions/setupAdminAccount`.
 - Owner then make this account Admin, and gives that account ability to create own Brand, Schema and Template with `transactions/addAdminAccount`
 - Create new Brand with `transactions/createBrand` using Admin Account.
 - Create new Schema with `transactions/createSchema` using Admin Account.
 - Create new Template with `transactions/createTemplate` using Admin Account.
 - Remove Template with `transactions/removeTemplate` using Admin Account.
-- Create NFT Receiver with `transaction/setupAccount` .
-- Create Mint of Templates and transfer to Address(having Setup Account enabled) with `transaction/mintNFT`
+- Create NFT Receiver with `transactions/setupAccount` .
+- Create Mint of Templates and transfer to Address(having Setup Account enabled) with `transactions/mintNFT`
   You can also see the scripts in `transactions/scripts` to see how information
   can be read from the NFTContract.
 
@@ -54,7 +54,7 @@ A common order of creating NFT would be
   Emitted when a new Template will be removed
 
 - Event for Template Mint ->
-  `pub event NFTMinted(nftId: UInt64, templateId: UInt64, mintNumber: UInt64`
+  `pub event NFTMinted(nftId: UInt64, templateId: UInt64, mintNumber: UInt64)`
   Emitted when a Template will be Minted and save as NFT
 
 ## NFTContract Addresses

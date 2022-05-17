@@ -1,4 +1,4 @@
-## How to Deploy and Test the Top Shot Contract in VSCode
+## How to Deploy and Test the NFT&NowWhere Contract in VSCode
 
 The first step for using any smart contract is deploying it to the blockchain,
 or emulator in our case. Do these commands in vscode.
@@ -74,7 +74,7 @@ Emitted when a new Brand will be created and added to the smart Contract.
 
 ## Event for Template Mint
 
-- `pub event NFTMinted(nftId:UInt64, templateId:UInt64, mintNumber: UInt64`
+- `pub event NFTMinted(nftId:UInt64, templateId:UInt64, mintNumber: UInt64)`
   Emitted when a Template will be Minted and save as NFT
 
 ## Start Flow
@@ -94,11 +94,3 @@ flow transactions send transactions/createBrand.cdc --arg String:"test" --args-j
 ## Mint NFT argument template ID
 
 flow transactions send transactions/mint.cdc --arg UInt64:2 --network testnet --signer testnet-account
-
-## Command to lock template argument template ID
-
-flow transactions send transactions/locktemplate.cdc --arg UInt64:1 --network testnet --signer testnet-account
-
-## Command to unlock template argument template ID
-
-flow transactions send transactions/unlocktemplate.cdc --arg UInt64:1 --network testnet --signer testnet-account

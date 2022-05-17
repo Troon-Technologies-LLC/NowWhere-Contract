@@ -91,7 +91,7 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
-      console.log("result:",result)
+      console.log("result:", result)
     } catch (e) {
       console.log(e);
       console.log("errror")
@@ -118,7 +118,7 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
-      console.log("NowWhereContract deploy result:",result)
+      console.log("NowWhereContract deploy result:", result)
     } catch (e) {
       console.log(e);
     }
@@ -327,7 +327,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [1, currentTimeInSeconds, currentTimeInSeconds+20000000.0];
+    const args = [1, currentTimeInSeconds, currentTimeInSeconds + 20000000.0];
 
     let txResult;
     try {
@@ -342,7 +342,7 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
-  
+
   test("add owner vault", async () => {
     const name = "addOwnerVault";
 
@@ -590,7 +590,7 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
-  
+
   test("test transaction remove template", async () => {
     const name = "removeTemplate";
     // Import participating accounts
@@ -651,7 +651,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [3, currentTimeInSeconds+10000000.0, currentTimeInSeconds+20000000.0];
+    const args = [3, currentTimeInSeconds + 10000000.0, currentTimeInSeconds + 20000000.0];
 
     let txResult;
     try {
@@ -690,7 +690,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [3, currentTimeInSeconds,  currentTimeInSeconds+40000000.0];
+    const args = [3, currentTimeInSeconds, currentTimeInSeconds + 40000000.0];
 
     let txResult;
     try {
@@ -735,7 +735,7 @@ describe("Transactions", () => {
     var test = 1;
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
     currentTimeInSeconds = currentTimeInSeconds + 10000000.0
-    const args = [2, currentTimeInSeconds, currentTimeInSeconds+20000000.0];
+    const args = [2, currentTimeInSeconds, currentTimeInSeconds + 20000000.0];
 
     let txResult;
     try {
@@ -1119,7 +1119,7 @@ describe("Scripts", () => {
   });
   test("get all nfts  data", async () => {
     const name = "getAllNFTIds";
-    const Dani= await getAccountAddress("Dani");
+    const Dani = await getAccountAddress("Dani");
 
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");

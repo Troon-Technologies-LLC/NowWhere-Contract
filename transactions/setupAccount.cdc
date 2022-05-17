@@ -1,4 +1,4 @@
-import NFTContract from "./NFTContract.cdc"
+import NFTContract from "../contracts/NFTContract.cdc"
 import NonFungibleToken from "./NonFungibleToken.cdc"
 
 transaction {
@@ -7,6 +7,6 @@ transaction {
         // store the empty NFT Collection in account storage
         acct.save( <- collection, to:NFTContract.CollectionStoragePath)
         // create a public capability for the Collection
-        acct.link<&{NonFungibleToken.CollectionPublic}>(NFTContract.CollectionPublicPath, target: NFTContract.CollectionStoragePath)
+        acct.link<&{NFTContract.NFTContractCollectionPublic}>(NFTContract.CollectionPublicPath, target: NFTContract.CollectionStoragePath)
     }
 }
