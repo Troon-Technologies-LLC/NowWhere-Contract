@@ -37,7 +37,6 @@ describe("Replicate Playground Accounts", () => {
     const Bob = await getAccountAddress("Bob");
     const Charlie = await getAccountAddress("Charlie");
     const Dave = await getAccountAddress("Dave");
-    const Fahim = await getAccountAddress("Fahim");
 
     console.log(
       "Four Playground accounts were created with following addresses"
@@ -46,7 +45,6 @@ describe("Replicate Playground Accounts", () => {
     console.log("Bob:", Bob);
     console.log("Charlie:", Charlie);
     console.log("Dave:", Dave);
-    console.log("Fahim:", Fahim);
     //mint the flow to the user account
     const data = await mintFlow(Bob, "42.0");
     const updatedBalance = await getFlowBalance(Bob);

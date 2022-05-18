@@ -13,6 +13,7 @@ pub contract NFTContract: NonFungibleToken {
     pub event BrandUpdated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
     pub event SchemaCreated(schemaId: UInt64, schemaName: String, author: Address)
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
+    pub event TemplateUpdated(templateId: UInt64, author: Address)
 
     // Paths
     pub let AdminResourceStoragePath: StoragePath
@@ -196,10 +197,10 @@ pub contract NFTContract: NonFungibleToken {
            
         }
 
-
+        // a method to get update MutableData field of Template
         pub fun updateMutableData(newMutableData: {String:AnyStruct}) {
             
-            if(self.mutableData?.length==nil){
+            if(self.mutableData?.length == nil){
                 self.mutableData = newMutableData
             }
             else {
@@ -460,7 +461,7 @@ pub contract NFTContract: NonFungibleToken {
             NFTContract.lastIssuedTemplateId = NFTContract.lastIssuedTemplateId + 1
         }
 
-         //method to update the existing template's mutable data, only author of brand can update this templa
+         //method to update the existing template's mutable data, only author of brand can update this template
         pub fun updateTemplateMutableData(templateId: UInt64, newMutableData: {String: AnyStruct}) {
             pre{
                 // the transaction will instantly revert if
@@ -477,7 +478,7 @@ pub contract NFTContract: NonFungibleToken {
             }
 
             NFTContract.allTemplates[templateId]!.updateMutableData(newMutableData: newMutableData)
-           // emit BrandUpdated(brandId: brandId, brandName: oldBrand!.brandName, author: oldBrand!.author, data: data)
+            emit TemplateUpdated(templateId: templateId, author: NFTContract.allBrands[oldTemplate!.brandId]!.author)
         }
 
         //method to mint NFT, only access by the verified user
