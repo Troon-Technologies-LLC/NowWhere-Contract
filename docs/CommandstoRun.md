@@ -1,4 +1,4 @@
-## How to Deploy and Test the Top Shot Contract in VSCode
+## How to Deploy and Test the NowWhere Contract in VSCode
 
 The first step for using any smart contract is deploying it to the blockchain,
 or emulator in our case. Do these commands in vscode.
