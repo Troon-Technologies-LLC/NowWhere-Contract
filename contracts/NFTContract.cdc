@@ -56,7 +56,7 @@ pub contract NFTContract: NonFungibleToken {
     
 // method to validate data against related schema forma
     pub fun validateData(format:{String: SchemaType},data: {String: AnyStruct}){
-       // let schema = TroonAtomicStandard.allSchemas[schemaId]!
+       
             var invalidKey: String = ""
             var isValidTemplate = true
 
@@ -173,17 +173,19 @@ pub contract NFTContract: NonFungibleToken {
         pub var maxSupply: UInt64
         pub var issuedSupply: UInt64
         access(contract) var immutableData: {String: AnyStruct}
-        access(contract) var mutableData: {String: AnyStruct}
+        access(contract) var mutableData: {String: AnyStruct}?
 
-        init(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}) {
+        init(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}?) {
             pre {
                 NFTContract.allBrands[brandId] != nil:"Brand Id must be valid"
                 NFTContract.allSchemas[schemaId] != nil:"Schema Id must be valid"
                 maxSupply > 0 : "MaxSupply must be greater than zero"
                 immutableData != nil: "ImmutableData must not be nil"
-                mutableData != nil: "MutableData must not be nil"
             }
-
+            // Before creating template, we need to check template data, if it is valid against given schema or not
+            let schema = NFTContract.allSchemas[schemaId]!
+            NFTContract.validateData(format:schema.format, data: immutableData)
+ 
             self.templateId = NFTContract.lastIssuedTemplateId
             self.brandId = brandId
             self.schemaId = schemaId
@@ -192,17 +194,26 @@ pub contract NFTContract: NonFungibleToken {
             self.mutableData = mutableData
             self.issuedSupply = 0
            
-            // Before creating template, we need to check template data, if it is valid against given schema or not
-
-            let schema = NFTContract.allSchemas[schemaId]!
-
-            NFTContract.validateData(format:schema.format, data: immutableData)
-           // NFTContract.validateData(format:schema.formatMutable, data: mutableData)
         }
 
 
-        pub fun updateMutableData(key:String,value:AnyStruct) {
-             self.mutableData[key]=value
+        pub fun updateMutableData(newMutableData: {String:AnyStruct}) {
+            
+            if(self.mutableData?.length==nil){
+                self.mutableData = newMutableData
+            }
+            else {
+                let a=newMutableData.keys
+                let v=newMutableData.values
+
+                var i=0
+                while i < newMutableData.length
+                    {
+                        self.mutableData?.insert(key: a[i], v[i])
+                        i=i+1
+                    }
+            }
+
         }
 
         // a method to get ImmutableData field of Template
@@ -334,8 +345,8 @@ pub contract NFTContract: NonFungibleToken {
         pub fun createNewBrand(brandName: String, data: {String: String})
         pub fun updateBrandData(brandId: UInt64, data: {String: String})
         pub fun createSchema(schemaName: String, format: {String: SchemaType})
-        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct})
-        pub fun updateTemplateMutableData(templateId: UInt64, key: String, value:AnyStruct)
+        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}?)
+        pub fun updateTemplateMutableData(templateId: UInt64, newMutableData: {String: AnyStruct})
         pub fun mintNFT(templateId: UInt64, account: Address)
     }
     
@@ -432,7 +443,7 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         //method to create new Template, only access by the verified user
-        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}) {
+        pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}?) {
             pre {
                 // the transaction will instantly revert if 
                 // the capability has not been added
@@ -450,7 +461,7 @@ pub contract NFTContract: NonFungibleToken {
         }
 
          //method to update the existing template's mutable data, only author of brand can update this templa
-        pub fun updateTemplateMutableData(templateId: UInt64, key: String, value:AnyStruct) {
+        pub fun updateTemplateMutableData(templateId: UInt64, newMutableData: {String: AnyStruct}) {
             pre{
                 // the transaction will instantly revert if
                 // the capability has not been added
@@ -465,7 +476,7 @@ pub contract NFTContract: NonFungibleToken {
                 panic("No permission to update others Template's Mutable Data")
             }
 
-            NFTContract.allTemplates[templateId]!.updateMutableData(key: key, value: value)
+            NFTContract.allTemplates[templateId]!.updateMutableData(newMutableData: newMutableData)
            // emit BrandUpdated(brandId: brandId, brandName: oldBrand!.brandName, author: oldBrand!.author, data: data)
         }
 
