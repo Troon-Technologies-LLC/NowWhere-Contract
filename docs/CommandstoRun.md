@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ## How to Deploy and Test the NFT&NowWhere Contract in VSCode
+=======
+## How to Deploy and Test the NowWhere Contract in VSCode
+>>>>>>> e1e0fca (update changes)
 
 The first step for using any smart contract is deploying it to the blockchain,
 or emulator in our case. Do these commands in vscode.
