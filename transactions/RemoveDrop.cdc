@@ -1,4 +1,4 @@
-import NowWhereContract from "./NowWhereContract.cdc"
+import NowWhereContract from "../contracts/NowWhereContract.cdc"
 
 transaction(DropId: UInt64){
    let adminRef: &NowWhereContract.DropAdmin
