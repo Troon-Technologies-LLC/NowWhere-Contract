@@ -59,28 +59,17 @@ pub contract NowWhereContract {
                 !(startDate==nil && endDate==nil && templates==nil):"All values are nil"
            }
 
-            var isUpdated:Bool = true;
-            var errorMessage:String = "";
-
             if(startDate != nil && startDate! < self.endDate){
                 self.startDate = startDate!
-            }else{
-                isUpdated = false;
-                errorMessage = "start-date should be greater than end-date"
             }
 
             if(endDate != nil && endDate! > self.startDate) {
                 self.endDate = endDate!
-            }else{
-                isUpdated = false;
-                errorMessage = "end-date should be greater than end-date"
             }
 
             if(templates != nil) {
                 self.templates = templates!
             }
-
-            assert(isUpdated, message: errorMessage);
             
             emit DropUpdated(dropId: self.dropId, startDate: self.startDate, endDate: self.endDate)
         }
