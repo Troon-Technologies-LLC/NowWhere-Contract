@@ -690,7 +690,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [3, currentTimeInSeconds,  currentTimeInSeconds+40000000.0];
+    const args = [3, currentTimeInSeconds,  currentTimeInSeconds];
 
     let txResult;
     try {
