@@ -872,7 +872,7 @@ describe("Transactions", () => {
     console.log("update drop is done");
     console.log("Update the drop with wrong params");
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(errorMessage);
+    expect(txResult.errorMessage).toBe(undefined);
   });
   //updating the end date
   test("test transaction  Update drop", async () => {
