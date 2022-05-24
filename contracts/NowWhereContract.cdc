@@ -53,8 +53,8 @@ pub contract NowWhereContract {
         // templates can be updated, if sale is not started yet
         pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
             pre{
-                (startDate==nil) || (startDate!=nil &&  self.startDate > getCurrentBlock().timestamp && startDate! >= getCurrentBlock().timestamp): "can't update start date"
-                (endDate==nil) || (endDate!=nil && endDate! > getCurrentBlock().timestamp): "can't update end date"
+                (startDate==nil) || (self.startDate > getCurrentBlock().timestamp && startDate! >= getCurrentBlock().timestamp): "can't update start date"
+                (endDate==nil) || (endDate! > getCurrentBlock().timestamp): "can't update end date"
                 (templates==nil) || (templates != nil && templates!.keys.length != 0 && self.startDate > getCurrentBlock().timestamp) : "can't update templates"
                 !(startDate==nil && endDate==nil && templates==nil):"All values are nil"
            }
