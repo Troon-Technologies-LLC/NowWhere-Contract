@@ -729,7 +729,11 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [3, currentTimeInSeconds, currentTimeInSeconds + 40000000.0];
+    const args = [
+      3,
+      currentTimeInSeconds + 15000000.0,
+      currentTimeInSeconds + 40000000.0,
+    ];
 
     let txResult;
     try {
@@ -747,6 +751,47 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
+  //updating the start date
+  test("test transaction  Update drop", async () => {
+    const name = "updateDropStatic";
+    var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    var test = 1;
+    const args = [3, currentTimeInSeconds + 20000000.0, null];
+
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log("Error", e);
+    }
+    console.log("update drop is done");
+    console.log("Update the start date with correct params");
+    console.log("tx Result", txResult);
+    expect(txResult.errorMessage).toBe(undefined);
+  });
   //updating the end date
   test("test transaction  Update drop", async () => {
     const name = "updateDropStatic";
