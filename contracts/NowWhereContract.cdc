@@ -55,7 +55,7 @@ pub contract NowWhereContract {
             pre{
                 (startDate==nil) || (self.startDate > getCurrentBlock().timestamp && startDate! >= getCurrentBlock().timestamp): "can't update start date"
                 (endDate==nil) || (endDate! > getCurrentBlock().timestamp): "can't update end date"
-                (templates==nil) || (templates != nil && templates!.keys.length != 0 && self.startDate > getCurrentBlock().timestamp) : "can't update templates"
+                (templates==nil) || (templates!.keys.length != 0 && self.startDate > getCurrentBlock().timestamp) : "can't update templates"
                 !(startDate==nil && endDate==nil && templates==nil):"All values are nil"
            }
 
