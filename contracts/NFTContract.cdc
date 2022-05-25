@@ -36,16 +36,27 @@ pub contract NFTContract: NonFungibleToken {
     // Total supply of all NFTs that are minted using this contract
     pub var totalSupply: UInt64
     
+
     // A dictionary that stores all Brands against it's brand-id.
     access(self) var allBrands: {UInt64: Brand}
+
+    // A dictionary that stores all Schemas against it's schema-id.
     access(self) var allSchemas: {UInt64: Schema}
+
+    // A dictionary that stores all Templates against it's template-id.
     access(self) var allTemplates: {UInt64: Template}
+
+    // A dictionary that stores all NFTs against it's nft-id.
     access(self) var allNFTs: {UInt64: NFTData}
 
     // Accounts ability to add capability
     access(self) var whiteListedAccounts: [Address]
 
-    // Create Schema Support all the mentioned Types
+    /*
+    * Schema Enum
+    *   Schema will be data-structure of a NFT. 
+    *   Schema will support following types e.g: String, Int, Fix64, Bool, Address, Array and Any
+    */
     pub enum SchemaType: UInt8 {
         pub case String
         pub case Int
@@ -121,7 +132,12 @@ pub contract NFTContract: NonFungibleToken {
     }
 
 
-    // A structure that contain all the data related to a Brand
+    /*
+    * Brand
+    *   Brand will represent a company or author of NFTs. 
+    *   A Brand has id, name, author and data for brand. 
+    *   Brand data is basic dictionary, so it can contain any of brand data
+    */
     pub struct Brand {
         pub let brandId: UInt64
         pub let brandName: String
@@ -143,6 +159,7 @@ pub contract NFTContract: NonFungibleToken {
             self.data = data
         }
     }
+
 
        // A structure that contain all the data related to a Schema
     pub struct Schema {
@@ -234,7 +251,11 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
-    // A structure that link template and mint-no of NFT
+    /*
+    * NFTData
+    *   NFTData is a structure than manage the relation between a NFT and template.
+    *   Also it manage mint-number of a NFT
+    */
     pub struct NFTData {
         pub let templateID: UInt64
         pub let mintNumber: UInt64
@@ -245,8 +266,11 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
-    // The resource that represents the Troon NFTs
-    // 
+    /*
+    * NFT
+    *   NFT is a resource that actually stays in user storage.
+    *   NFT has id, data which include relation with template and minter number of that specific NFT
+    */
     pub resource NFT: NonFungibleToken.INFT {
         pub let id: UInt64
         access(contract) let data: NFTData
@@ -264,9 +288,8 @@ pub contract NFTContract: NonFungibleToken {
     }
 
     /** NFTContractCollectionPublic
-
-        A public interface extending the standard NFT Collection with type information specific
-        to NowWhere NFTs.
+    *   A public interface extending the standard NFT Collection with type information specific
+    *   to NowWhere NFTs.
     */
     pub resource interface NFTContractCollectionPublic {
         pub fun deposit(token: @NonFungibleToken.NFT)
@@ -282,12 +305,14 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
-    // Collection is a resource that every user who owns NFTs 
-    // will store in their account to manage their NFTS
-    //
+    /** Collection
+    *   Collection is a resource that lie in user storage to manage owned NFT resource
+    */
     pub resource Collection: NFTContractCollectionPublic, NonFungibleToken.Provider, NonFungibleToken.Receiver, NonFungibleToken.CollectionPublic {
+        // ownedNFTs will manage all user owned NFTs against it NFT id
         pub var ownedNFTs: @{UInt64: NonFungibleToken.NFT}
 
+        // withdraw method will withdraw NFT from NFT id from user storage 
         pub fun withdraw(withdrawID: UInt64): @NonFungibleToken.NFT {
             let token <- self.ownedNFTs.remove(key: withdrawID) 
                 ?? panic("Cannot withdraw: template does not exist in the collection")
@@ -295,10 +320,12 @@ pub contract NFTContract: NonFungibleToken {
             return <-token
         }
 
+        // getIDs mehtod will return all NFT-ids that are owned by a user 
         pub fun getIDs(): [UInt64] {
             return self.ownedNFTs.keys
         }
 
+        // deposit mehtod will store NFT into user storage 
         pub fun deposit(token: @NonFungibleToken.NFT) {
             let token <- token as! @NFTContract.NFT
             let id = token.id
@@ -309,6 +336,7 @@ pub contract NFTContract: NonFungibleToken {
             destroy oldToken
         }
 
+        // borrowNFT is method to borrow a NFT (as NonFungibleToken.NFT) 
         pub fun borrowNFT(id: UInt64): &NonFungibleToken.NFT {
             return &self.ownedNFTs[id] as &NonFungibleToken.NFT
         }
@@ -370,7 +398,10 @@ pub contract NFTContract: NonFungibleToken {
         init(){}
     }
 
-    // AdminResource, where are defining all the methods related to Brands, Schema, Template and NFTs
+    /* AdminResource
+    *   AdminReource is a resource which is managing all the methods that a user (admin and end-user) can call e.g:    
+    *   createBrand, createSchema, createTemplate, mintNFT, addCapbility etc
+    */
     pub resource AdminResource: UserSpecialCapability, NFTMethodsCapability {
         // a variable which stores all Brands owned by a user
         priv var ownedBrands: {UInt64: Brand}

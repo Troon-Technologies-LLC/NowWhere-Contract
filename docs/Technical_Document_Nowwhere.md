@@ -7,19 +7,18 @@ A common order of creating Drop would be
 - Create Admin Account with `transaction/setupAdminAccount`.
 - Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop 
   and purchase Drop with `transactions/addAdminAccount` 
-
+- The owner then makes this account Admin and gives that accountability to create its Brand, Schema, Template, Drop
+  and purchase Drop with `transactions/addAdminAccount`
 - Create new Brand with `transactions/createBrand` using Admin Account.
 - Create new Schema with `transactions/createSchema` using Admin Account.
 - Create new Template with `transactions/createTemplate` using Admin Account.
 - Remove Template with `transactions/removeTemplate` using Admin Account.
 - Create NFT Receiver with `transaction/setupAccount` .
 - Create new Drop with `transactions/createDrop` using Admin Account.
-- update Drop `transactions/updateDrop.cdc` using Admin Account.
+- update Drop with `transactions/updateDrop.cdc` using Admin Account.
 - Purchase NFT and send to any address with `transactions/purchaseDrop` using Admin Account.
 - Purchase NFT with flow and send to any address with `transactions/purchaseNFTWithFlow` using Admin Account and User Account.
 - Remove Drop `transactions/RemoveDrop.cdc` using Admin Account.
-  You can also see the scripts in `transactions/scripts` to see how information
-  can be read from the NowWhereContract.
 
 ### Nowwhere Events
 
@@ -49,11 +48,12 @@ A common order of creating Drop would be
 
 ## Nowwhere Addresses
 
+
 `NowWhereContract.cdc`
 
 | Network | Contract Address     |
 | ------- | -------------------- |
-| Testnet | `0xab79c34632e5a7af` |
+| Testnet | `0x1673bd60de19daa6` |
 | Mainnet | `0x1272fc57f20604b9` |
 
 ## Drop Structure
@@ -67,11 +67,15 @@ In drops we have the following Information:
 
 ## Instructions for Create Drops
 
-To Create a drop of specific Template, we have to give arguments shown above, after that our function will check that start and end time should be greater than present time, template must not be null, drop Ids should be unique.
+To Create a drop of specific Template/s, we have to give arguments shown above, after that our function will check that start and end time should be greater than present time, template must not be null, drop Ids should be unique. Our drop is also suporting multiple templates and you can add any details to template which can be entertain in future e.g: price, supply etc
+
 
 ## Instruction of Update Drops
 
-To Update a drop of specific Template, we have to give arguments dropId, startDate, templates, drop Id need to be exist in all drops.
+To update a drop, Admin need to provide drop-id and the attributes that Admin want to update e.g: start-date, end-date or templates. Drop will be updated on following situations:
+1. If drop is not active (start-date is not passed), than Admin can update all details of a drop e.g: start-date, end-date and template
+2. If drop is active than, Admin can only update the end-date of drop
+
 
 ## Instructions for Purchase Drop
 
