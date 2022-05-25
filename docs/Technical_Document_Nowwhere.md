@@ -4,9 +4,15 @@
 
 A common order of creating Drop would be
 
+<<<<<<< HEAD
 - Create Admin Account with `transactions/setupAdminAccount`.
 - Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop
   and purchase Drop with `transactions/addAdminAccount`
+=======
+- Create Admin Account with `transaction/setupAdminAccount`.
+- Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop 
+  and purchase Drop with `transactions/addAdminAccount` 
+>>>>>>> bd13324 (Changes resolved for mutable layer)
 - Create new Brand with `transactions/createBrand` using Admin Account.
 - Create new Schema with `transactions/createSchema` using Admin Account.
 - Create new Template with `transactions/createTemplate` using Admin Account.
