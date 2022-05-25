@@ -33,7 +33,10 @@ pub contract NowWhereContract {
     // actual stored values, but an instance (or object) of one of these Types
     // can be created by this contract that contains stored values.
 
-    // Drop is a struct 
+    /* Drop
+    *   Drop is an event, which has a start-date and end-date. 
+    *   In a drop, Admin will add templates that can be purcahsed in that event
+    */ 
     pub struct Drop {
         pub let dropId: UInt64
         pub var startDate: UFix64
@@ -80,8 +83,9 @@ pub contract NowWhereContract {
         }
     }
 
-    // DropAdmin
-    // This is the main resource to manage the NFTs that they are creating and purchasing.
+    /* DropAdmin
+    *   DropAdmin is resource, which will be used by the Admin to create, update, remove drop and purcahse NFT
+    */
     pub resource DropAdmin {
         access(contract) var ownerVault: Capability<&AnyResource{FungibleToken.Receiver}>?
 
