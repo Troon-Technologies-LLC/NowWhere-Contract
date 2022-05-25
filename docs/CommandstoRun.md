@@ -87,7 +87,7 @@ Emitted when a new Brand will be created and added to the smart Contract.
 
 `flow keys generate`
 
-## Create Template argument is max supply
+## Create Brand
 
 `flow transactions send transactions/createBrand.cdc --arg String:"test" --args-json "[{\"type\":\"String\",\"value\":\"test\"},{\"type\":\"String\",\"value\":\"abc\"}]" --network testnet --signer testnet-account`
 
