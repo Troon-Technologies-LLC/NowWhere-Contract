@@ -48,8 +48,9 @@ A common order of creating NFT would be
 5. Mint NFT and transfer that NFT to given address(having NFT-receiver) with `transactions/mintTemplate.cdc` transaction.
 
 You can also call scripts to fetch and verify the data, basic scripts would be
+
 1. Get all brands ids by calling `scripts/getAllBrands.cdc` script.
-2. Get specific brand data by its brand-id by calling `scripts/getBrandById.cdc` script. 
+2. Get specific brand data by its brand-id by calling `scripts/getBrandById.cdc` script.
 3. Get all schemas by calling `scripts/getallSchema.cdc` script.
 4. Get specific schema by its schema-id by calling `scripts/getSchemaById.cdc` script.
 5. Get all templates by calling `scripts/getAllTemplates.cdc` script.
@@ -62,7 +63,6 @@ You can also call scripts to fetch and verify the data, basic scripts would be
 - ` pub event ContractInitialized()`
   This event is emitted when the `NFTContract` will be initialized.
 
-
 ## Event for Brand
 
 - `pub event BrandCreated(brandId:UInt64, brandName:String, author:Address, data:{String:String})`
@@ -71,12 +71,10 @@ You can also call scripts to fetch and verify the data, basic scripts would be
 - `pub event BrandUpdated(brandId: UInt64, brandName: String, author: Address, data:{String: String})`
   Emitted when a Brand is updated on Smart-contract.
 
-
 ## Event for Schema
 
 - `pub event SchemaCreated(schemaId:UInt64, schemaName:String, author:Address)`
   Emitted when a new Schema will be created
-
 
 ## Event for Template
 
@@ -85,7 +83,6 @@ You can also call scripts to fetch and verify the data, basic scripts would be
 
 - `pub event TemplateRemoved(templateId: UInt64)`
   Emitted when a Template is updated
-
 
 ## Event for NFT
 
@@ -100,7 +97,6 @@ You can also call scripts to fetch and verify the data, basic scripts would be
 
 - `pub event Withdraw(id: UInt64, from: Address?)`
   Emitted when a NFT is withdrawn
-  
 
 ## Start Flow
 
@@ -112,7 +108,18 @@ You can also call scripts to fetch and verify the data, basic scripts would be
 
 `flow keys generate`
 
-## Create Brand 
+## Create Brand
 
 `flow transactions send transactions/createBrand.cdc --arg String:"test" --args-json "[{\"type\":\"String\",\"value\":\"test\"},{\"type\":\"String\",\"value\":\"abc\"}]" --network testnet --signer testnet-account`
 
+## Create Schema
+
+`flow transactions send transactions/createSchema.cdc --arg String:"test" --network testnet --signer testnet-account`
+
+## Create Template
+
+`flow transactions send transactions/createTemplate.cdc --arg UInt64:"1" UInt64:"1" UInt64:"100" --args-json "[{\"type\":\"String\",\"value\":\"test\"},{\"type\":\"String\",\"value\":\"abc\"}]" --network testnet --signer testnet-account`
+
+## Mint NFT
+
+`flow transactions send transactions/mintNFT.cdc --arg UInt64:"1" Address:"0x01" --network testnet --signer testnet-account`
