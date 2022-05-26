@@ -55,7 +55,7 @@ You can also call scripts to fetch and verify the data, basic scripts would be
   Emitted when a new Template will be removed
 
 - Event for Template Mint ->
-  `pub event NFTMinted(nftId: UInt64, templateId: UInt64, mintNumber: UInt64`
+  `pub event NFTMinted(nftId: UInt64, templateId: UInt64, mintNumber: UInt64)`
   Emitted when a Template will be Minted and save as NFT
 
 ## NFTContract Addresses
