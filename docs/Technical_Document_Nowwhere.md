@@ -7,13 +7,16 @@ A common order of creating Drop would be
 - Create Admin Account with `transaction/setupAdminAccount`.
 - Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop 
   and purchase Drop with `transactions/addAdminAccount` 
+<<<<<<< HEAD
 - The owner then makes this account Admin and gives that accountability to create its Brand, Schema, Template, Drop
   and purchase Drop with `transactions/addAdminAccount`
+=======
+>>>>>>> dev
 - Create new Brand with `transactions/createBrand` using Admin Account.
 - Create new Schema with `transactions/createSchema` using Admin Account.
 - Create new Template with `transactions/createTemplate` using Admin Account.
 - Remove Template with `transactions/removeTemplate` using Admin Account.
-- Create NFT Receiver with `transaction/setupAccount` .
+- Create NFT Receiver with `transactions/setupAccount` .
 - Create new Drop with `transactions/createDrop` using Admin Account.
 - update Drop with `transactions/updateDrop.cdc` using Admin Account.
 - Purchase NFT and send to any address with `transactions/purchaseDrop` using Admin Account.
@@ -84,7 +87,8 @@ To Purchase NFT with any Drop we have to give the following fields:
 - dropId
 - templateId
 - mintNumber(Mint Number of Template)
-- receiptAddress(Address which Addresswill recieve NFT)
+- receiptAddress(Address which Address will recieve NFT)
+- immutableData optional
   Only Whitelisted Address can create Drops and Purchase NFTs with Drops.
 
 ## Instructions for Purchase Drop With Flow
@@ -97,6 +101,7 @@ To Purchase NFT with any Drop using flow we have to give the following fields:
 - receiptAddress(Address which will recieve NFT)
 - price(price of drop)
 - flowPayment(flow payment vault)
+- immutableData optional
 
 ## Instructions for Remove Drop
 

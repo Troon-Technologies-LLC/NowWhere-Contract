@@ -6,7 +6,6 @@ pub contract NFTContract: NonFungibleToken {
     pub event ContractInitialized()
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
-    pub event NFTBorrowed(id: UInt64)
     pub event NFTDestroyed(id: UInt64)
     pub event NFTMinted(nftId: UInt64, templateId: UInt64, mintNumber: UInt64)
     pub event BrandCreated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
@@ -15,6 +14,7 @@ pub contract NFTContract: NonFungibleToken {
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
     pub event TemplateUpdated(templateId: UInt64, author: Address)
     pub event TemplateRemoved(templateId: UInt64)
+    pub event TemplateUpdated(templateId: UInt64, author: Address)
 
     // Paths
     pub let AdminResourceStoragePath: StoragePath
@@ -67,7 +67,7 @@ pub contract NFTContract: NonFungibleToken {
         pub case Any
     }
     
-// method to validate data against related schema forma
+    // method to validate data against related schema forma
     pub fun validateData(format:{String: SchemaType},data: {String: AnyStruct}){
        
             var invalidKey: String = ""
@@ -259,10 +259,16 @@ pub contract NFTContract: NonFungibleToken {
     pub struct NFTData {
         pub let templateID: UInt64
         pub let mintNumber: UInt64
+        access(contract) var immutableData: {String: AnyStruct}?
 
-        init(templateID: UInt64, mintNumber: UInt64) {
+        init(templateID: UInt64, mintNumber: UInt64, immutableData: {String: AnyStruct}?) {
             self.templateID = templateID
             self.mintNumber = mintNumber
+            self.immutableData = immutableData
+        }
+        // a method to get the immutable data of the NFT
+        pub fun getImmutableData(): {String:AnyStruct}? {
+            return self.immutableData
         }
     }
 
@@ -275,10 +281,10 @@ pub contract NFTContract: NonFungibleToken {
         pub let id: UInt64
         access(contract) let data: NFTData
 
-        init(templateID: UInt64, mintNumber: UInt64) {
+        init(templateID: UInt64, mintNumber: UInt64, immutableData: {String:AnyStruct}?) {
             NFTContract.totalSupply = NFTContract.totalSupply + 1
             self.id = NFTContract.totalSupply
-            NFTContract.allNFTs[self.id] = NFTData(templateID: templateID, mintNumber: mintNumber)
+            NFTContract.allNFTs[self.id] = NFTData(templateID: templateID, mintNumber: mintNumber, immutableData: immutableData)
             self.data = NFTContract.allNFTs[self.id]!
             emit NFTMinted(nftId: self.id, templateId: templateID, mintNumber: mintNumber)
         }
@@ -378,7 +384,6 @@ pub contract NFTContract: NonFungibleToken {
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}?)
         pub fun updateTemplateMutableData(templateId: UInt64, newMutableData: {String: AnyStruct})
         pub fun mintNFT(templateId: UInt64, account: Address)
-        pub fun removeTemplateById(templateId: UInt64)
     }
     
     //AdminCapability to add whiteListedAccounts
@@ -515,7 +520,7 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         //method to mint NFT, only access by the verified user
-        pub fun mintNFT(templateId: UInt64, account: Address) {
+        pub fun mintNFT(templateId: UInt64, account: Address, immutableData:{String:AnyStruct}?) {
             pre{
                 // the transaction will instantly revert if 
                 // the capability has not been added
@@ -527,9 +532,9 @@ pub contract NFTContract: NonFungibleToken {
             let receiptAccount = getAccount(account)
             let recipientCollection = receiptAccount
                 .getCapability(NFTContract.CollectionPublicPath)
-                .borrow<&{NonFungibleToken.CollectionPublic}>()
+                .borrow<&{NFTContract.NFTContractCollectionPublic}>()
                 ?? panic("Could not get receiver reference to the NFT Collection")
-            var newNFT: @NFT <- create NFT(templateID: templateId, mintNumber: NFTContract.allTemplates[templateId]!.incrementIssuedSupply())
+            var newNFT: @NFT <- create NFT(templateID: templateId, mintNumber: NFTContract.allTemplates[templateId]!.incrementIssuedSupply(), immutableData:immutableData)
             recipientCollection.deposit(token: <-newNFT)
         }
 

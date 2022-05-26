@@ -8,7 +8,7 @@ transaction {
         acct.save( <- collection, to:NFTContract.CollectionStoragePath)
         log("Collection created for account".concat(acct.address.toString()))
         // create a public capability for the Collection
-        acct.link<&{NonFungibleToken.CollectionPublic}>(NFTContract.CollectionPublicPath, target:NFTContract.CollectionStoragePath)
+        acct.link<&{NFTContract.NFTContractCollectionPublic}>(NFTContract.CollectionPublicPath, target:NFTContract.CollectionStoragePath)
         log("Capability created")
 
     }

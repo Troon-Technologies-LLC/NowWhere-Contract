@@ -6,6 +6,6 @@ transaction(DropId: UInt64,TemplateId: UInt64,MintNumber: UInt64,Creator: Addres
         self.adminRef = acct.borrow<&NowWhereContract.DropAdmin>(from:NowWhereContract.DropAdminStoragePath)
         ??panic("could not borrow admin reference")
     
-    self.adminRef.purchaseNFT(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: Creator)
+    self.adminRef.purchaseNFT(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: Creator, immutableData:nil)
     }
 }

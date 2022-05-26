@@ -7,12 +7,12 @@ transaction {
     let adminRef: &NowWhereContract.DropAdmin
 
     prepare(acct: AuthAccount) {
-       let data = acct.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
+        let data = acct.getCapability<&FlowToken.Vault{FungibleToken.Receiver}>(/public/flowTokenReceiver)
 
-       self.adminRef = acct.borrow<&NowWhereContract.DropAdmin>(from:NowWhereContract.DropAdminStoragePath)
+        self.adminRef = acct.borrow<&NowWhereContract.DropAdmin>(from:NowWhereContract.DropAdminStoragePath)
         ??panic("could not borrow admin reference")
 
-       self.adminRef.addOwnerVault(_ownerVault: data)
+        self.adminRef.addOwnerVault(_ownerVault: data)
     }
 
     execute{
