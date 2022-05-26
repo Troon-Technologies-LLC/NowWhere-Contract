@@ -66,7 +66,7 @@ pub contract NFTContract: NonFungibleToken {
         pub case Any
     }
     
-// method to validate data against related schema forma
+    // method to validate data against related schema forma
     pub fun validateData(format:{String: SchemaType},data: {String: AnyStruct}){
        
             var invalidKey: String = ""
