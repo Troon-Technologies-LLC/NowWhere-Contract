@@ -12,6 +12,7 @@ pub contract NFTContract: NonFungibleToken {
     pub event BrandUpdated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
     pub event SchemaCreated(schemaId: UInt64, schemaName: String, author: Address)
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
+    pub event TemplateUpdated(templateId: UInt64, author: Address)
     pub event TemplateRemoved(templateId: UInt64)
     pub event TemplateUpdated(templateId: UInt64, author: Address)
 
@@ -159,11 +160,8 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
-    /*
-    * Schema
-    *   Schema will be data-structure of a NFT. 
-    *   Schema has key name and data-type of its value, which will be used for serialization and deserialization (in future work)
-    */
+
+       // A structure that contain all the data related to a Schema
     pub struct Schema {
         pub let schemaId: UInt64
         pub let schemaName: String
@@ -185,12 +183,8 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
-    /*
-    * Template
-    *   Template will be blueprint of a NFT. 
-    *   Template has relation between brand and schema. It also manage max-supply of a NFT and its issued-supply.
-    *   Template also contain meta data of a NFT, which make it as a blueprint of NFT
-    */
+    
+    // A structure that contain all the data and methods related to Template
     pub struct Template {
         pub let templateId: UInt64
         pub let brandId: UInt64
