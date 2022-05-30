@@ -27,7 +27,13 @@ transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
             "contectValue" : "https://troontechnologies.com/",
             "extras" : extra        
         }
-        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
-        log("ok")
+       
+       let mutableData : {String: AnyStruct} = {   
+            "movieCategory" : "Hollywood",
+            "movieName" : "Interstellar"
+           
+        }
+        
+        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData, mutableData: mutableData)
     }
 }

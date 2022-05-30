@@ -12,8 +12,8 @@ transaction (templateId:UInt64){
               panic("could not borrow a reference to the NFTMethodsCapability interface")
 
              let mutableData : {String: AnyStruct} = {   //}
-                  "qwerty" : "asd",
-                 "qqq" : "ggg"
+                "Keyboard" : "Qwerty",
+                "InputType" : "AlphaNumeric"
               
              }
 
