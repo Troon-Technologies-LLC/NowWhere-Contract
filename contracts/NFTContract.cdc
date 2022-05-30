@@ -6,6 +6,7 @@ pub contract NFTContract: NonFungibleToken {
     pub event ContractInitialized()
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
+    pub event NFTBorrowed(id: UInt64)
     pub event NFTDestroyed(id: UInt64)
     pub event NFTMinted(nftId: UInt64, templateId: UInt64, mintNumber: UInt64)
     pub event BrandCreated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
@@ -14,7 +15,6 @@ pub contract NFTContract: NonFungibleToken {
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
     pub event TemplateUpdated(templateId: UInt64, author: Address)
     pub event TemplateRemoved(templateId: UInt64)
-    pub event TemplateUpdated(templateId: UInt64, author: Address)
 
     // Paths
     pub let AdminResourceStoragePath: StoragePath
@@ -69,7 +69,6 @@ pub contract NFTContract: NonFungibleToken {
     
     // method to validate data against related schema forma
     pub fun validateData(format:{String: SchemaType},data: {String: AnyStruct}){
-       
             var invalidKey: String = ""
             var isValidTemplate = true
 
@@ -167,7 +166,6 @@ pub contract NFTContract: NonFungibleToken {
         pub let schemaName: String
         pub let author: Address
         access(contract) let format: {String: SchemaType}
-     
 
         init(schemaName: String, author: Address, format: {String: SchemaType}){
             pre {
@@ -179,7 +177,6 @@ pub contract NFTContract: NonFungibleToken {
             self.schemaName = schemaName
             self.author = author
             self.format = format
-           
         }
     }
 
@@ -204,7 +201,7 @@ pub contract NFTContract: NonFungibleToken {
             // Before creating template, we need to check template data, if it is valid against given schema or not
             let schema = NFTContract.allSchemas[schemaId]!
             NFTContract.validateData(format:schema.format, data: immutableData)
- 
+            
             self.templateId = NFTContract.lastIssuedTemplateId
             self.brandId = brandId
             self.schemaId = schemaId
@@ -212,7 +209,6 @@ pub contract NFTContract: NonFungibleToken {
             self.immutableData = immutableData
             self.mutableData = mutableData
             self.issuedSupply = 0
-           
         }
 
         // a method to get update MutableData field of Template
@@ -383,7 +379,8 @@ pub contract NFTContract: NonFungibleToken {
         pub fun createSchema(schemaName: String, format: {String: SchemaType})
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}?)
         pub fun updateTemplateMutableData(templateId: UInt64, newMutableData: {String: AnyStruct})
-        pub fun mintNFT(templateId: UInt64, account: Address)
+        pub fun mintNFT(templateId: UInt64, account: Address, immutableData:{String:AnyStruct}?)
+        pub fun removeTemplateById(templateId: UInt64) 
     }
     
     //AdminCapability to add whiteListedAccounts
