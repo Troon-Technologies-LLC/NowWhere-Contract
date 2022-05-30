@@ -268,7 +268,7 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-  test("test transaction  create template", async () => {
+  test("test transaction create template", async () => {
     const name = "createTemplateStaticData";
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
@@ -1351,7 +1351,7 @@ describe("TransactionsToUpdate", () => {
       name,
       addressMap,
     });
-    // brandId, schemaId, maxSupply,immutableData
+    // brandId, schemaId, maxSupply, immutableData
     const args = [2];
     let txResult;
     try {

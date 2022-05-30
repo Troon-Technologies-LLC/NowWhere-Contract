@@ -13,8 +13,7 @@ pub contract NFTContract: NonFungibleToken {
     pub event BrandUpdated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
     pub event SchemaCreated(schemaId: UInt64, schemaName: String, author: Address)
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
-    pub event CompleteTemplateUpdated(templateId: UInt64, author: Address)
-    pub event TemplateUpdatedWithParticularPair(templateId: UInt64, author: Address)
+    pub event TemplateUpdated(templateId: UInt64)
     pub event TemplateRemoved(templateId: UInt64)
 
     // Paths
@@ -516,7 +515,7 @@ pub contract NFTContract: NonFungibleToken {
             }
 
             NFTContract.allTemplates[templateId]!.updateCompleteMutableData(newMutableData: newMutableData)
-            emit CompleteTemplateUpdated(templateId: templateId, author: NFTContract.allBrands[oldTemplate!.brandId]!.author)
+            emit TemplateUpdated(templateId: templateId)
         }
 
         //method to update or add particular key-value pair in Template's mutable data, only author of brand can update this template
@@ -535,7 +534,7 @@ pub contract NFTContract: NonFungibleToken {
             }
 
             NFTContract.allTemplates[templateId]!.updateMutableDataForParticularKey(key: key, value: value)
-            emit TemplateUpdatedWithParticularPair(templateId: templateId, author: NFTContract.allBrands[oldTemplate!.brandId]!.author)
+            emit TemplateUpdated(templateId: templateId)
         }
 
         //method to mint NFT, only access by the verified user
