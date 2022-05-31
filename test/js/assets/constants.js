@@ -35,7 +35,7 @@ const flowConfig = {
     emulatorPort: 8080,
     gRPCServerPort: 3569,
     restAPIPort: 8888,
-    basePath:"../.."
+    basePath:"../../.."
 
 }
 

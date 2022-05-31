@@ -24,7 +24,7 @@ import {
     timeoutLimit,
     minBalance,
     testingTokenAmount
-} from './assets/constants';
+} from '../assets/constants';
 
 
 jest.setTimeout(timeoutLimit);
@@ -43,7 +43,7 @@ afterAll(async () => {
 });
 
 describe("Flow Setup", () => {
-    test("Create Accounts", async () => {
+    test("Account creation", async () => {
         //creating 2 accounts
         const Alice = await getAccountAddress(accountNames.alice);
         const Bob = await getAccountAddress(accountNames.bob);

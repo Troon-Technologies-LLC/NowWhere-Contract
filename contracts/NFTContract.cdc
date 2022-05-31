@@ -12,7 +12,6 @@ pub contract NFTContract: NonFungibleToken {
     pub event BrandUpdated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
     pub event SchemaCreated(schemaId: UInt64, schemaName: String, author: Address)
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
-    pub event TemplateUpdated(templateId: UInt64, author: Address)
     pub event TemplateRemoved(templateId: UInt64)
     pub event TemplateUpdated(templateId: UInt64, author: Address)
 
