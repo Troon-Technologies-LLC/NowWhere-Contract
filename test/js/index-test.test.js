@@ -95,11 +95,7 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
-<<<<<<< HEAD
-      console.log("result:", result);
-=======
       console.log("result:", result)
->>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
     } catch (e) {
       console.log(e);
       console.log("errror");
@@ -126,11 +122,7 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
-<<<<<<< HEAD
-      console.log("NowWhereContract deploy result:", result);
-=======
       console.log("NowWhereContract deploy result:", result)
->>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
     } catch (e) {
       console.log(e);
     }
@@ -364,7 +356,7 @@ describe("Transactions", () => {
 
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
+    const NFTContract = await getContractAddress("NFTContract");``
     const NowWhereContract = await getContractAddress("NowWhereContract");
     const addressMap = {
       NowWhereContract,
@@ -635,11 +627,6 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
-<<<<<<< HEAD
-  /* 
-=======
-
->>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
   test("test transaction remove template", async () => {
     const name = "removeTemplate";
     // Import participating accounts
@@ -675,7 +662,6 @@ describe("Transactions", () => {
     }
     expect(txResult.errorMessage).toBe(undefined);
   });
-*/
   //update drop testcase
   test("test transaction  create drop", async () => {
     const name = "createDropStaticData";
@@ -700,15 +686,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-<<<<<<< HEAD
-    const args = [
-      3,
-      currentTimeInSeconds + 10000000.0,
-      currentTimeInSeconds + 20000000.0,
-    ];
-=======
     const args = [3, currentTimeInSeconds + 10000000.0, currentTimeInSeconds + 20000000.0];
->>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
 
     let txResult;
     try {
@@ -791,11 +769,7 @@ describe("Transactions", () => {
     });
     var test = 1;
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
-<<<<<<< HEAD
-    currentTimeInSeconds = currentTimeInSeconds + 10000000.0;
-=======
     currentTimeInSeconds = currentTimeInSeconds + 10000000.0
->>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
     const args = [2, currentTimeInSeconds, currentTimeInSeconds + 20000000.0];
 
     let txResult;
@@ -1362,7 +1336,7 @@ describe("TransactionsToUpdate", () => {
 
     // Transaction result will hold status, events and error message
     console.log({ txResult }, { error });
-    expect(txResult.errorMessage).toBe(null);
+    expect(txResult.errorMessage).toBe(undefined);
   });
 
   test("test transaction to Update the Template's MUtable Data", async () => {
