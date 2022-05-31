@@ -4,7 +4,7 @@
 
 A common order of creating Drop would be
 
-- Create Admin Account with `transaction/setupAdminAccount`.
+- Create Admin Account with `transactions/setupAdminAccount`.
 - Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop 
   and purchase Drop with `transactions/addAdminAccount` 
 - Create new Brand with `transactions/createBrand` using Admin Account.

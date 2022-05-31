@@ -34,7 +34,7 @@ the core functionality of the NFT.
 
 | Network | Contract Address     |
 | ------- | -------------------- |
-| Testnet | `0x7172dabff94b6047` |
+| Testnet | `0xf93e36240366a450` |
 | Mainnet | `0x1e075b24abe6eca6` |
 
 ## Instructions for creating Brand, Schema, Template and Mint Templates
@@ -44,7 +44,7 @@ A common order of creating NFT would be
 1. Creating new Brand with `transactions/createBrand.cdc` transaction.
 2. Creating new Schema with `transactions/createSchema.cdc` transaction.
 3. Creating new Template with `transactions/createTemplate.cdc` transaction.
-4. Create NFT receiver with `transaction/setupAccount.cdc` transaction for the end-user who will receive the NFT.
+4. Create NFT receiver with `transactions/setupAccount.cdc` transaction for the end-user who will receive the NFT.
 5. Mint NFT and transfer that NFT to given address(having NFT-receiver) with `transactions/mintTemplate.cdc` transaction.
 
 You can also call scripts to fetch and verify the data, basic scripts would be
@@ -86,7 +86,7 @@ You can also call scripts to fetch and verify the data, basic scripts would be
 
 ## Event for NFT
 
-- `pub event NFTMinted(nftId:UInt64, templateId:UInt64, mintNumber: UInt64`
+- `pub event NFTMinted(nftId:UInt64, templateId:UInt64, mintNumber: UInt64)`
   Emitted when a NFT is minted
 
 - `pub event NFTDestroyed(id: UInt64)`
