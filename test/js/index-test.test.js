@@ -1385,6 +1385,7 @@ describe("ScriptsToGetUpdatedData", () => {
       NonFungibleToken,
       NFTContract,
     };
+    
     let code = await getScriptCode({
       name,
       addressMap,
