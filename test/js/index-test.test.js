@@ -2,6 +2,7 @@ import path from "path";
 import {
   init,
   emulator,
+  shallPass,
   getAccountAddress,
   deployContractByName,
   getContractCode,
@@ -1281,7 +1282,7 @@ describe("TransactionsToUpdate", () => {
     });
     // brandId, schemaId, maxSupply,immutableData
     const args = [1];
-    let txResult;
+ /*   let txResult;
     try {
       txResult = await sendTransaction({
         code,
@@ -1290,9 +1291,21 @@ describe("TransactionsToUpdate", () => {
       });
     } catch (e) {
       console.log(e);
-    }
-    console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    }*/
+ //   console.log("tx Result", txResult);
+  //  expect(txResult.errorMessage).toBe(undefined);
+
+    const [txResult, error] = await shallPass(
+      sendTransaction({
+        code,
+        signers,
+        args,
+      }),
+    );
+
+    // Transaction result will hold status, events and error message
+    console.log({ txResult }, { error });
+    expect(txResult.errorMessage).toBe(null);
   });
 
   test("test transaction to Update the Template's MUtable Data", async () => {
