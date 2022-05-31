@@ -39,8 +39,9 @@ describe("Replicate Playground Accounts", () => {
     const Bob = await getAccountAddress("Bob");
     const Charlie = await getAccountAddress("Charlie");
     const Dave = await getAccountAddress("Dave");
-    const Dani = await getAccountAddress("Dani");
 
+    const Dani = await getAccountAddress("Dani");
+    const Fahim = await getAccountAddress("Fahim");
     console.log(
       "Four Playground accounts were created with following addresses"
     );
@@ -48,7 +49,9 @@ describe("Replicate Playground Accounts", () => {
     console.log("Bob:", Bob);
     console.log("Charlie:", Charlie);
     console.log("Dave:", Dave);
+
     console.log("Dani:", Dani);
+    console.log("Fahim:", Fahim);
     //mint the flow to the user account
     const data = await mintFlow(Bob, "42.0");
     const updatedBalance = await getFlowBalance(Bob);
@@ -92,7 +95,11 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
+<<<<<<< HEAD
       console.log("result:", result);
+=======
+      console.log("result:", result)
+>>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
     } catch (e) {
       console.log(e);
       console.log("errror");
@@ -119,7 +126,11 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
+<<<<<<< HEAD
       console.log("NowWhereContract deploy result:", result);
+=======
+      console.log("NowWhereContract deploy result:", result)
+>>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
     } catch (e) {
       console.log(e);
     }
@@ -624,7 +635,11 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
+<<<<<<< HEAD
   /* 
+=======
+
+>>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
   test("test transaction remove template", async () => {
     const name = "removeTemplate";
     // Import participating accounts
@@ -685,11 +700,15 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
+<<<<<<< HEAD
     const args = [
       3,
       currentTimeInSeconds + 10000000.0,
       currentTimeInSeconds + 20000000.0,
     ];
+=======
+    const args = [3, currentTimeInSeconds + 10000000.0, currentTimeInSeconds + 20000000.0];
+>>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
 
     let txResult;
     try {
@@ -772,7 +791,11 @@ describe("Transactions", () => {
     });
     var test = 1;
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+<<<<<<< HEAD
     currentTimeInSeconds = currentTimeInSeconds + 10000000.0;
+=======
+    currentTimeInSeconds = currentTimeInSeconds + 10000000.0
+>>>>>>> 100b9e4e218fca8db006813c5268d66ecbb8f47f
     const args = [2, currentTimeInSeconds, currentTimeInSeconds + 20000000.0];
 
     let txResult;
