@@ -92,10 +92,10 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
-      console.log("result:",result)
+      console.log("result:", result);
     } catch (e) {
       console.log(e);
-      console.log("errror")
+      console.log("errror");
     }
     expect(name).toBe("NFTContract");
   });
@@ -106,7 +106,7 @@ describe("Deployment", () => {
     let update = true;
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    console.log("NowWhereContract:", NFTContract)
+    console.log("NowWhereContract:", NFTContract);
     let addressMap = {
       NonFungibleToken,
       NFTContract,
@@ -119,7 +119,7 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
-      console.log("NowWhereContract deploy result:",result)
+      console.log("NowWhereContract deploy result:", result);
     } catch (e) {
       console.log(e);
     }
@@ -137,8 +137,8 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    console.log("NFTContract:", NFTContract)
-    console.log("NonFungibleToken:", NonFungibleToken)
+    console.log("NFTContract:", NFTContract);
+    console.log("NonFungibleToken:", NonFungibleToken);
     const addressMap = {
       NonFungibleToken,
       NFTContract,
@@ -341,7 +341,6 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-
   test("test transaction  create drop", async () => {
     const name = "createDropStaticData";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
@@ -365,7 +364,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [1, currentTimeInSeconds, currentTimeInSeconds+20000000.0];
+    const args = [1, currentTimeInSeconds, currentTimeInSeconds + 20000000.0];
 
     let txResult;
     try {
@@ -380,7 +379,7 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
-  
+
   test("add owner vault", async () => {
     const name = "addOwnerVault";
 
@@ -450,7 +449,6 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-
   test("test transaction purchase drop", async () => {
     const name = "purchaseDrop";
 
@@ -485,7 +483,6 @@ describe("Transactions", () => {
         signers,
         args,
       });
-
     } catch (e) {
       console.log(e);
     }
@@ -538,7 +535,6 @@ describe("Transactions", () => {
     expect(updatedBalance1.toString()).toBe(userOne);
     expect(updatedBalance2.toString()).toBe(user2);
   });
-
 
   test("purchase drop with flow", async () => {
     const name = "purchaseNFTWithFlow";
@@ -628,7 +624,7 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult.errorMessage).toBe(undefined);
   });
- /* 
+  /* 
   test("test transaction remove template", async () => {
     const name = "removeTemplate";
     // Import participating accounts
@@ -689,7 +685,11 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [3, currentTimeInSeconds+10000000.0, currentTimeInSeconds+20000000.0];
+    const args = [
+      3,
+      currentTimeInSeconds + 10000000.0,
+      currentTimeInSeconds + 20000000.0,
+    ];
 
     let txResult;
     try {
@@ -728,7 +728,7 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [3, currentTimeInSeconds,  currentTimeInSeconds+40000000.0];
+    const args = [3, currentTimeInSeconds, currentTimeInSeconds + 40000000.0];
 
     let txResult;
     try {
@@ -772,8 +772,8 @@ describe("Transactions", () => {
     });
     var test = 1;
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
-    currentTimeInSeconds = currentTimeInSeconds + 10000000.0
-    const args = [2, currentTimeInSeconds, currentTimeInSeconds+20000000.0];
+    currentTimeInSeconds = currentTimeInSeconds + 10000000.0;
+    const args = [2, currentTimeInSeconds, currentTimeInSeconds + 20000000.0];
 
     let txResult;
     try {
@@ -1084,6 +1084,41 @@ describe("Scripts", () => {
     });
     console.log("result", result);
   });
+
+  test("get template data by Id", async () => {
+    const name = "getTemplateById";
+    const Bob = await getAccountAddress("Bob");
+
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+    };
+    let code = await getScriptCode({
+      name,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x01": Alice,
+          "0x02": Bob,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+    const args = [2];
+    const result = await executeScript({
+      code,
+      args,
+    });
+    console.log("result", result);
+  });
+
   test("get drop data ", async () => {
     const name = "getAllDrops";
     const Bob = await getAccountAddress("Bob");
@@ -1157,7 +1192,7 @@ describe("Scripts", () => {
   });
   test("get all nfts  data", async () => {
     const name = "getAllNFTIds";
-    const Dani= await getAccountAddress("Dani");
+    const Dani = await getAccountAddress("Dani");
 
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
@@ -1257,7 +1292,6 @@ describe("Scripts", () => {
     console.log("result", result);
   });
 });
-
 
 describe("TransactionsToUpdate", () => {
   test("test transaction to Update the Template's MUtable Data", async () => {
@@ -1417,8 +1451,6 @@ describe("TransactionsToUpdate", () => {
   });
 });
 
-
-
 describe("ScriptsToGetUpdatedData", () => {
   test("get template data by Id", async () => {
     const name = "getTemplateById";
@@ -1454,7 +1486,6 @@ describe("ScriptsToGetUpdatedData", () => {
     console.log("result", result);
   });
 
-
   test("get template mutable data by Id", async () => {
     const name = "getTemplateMutableData";
     const Bob = await getAccountAddress("Bob");
@@ -1488,7 +1519,6 @@ describe("ScriptsToGetUpdatedData", () => {
     });
     console.log("result", result);
   });
-
 
   test("get template data by Id", async () => {
     const name = "getTemplateById";

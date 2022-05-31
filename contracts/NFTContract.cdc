@@ -67,8 +67,11 @@ pub contract NFTContract: NonFungibleToken {
         pub case Any
     }
 
-    // method to validate data against related schema forma
-    pub fun validateData(format:{String: SchemaType},data: {String: AnyStruct}){
+    /*  
+    *   Method to validate template's Immutable data as per the one defined in related schema format
+    *   Immutable data's keys and their value types must be according to the schema format defination
+    */
+    pub fun validateDataAgainstSchema(format: {String: SchemaType}, data: {String: AnyStruct}) {
        
             var invalidKey: String = ""
             var isValidTemplate = true
@@ -160,16 +163,14 @@ pub contract NFTContract: NonFungibleToken {
         }
     }
 
-    /*
-    * Schema
-    *   Schema will be data-structure of a NFT. 
-    *   Schema has key name and data-type of its value, which will be used for serialization and deserialization (in future work)
-    */
+
+       // A structure that contain all the data related to a Schema
     pub struct Schema {
         pub let schemaId: UInt64
         pub let schemaName: String
         pub let author: Address
         access(contract) let format: {String: SchemaType}
+     
 
         init(schemaName: String, author: Address, format: {String: SchemaType}){
             pre {
@@ -181,6 +182,7 @@ pub contract NFTContract: NonFungibleToken {
             self.schemaName = schemaName
             self.author = author
             self.format = format
+           
         }
     }
 
@@ -197,7 +199,7 @@ pub contract NFTContract: NonFungibleToken {
         pub var maxSupply: UInt64
         pub var issuedSupply: UInt64
         access(contract) var immutableData: {String: AnyStruct}
-        access(all) var mutableData: {String: AnyStruct}?
+        access(contract) var mutableData: {String: AnyStruct}?
 
         init(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}?) {
             pre {
@@ -208,7 +210,7 @@ pub contract NFTContract: NonFungibleToken {
             }
             // Before creating template, we need to check template data, if it is valid against given schema or not
             let schema = NFTContract.allSchemas[schemaId]!
-            NFTContract.validateData(format:schema.format, data: immutableData)
+            NFTContract.validateDataAgainstSchema(format:schema.format, data: immutableData)
  
             self.templateId = NFTContract.lastIssuedTemplateId
             self.brandId = brandId
@@ -221,26 +223,16 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         // a method to update entire MutableData field of Template
-        pub fun updateCompleteMutableData(newMutableData: {String:AnyStruct}) {     
+        pub fun updateCompleteMutableData(newMutableData: {String: AnyStruct}) {     
                 self.mutableData = newMutableData
         }
 
         // a method to update or add particular pair in MutableData field of Template
-        pub fun updateMutableDataForParticularKey(key:String,value:AnyStruct){
-                pre{
-                    self.mutableData?.length != nil: "Mutable data is nil, update complete mutable layer instead!"
-                }
-                self.mutableData?.insert(key: key, value)
+        pub fun updateMutableDataForParticularKey(key: String, value: AnyStruct){
+            pre{
+                self.mutableData?.length != nil: "Mutable data is nil, update complete mutable data of template instead!"
             }
-
-        // a method to get ImmutableData field of Template
-        pub fun getImmutableData(): {String:AnyStruct} {
-            return self.immutableData
-        }
-
-        // a method to get the mutable data of the template
-        pub fun getmutableData(): {String:AnyStruct}? {
-            return self.mutableData
+            self.mutableData?.insert(key: key, value)
         }
 
         // a method to increment issued supply for template
@@ -626,6 +618,16 @@ pub contract NFTContract: NonFungibleToken {
         return NFTContract.allTemplates[templateId]!
     } 
 
+    //method to get data at immutableData field of Template
+    pub fun getImmutableData(templateId: UInt64): {String:AnyStruct} {
+        return NFTContract.allTemplates[templateId]!.immutableData
+    }
+
+     //method to get data at mutableData field of template
+    pub fun getMutableData(templateId: UInt64): {String: AnyStruct}?{
+        return NFTContract.allTemplates[templateId]!.mutableData
+    }
+    
     //method to get nft-data by id
     pub fun getNFTDataById(nftId: UInt64): NFTData {
         pre {
