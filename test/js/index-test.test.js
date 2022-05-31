@@ -162,7 +162,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction add admin Account", async () => {
@@ -200,7 +200,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx result ", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
   test("test transaction  create brand", async () => {
     const name = "createBrand";
@@ -234,7 +234,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
   test("test transaction  create Schema", async () => {
     const name = "createSchema";
@@ -269,7 +269,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction  create template", async () => {
@@ -305,7 +305,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction  create drop", async () => {
@@ -345,7 +345,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("add owner vault", async () => {
@@ -380,7 +380,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("create user empty collection", async () => {
@@ -414,7 +414,7 @@ describe("Transactions", () => {
     }
     console.log("tx Result", txResult);
     console.log("done empty collection");
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction purchase drop", async () => {
@@ -455,7 +455,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("create user empty collection", async () => {
@@ -488,7 +488,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    // expect(txResult.errorMessage).toBe("");
+    // expect(txResult[0].status).toBe("");
   });
   test("check intial balance of both user owner and buyer", async () => {
     let userOne = "0.00100000,";
@@ -538,7 +538,7 @@ describe("Transactions", () => {
     }
     console.log("tx Result", txResult);
     console.log("done the user purchase with flow");
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("check final balance of both user owner and buyer", async () => {
@@ -590,7 +590,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
   test("test transaction remove template", async () => {
     const name = "removeTemplate";
@@ -625,7 +625,7 @@ describe("Transactions", () => {
     } catch (e) {
       console.log(e);
     }
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
   //update drop testcase
   //create new template
@@ -662,7 +662,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction  create drop", async () => {
@@ -705,7 +705,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   //updating the start date, end date and templates
@@ -751,7 +751,7 @@ describe("Transactions", () => {
     console.log("update drop is done");
     console.log("Update the drop with correct params");
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   //updating the start date
@@ -793,7 +793,7 @@ describe("Transactions", () => {
     console.log("update drop is done");
     console.log("Update the start date with correct params");
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
   //updating the end date
   test("test transaction  Update drop", async () => {
@@ -834,7 +834,7 @@ describe("Transactions", () => {
     console.log("update drop is done");
     console.log("Update the start date and end date with correct params");
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
   //updating with wrong params
   test("test transaction  Update drop", async () => {
@@ -874,8 +874,8 @@ describe("Transactions", () => {
     }
     console.log("update drop is done");
     console.log("Update the drop with wrong params");
-    console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    //console.log("tx Result", txResult);
+    expect(txResult[1]).toMatch("All values are nil");
   });
   //updating the end date
   test("test transaction  Update drop", async () => {
@@ -915,8 +915,8 @@ describe("Transactions", () => {
     }
     console.log("update drop is done");
     console.log("Update the end date and with wrong params");
-    console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    //console.log("tx Result", txResult);
+    expect(txResult[1]).toMatch("can't update end date");
   });
 
   //remove drop test case
@@ -960,7 +960,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction  remove drop", async () => {
@@ -1001,7 +1001,7 @@ describe("Transactions", () => {
       console.log("Error", e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 });
 describe("Scripts", () => {
@@ -1466,7 +1466,7 @@ describe("TransactionsToUpdate", () => {
       console.log(e);
     }*/
     //   console.log("tx Result", txResult);
-    //  expect(txResult.errorMessage).toBe(undefined);
+    //  expect(txResult[0].status).toBe(4);
 
     const [txResult, error] = await shallPass(
       sendTransaction({
@@ -1478,7 +1478,7 @@ describe("TransactionsToUpdate", () => {
 
     // Transaction result will hold status, events and error message
     console.log({ txResult }, { error });
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction to Update the Template's MUtable Data", async () => {
@@ -1514,7 +1514,7 @@ describe("TransactionsToUpdate", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction to Update the Template's MUtable Data", async () => {
@@ -1550,7 +1550,7 @@ describe("TransactionsToUpdate", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 
   test("test transaction to Update the Template's MUtable Data", async () => {
@@ -1586,7 +1586,7 @@ describe("TransactionsToUpdate", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
-    expect(txResult.errorMessage).toBe(undefined);
+    expect(txResult[0].status).toBe(4);
   });
 });
 
