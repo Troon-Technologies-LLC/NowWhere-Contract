@@ -6,15 +6,15 @@ pub contract NFTContract: NonFungibleToken {
     pub event ContractInitialized()
     pub event Withdraw(id: UInt64, from: Address?)
     pub event Deposit(id: UInt64, to: Address?)
-    pub event NFTBorrowed(id: UInt64)
     pub event NFTDestroyed(id: UInt64)
     pub event NFTMinted(nftId: UInt64, templateId: UInt64, mintNumber: UInt64)
-    pub event BrandCreated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
-    pub event BrandUpdated(brandId: UInt64, brandName: String, author: Address, data:{String: String})
+    pub event BrandCreated(brandId: UInt64, brandName: String, author: Address, data: {String: String})
+    pub event BrandUpdated(brandId: UInt64, brandName: String, author: Address, data:  {String: String})
     pub event SchemaCreated(schemaId: UInt64, schemaName: String, author: Address)
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
     pub event TemplateUpdated(templateId: UInt64)
     pub event TemplateRemoved(templateId: UInt64)
+
 
     // Paths
     pub let AdminResourceStoragePath: StoragePath
@@ -67,8 +67,11 @@ pub contract NFTContract: NonFungibleToken {
         pub case Any
     }
 
-    // method to validate data against related schema forma
-    pub fun validateData(format:{String: SchemaType},data: {String: AnyStruct}){
+    /*  
+    *   Method to validate template's Immutable data as per the one defined in related schema format
+    *   Immutable data's keys and their value types must be according to the schema format defination
+    */
+    pub fun validateDataAgainstSchema(format: {String: SchemaType}, data: {String: AnyStruct}) {
        
             var invalidKey: String = ""
             var isValidTemplate = true
@@ -207,7 +210,7 @@ pub contract NFTContract: NonFungibleToken {
             }
             // Before creating template, we need to check template data, if it is valid against given schema or not
             let schema = NFTContract.allSchemas[schemaId]!
-            NFTContract.validateData(format:schema.format, data: immutableData)
+            NFTContract.validateDataAgainstSchema(format: schema.format, data: immutableData)
  
             self.templateId = NFTContract.lastIssuedTemplateId
             self.brandId = brandId
@@ -220,17 +223,17 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         // a method to update entire MutableData field of Template
-        pub fun updateCompleteMutableData(newMutableData: {String:AnyStruct}) {     
+        pub fun updateCompleteMutableData(newMutableData: {String: AnyStruct}) {     
                 self.mutableData = newMutableData
         }
 
         // a method to update or add particular pair in MutableData field of Template
-        pub fun updateMutableDataForParticularKey(key:String,value:AnyStruct){
-                pre{
-                    self.mutableData?.length != nil: "Mutable data is nil, update complete mutable layer instead!"
-                }
-                self.mutableData?.insert(key: key, value)
+        pub fun updateMutableDataForParticularKey(key: String, value: AnyStruct){
+            pre{
+                self.mutableData?.length != nil: "Mutable data is nil, update complete mutable data of template instead!"
             }
+            self.mutableData?.insert(key: key, value)
+        }
 
         // a method to increment issued supply for template
         access(contract) fun incrementIssuedSupply(): UInt64 {
@@ -251,10 +254,16 @@ pub contract NFTContract: NonFungibleToken {
     pub struct NFTData {
         pub let templateID: UInt64
         pub let mintNumber: UInt64
+        access(contract) var immutableData: {String: AnyStruct}?
 
-        init(templateID: UInt64, mintNumber: UInt64) {
+        init(templateID: UInt64, mintNumber: UInt64, immutableData: {String: AnyStruct}?) {
             self.templateID = templateID
             self.mintNumber = mintNumber
+            self.immutableData = immutableData
+        }
+        // a method to get the immutable data of the NFT
+        pub fun getImmutableData(): {String: AnyStruct}? {
+            return self.immutableData
         }
     }
 
@@ -267,10 +276,10 @@ pub contract NFTContract: NonFungibleToken {
         pub let id: UInt64
         access(contract) let data: NFTData
 
-        init(templateID: UInt64, mintNumber: UInt64) {
+        init(templateID: UInt64, mintNumber: UInt64, immutableData: {String:AnyStruct}?) {
             NFTContract.totalSupply = NFTContract.totalSupply + 1
             self.id = NFTContract.totalSupply
-            NFTContract.allNFTs[self.id] = NFTData(templateID: templateID, mintNumber: mintNumber)
+            NFTContract.allNFTs[self.id] = NFTData(templateID: templateID, mintNumber: mintNumber, immutableData: immutableData)
             self.data = NFTContract.allNFTs[self.id]!
             emit NFTMinted(nftId: self.id, templateId: templateID, mintNumber: mintNumber)
         }
@@ -369,9 +378,10 @@ pub contract NFTContract: NonFungibleToken {
         pub fun createSchema(schemaName: String, format: {String: SchemaType})
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}?)
         pub fun updateCompleteTemplateMutableData(templateId: UInt64, newMutableData: {String: AnyStruct})
-        pub fun updateTemplateMutableDataForParticularKey(templateId: UInt64, key: String, value:AnyStruct)
-        pub fun mintNFT(templateId: UInt64, account: Address)
+        pub fun updateTemplateMutableDataForParticularKey(templateId: UInt64, key: String, value: AnyStruct)
+        pub fun mintNFT(templateId: UInt64, account: Address, immutableData:{String:AnyStruct}?)
         pub fun removeTemplateById(templateId: UInt64)
+        
     }
     
     //AdminCapability to add whiteListedAccounts
@@ -527,7 +537,7 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         //method to mint NFT, only access by the verified user
-        pub fun mintNFT(templateId: UInt64, account: Address) {
+        pub fun mintNFT(templateId: UInt64, account: Address, immutableData:{String:AnyStruct}?) {
             pre{
                 // the transaction will instantly revert if 
                 // the capability has not been added
@@ -539,9 +549,9 @@ pub contract NFTContract: NonFungibleToken {
             let receiptAccount = getAccount(account)
             let recipientCollection = receiptAccount
                 .getCapability(NFTContract.CollectionPublicPath)
-                .borrow<&{NonFungibleToken.CollectionPublic}>()
+                .borrow<&{NFTContract.NFTContractCollectionPublic}>()
                 ?? panic("Could not get receiver reference to the NFT Collection")
-            var newNFT: @NFT <- create NFT(templateID: templateId, mintNumber: NFTContract.allTemplates[templateId]!.incrementIssuedSupply())
+            var newNFT: @NFT <- create NFT(templateID: templateId, mintNumber: NFTContract.allTemplates[templateId]!.incrementIssuedSupply(), immutableData:immutableData)
             recipientCollection.deposit(token: <-newNFT)
         }
 
@@ -615,14 +625,14 @@ pub contract NFTContract: NonFungibleToken {
         return NFTContract.allTemplates[templateId]!
     } 
 
-     // a method to get the mutable data of the template
-    pub fun getMutableData(templateId: UInt64): {String: AnyStruct}?{
-        return NFTContract.allTemplates[templateId]!.mutableData
-    }
-
-    // a method to get ImmutableData field of Template
+    //method to get data at immutableData field of Template
     pub fun getImmutableData(templateId: UInt64): {String:AnyStruct} {
         return NFTContract.allTemplates[templateId]!.immutableData
+    }
+
+     //method to get data at mutableData field of Template
+    pub fun getMutableData(templateId: UInt64): {String: AnyStruct}?{
+        return NFTContract.allTemplates[templateId]!.mutableData
     }
     
     //method to get nft-data by id
