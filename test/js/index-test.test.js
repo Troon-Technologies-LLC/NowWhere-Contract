@@ -1000,6 +1000,151 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult[0].status).toBe(4);
   });
+  //test-cases for lock template
+  test("test transaction  create template", async () => {
+    const name = "createTemplateStaticData";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [1, 1, 100];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult[0].status).toBe(4);
+  });
+
+  //lock the template
+  test("test transaction lock the template", async () => {
+    const name = "lockTemplate";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [4, true];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+      console.log("lock the Template result:", txResult);
+    } catch (e) {
+      console.log(e);
+    }
+    expect(txResult[0].status).toBe(4);
+  });
+  //lock the template that is already locked
+  test("test transaction lock the template", async () => {
+    const name = "lockTemplate";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [4, true];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    expect(txResult[1]).toMatch("Template is already locked");
+  });
+  //remove the template after lock
+  test("test transaction remove template", async () => {
+    const name = "removeTemplate";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [4];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    expect(txResult[1]).toMatch(
+      "You are not authorized to remove the template because the template is locked"
+    );
+  });
 });
 describe("Scripts", () => {
   test("get user NFT", async () => {
@@ -1254,6 +1399,40 @@ describe("Scripts", () => {
       args,
     });
     console.log("result", result);
+  });
+
+  test("get template is locked by Id", async () => {
+    const name = "getTemplateIsLocked";
+    const Charlie = await getAccountAddress("Charlie");
+
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+    };
+    let code = await getScriptCode({
+      name,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x02": Charlie,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+    const args = [4];
+    const result = await executeScript({
+      code,
+      args,
+    });
+
+    console.log("template is locked result", result);
   });
   test("get drop data ", async () => {
     const name = "getAllDrops";

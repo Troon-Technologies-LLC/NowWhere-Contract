@@ -1,5 +1,4 @@
-import NFTContract from "./NFTContract.cdc"
-
+import NFTContract from "../contracts/NFTContract.cdc"
 transaction (brandId: UInt64, brandName: String){
   prepare(acct: AuthAccount) {
 

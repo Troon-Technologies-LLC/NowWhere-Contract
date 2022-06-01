@@ -14,6 +14,7 @@ pub contract NFTContract: NonFungibleToken {
     pub event SchemaCreated(schemaId: UInt64, schemaName: String, author: Address)
     pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)
     pub event TemplateRemoved(templateId: UInt64)
+    pub event TemplateLocked(templateId: UInt64)
 
     // Paths
     pub let AdminResourceStoragePath: StoragePath
@@ -130,6 +131,7 @@ pub contract NFTContract: NonFungibleToken {
         pub let schemaId: UInt64
         pub var maxSupply: UInt64
         pub var issuedSupply: UInt64
+        pub var locked: Bool
         access(contract) var immutableData: {String: AnyStruct}
 
         init(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}) {
@@ -146,6 +148,7 @@ pub contract NFTContract: NonFungibleToken {
             self.maxSupply = maxSupply
             self.immutableData = immutableData
             self.issuedSupply = 0
+            self.locked = false
             // Before creating template, we need to check template data, if it is valid against given schema or not
             let schema = NFTContract.allSchemas[schemaId]!
             var invalidKey: String = ""
@@ -222,6 +225,15 @@ pub contract NFTContract: NonFungibleToken {
 
             self.issuedSupply = self.issuedSupply + 1
             return self.issuedSupply
+        }
+
+        // A method to lock the template
+        pub fun lockTemplate(status: Bool){
+            pre {
+                self.locked != true: "template is locked"
+                status != false: "invalid status" 
+            }
+            self.locked = status
         }
     }
 
@@ -352,6 +364,7 @@ pub contract NFTContract: NonFungibleToken {
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct})
         pub fun mintNFT(templateId: UInt64, account: Address)
         pub fun removeTemplateById(templateId: UInt64)
+        pub fun lockTemplateById(templateId: UInt64, status: Bool)
     }
     
     //AdminCapability to add whiteListedAccounts
@@ -476,6 +489,7 @@ pub contract NFTContract: NonFungibleToken {
                 NFTContract.whiteListedAccounts.contains(self.owner!.address): "you are not authorized for this action"
                 self.ownedTemplates[templateId]!= nil: "Minter does not have specific template Id"
                 NFTContract.allTemplates[templateId] != nil: "Template Id must be valid"
+                NFTContract.allTemplates[templateId]!.locked != true: "You are not authorized because the template is locked"
                 }
             let receiptAccount = getAccount(account)
             let recipientCollection = receiptAccount
@@ -493,10 +507,25 @@ pub contract NFTContract: NonFungibleToken {
                 NFTContract.whiteListedAccounts.contains(self.owner!.address): "you are not authorized for this action"
                 templateId != nil: "invalid template id"
                 NFTContract.allTemplates[templateId]!=nil: "template id does not exist"
-                NFTContract.allTemplates[templateId]!.issuedSupply == 0: "could not remove template with given id"   
+                NFTContract.allTemplates[templateId]!.issuedSupply == 0: "could not remove template with given id"
+                NFTContract.allTemplates[templateId]!.locked != true: "You are not authorized to remove the template because the template is locked"
             }
             NFTContract.allTemplates.remove(key: templateId)
             emit TemplateRemoved(templateId: templateId)
+        }
+
+         // method to lock template by id
+        pub fun lockTemplateById(templateId: UInt64, status: Bool) {
+            pre {
+                self.capability != nil: "I don't have the special capability :("
+                NFTContract.whiteListedAccounts.contains(self.owner!.address): "you are not authorized for this action"
+                templateId != nil: "invalid template id"
+                NFTContract.allTemplates[templateId]!= nil: "template id does not exist"
+                NFTContract.allTemplates[templateId]!.locked != true: "Template is already locked"
+                status != false: "invalid status" 
+            }
+            NFTContract.allTemplates[templateId]!.lockTemplate(status: status)
+            emit TemplateLocked(templateId: templateId)
         }
 
         init() {
@@ -554,6 +583,14 @@ pub contract NFTContract: NonFungibleToken {
             NFTContract.allTemplates[templateId]!=nil: "Template id does not exist"
         }
         return NFTContract.allTemplates[templateId]!
+    } 
+
+    // method to get template is locked by id
+    pub fun isTemplateLocked(templateId: UInt64): Bool {
+        pre {
+            NFTContract.allTemplates[templateId]!= nil: "Template id does not exist"
+        }
+        return NFTContract.allTemplates[templateId]!.locked
     } 
 
     //method to get nft-data by id

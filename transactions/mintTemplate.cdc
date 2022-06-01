@@ -1,5 +1,4 @@
-import NFTContract from "./NFTContract.cdc"
-
+import NFTContract from "../contracts/NFTContract.cdc"
 transaction(templateId: UInt64, account: Address){
     prepare(acct: AuthAccount) {
         let actorResource = acct.getCapability
