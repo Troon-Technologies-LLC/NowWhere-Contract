@@ -152,7 +152,7 @@ pub contract NowWhereContract {
             emit DropRemoved(dropId: dropId)
         }
 
-        pub fun purchaseNFT(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address){
+        pub fun purchaseNFT(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, immutableData:{String:AnyStruct}?) {
             pre {
                 mintNumbers > 0: "mint number must be greater than zero"
                 mintNumbers <= 10: "mint numbers must be less than ten"
@@ -169,13 +169,13 @@ pub contract NowWhereContract {
             assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply") 
             var i: UInt64 = 0
             while i < mintNumbers {
-                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
+                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress, immutableData:immutableData)
                 i = i + 1
             }
             emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
 
-        pub fun purchaseNFTWithFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault) {
+        pub fun purchaseNFTWithFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault, immutableData:{String:AnyStruct}?) {
             pre{
                 price > 0.0: "Price should be greater than zero"
                 receiptAddress !=nil: "invalid receipt Address"
@@ -199,7 +199,7 @@ pub contract NowWhereContract {
             
             var i: UInt64 = 0
             while i < mintNumbers {
-                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
+                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress, immutableData: immutableData)
                 i = i + 1
             }
             emit DropPurchasedWithFlow(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress,price: price)

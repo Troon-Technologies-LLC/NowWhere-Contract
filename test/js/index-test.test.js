@@ -413,7 +413,7 @@ describe("Transactions", () => {
   });
 
   test("test transaction purchase drop", async () => {
-    const name = "purchaseDrop";
+    const name = "purchaseDropStatic";
 
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
@@ -500,7 +500,7 @@ describe("Transactions", () => {
   });
 
   test("purchase drop with flow", async () => {
-    const name = "purchaseNFTWithFlow";
+    const name = "purchaseNFTWithFlowStatic";
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
     const Bob = await getAccountAddress("Bob");

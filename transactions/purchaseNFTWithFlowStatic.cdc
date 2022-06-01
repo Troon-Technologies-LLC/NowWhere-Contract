@@ -2,7 +2,7 @@ import NowWhereContract from "../contracts/NowWhereContract.cdc"
 import FungibleToken from 0xee82856bf20e2aa6 // emulator address
 import FlowToken from 0x0ae53cb6e3f42a79  // emulator address
 
-transaction(DropId: UInt64, TemplateId: UInt64, MintNumber: UInt64, receiptAddress: Address, Price: UFix64, immutableData:{String:AnyStruct}?) {
+transaction(DropId: UInt64, TemplateId: UInt64, MintNumber: UInt64, receiptAddress: Address, Price: UFix64) {
     //it holds the reference to the owner
     let adminRef: &NowWhereContract.DropAdmin
     // Temporary Vault object that holds the balance that is being transferred
@@ -19,7 +19,7 @@ transaction(DropId: UInt64, TemplateId: UInt64, MintNumber: UInt64, receiptAddre
   
     execute{
       
-      let dropResponse = self.adminRef.purchaseNFTWithFlow(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: receiptAddress, price:Price,flowPayment: <- self.temporaryVault, immutableData: immutableData)
+      let dropResponse = self.adminRef.purchaseNFTWithFlow(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: receiptAddress, price:Price,flowPayment: <- self.temporaryVault, immutableData: nil)
       
       log(dropResponse)
     }
