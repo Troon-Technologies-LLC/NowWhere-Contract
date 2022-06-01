@@ -44,7 +44,7 @@ afterAll(async () => {
 
 describe("NFT Contract Setup", () => {
     test("Account creation", async () => {
-        //creating 2 accounts
+        //creating accounts
         const Alice = await getAccountAddress(accountNames.alice);
         const Bob = await getAccountAddress(accountNames.bob);
         const Charlie = await getAccountAddress(accountNames.charlie);
@@ -67,7 +67,7 @@ describe("NFT Contract Setup", () => {
             update,
         });
 
-        //check if balance is not null & expception is null
+        //check if result instance is not null & expception is null
         expect(result[0]).not.toBeNull();
         expect(result[1]).toBeNull();
 
@@ -87,7 +87,7 @@ describe("NFT Contract Setup", () => {
             NonFungibleToken,
         };
 
-        //deploying contract to Alice accouont
+        //deploying contract to Bob accouont
         let result = await deployContractByName({
             name: contractName,
             to: Bob,
@@ -95,7 +95,7 @@ describe("NFT Contract Setup", () => {
             addressMap
         });
 
-        //check if balance is not null & expception is null
+        //check if result instance is not null & expception is null
         expect(result[0]).not.toBeNull();
         expect(result[1]).toBeNull();
 

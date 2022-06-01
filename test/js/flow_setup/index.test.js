@@ -88,17 +88,17 @@ describe("Flow Setup", () => {
         //mint flow tokens to Alice account
         await mintFlow(Alice, testingTokenAmount);
 
-        //fetching new Alice current balance
+        //fetching new Alice balance
         let aliceBalanceNew = await getFlowBalance(Alice);
 
         //check if balance is not null & expception is null
         expect(aliceBalanceNew[0]).not.toBeNull()
         expect(aliceBalanceNew[1]).toBeNull()
 
-        //check if new balance new balance is greater than new balance
+        //check if old balance is less than new balance
         expect(+aliceBalanceOld[0]).toBeLessThan(+aliceBalanceNew[0])
 
-        //check if balance increased as expected
+        //check if new balance increased as expected
         expect(+aliceBalanceOld[0] + testingTokenAmount).toEqual(+aliceBalanceNew[0])
 
     });
@@ -115,13 +115,14 @@ describe("Flow Setup", () => {
             update,
         });
 
-        //check if balance is not null & expception is null
+        //check if result instance is not null & expception is null
         expect(result[0]).not.toBeNull();
         expect(result[1]).toBeNull();
 
         //fetch contract address
         let contractAddress = await getContractAddress(contractName)
 
+        //check if contract-address is same as Alice address
         expect(contractAddress).toEqual(Alice)
     });
 
@@ -131,7 +132,6 @@ describe("Flow Setup", () => {
 
         //get Alice account
         const Alice = await getAccountAddress(accountNames.alice);
-
 
         //generate addressMap from import statements
         const FungibleToken = await getContractAddress(contractNames.fungibleToken, true);
