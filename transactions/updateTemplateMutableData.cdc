@@ -11,11 +11,13 @@ transaction (templateId:UInt64){
               .borrow() ?? 
               panic("could not borrow a reference to the NFTMethodsCapability interface")
 
-             
-        var key="game"
-        var value = "cricket"
+             let mutableData : {String: AnyStruct} = {   //}
+                "Keyboard" : "Qwerty",
+                "InputType" : "AlphaNumeric"
+              
+             }
 
-    actorResource.updateTemplateMutableDataForParticularKey(templateId: templateId, key: key, value: value)
+    actorResource.updateTemplateMutableData(templateId: templateId, newMutableData: mutableData)
 
   }
 }

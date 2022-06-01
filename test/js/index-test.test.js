@@ -305,6 +305,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
+    console.log("First template created");
     expect(txResult[0].status).toBe(4);
   });
 
@@ -590,6 +591,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
+    console.log("Second template created");
     expect(txResult[0].status).toBe(4);
   });
   test("test transaction remove template", async () => {
@@ -625,12 +627,13 @@ describe("Transactions", () => {
     } catch (e) {
       console.log(e);
     }
+    console.log("Second template removed");
     expect(txResult[0].status).toBe(4);
   });
   //update drop testcase
   //create new template
   test("test transaction  create template", async () => {
-    const name = "createTemplateStaticData";
+    const name = "createTemplateNilMutableData";
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
     // Set transaction signers
@@ -650,7 +653,7 @@ describe("Transactions", () => {
       addressMap,
     });
     // brandId, schemaId, maxSupply,immutableData
-    const args = [1, 1, 100];
+    const args = [1, 1, 200];
     let txResult;
     try {
       txResult = await sendTransaction({
@@ -662,6 +665,7 @@ describe("Transactions", () => {
       console.log(e);
     }
     console.log("tx Result", txResult);
+    console.log("Third template created with Nil mutable data");
     expect(txResult[0].status).toBe(4);
   });
 
@@ -1003,6 +1007,85 @@ describe("Transactions", () => {
     console.log("tx Result", txResult);
     expect(txResult[0].status).toBe(4);
   });
+
+  //update template test cases
+
+  test("test transaction to Update the Template's MUtable Data", async () => {
+    const name = "updateTemplateMutableAttribute";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [1];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    
+    console.log("tx Result", txResult);
+    console.log("Mutable attribute updated for first template");
+    expect(txResult[0].status).toBe(4);
+  });
+
+  test("test transaction to Update the Template's MUtable attribute", async () => {
+    const name = "updateTemplateMutableData";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [3];
+       let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    console.log("Mutable data updated for third template");
+    expect(txResult[0].status).toBe(4);
+  });
+
+
 });
 describe("Scripts", () => {
   test("get user NFT", async () => {
@@ -1258,6 +1341,40 @@ describe("Scripts", () => {
     });
     console.log("result", result);
   });
+
+  test("get template data by Id", async () => {
+    const name = "getTemplateById";
+    const Bob = await getAccountAddress("Bob");
+
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+    };
+    let code = await getScriptCode({
+      name,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x01": Alice,
+          "0x02": Bob,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+    const args = [3];
+    const result = await executeScript({
+      code,
+      args,
+    });
+    console.log("result", result);
+  });
   test("get drop data ", async () => {
     const name = "getAllDrops";
     const Bob = await getAccountAddress("Bob");
@@ -1430,169 +1547,9 @@ describe("Scripts", () => {
     });
     console.log("result", result);
   });
-});
-
-describe("TransactionsToUpdate", () => {
-  test("test transaction to Update the Template's MUtable Data", async () => {
-    const name = "updateCompleteTemplateMutableStaticData";
-    // Import participating accounts
-    const Charlie = await getAccountAddress("Charlie");
-    // Set transaction signers
-    const signers = [Charlie];
-    // Generate addressMap from import statements
-    const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
-    const NowWhereContract = await getContractAddress("NowWhereContract");
-    const addressMap = {
-      NonFungibleToken,
-      NFTContract,
-      NowWhereContract,
-    };
-
-    let code = await getTransactionCode({
-      name,
-      addressMap,
-    });
-    // brandId, schemaId, maxSupply,immutableData
-    const args = [1];
-    /*   let txResult;
-    try {
-      txResult = await sendTransaction({
-        code,
-        signers,
-        args,
-      });
-    } catch (e) {
-      console.log(e);
-    }*/
-    //   console.log("tx Result", txResult);
-    //  expect(txResult[0].status).toBe(4);
-
-    const [txResult, error] = await shallPass(
-      sendTransaction({
-        code,
-        signers,
-        args,
-      })
-    );
-
-    // Transaction result will hold status, events and error message
-    console.log({ txResult }, { error });
-    expect(txResult[0].status).toBe(4);
-  });
-
-  test("test transaction to Update the Template's MUtable Data", async () => {
-    const name = "updateParticularPairTemplateMutableStaticData";
-    // Import participating accounts
-    const Charlie = await getAccountAddress("Charlie");
-    // Set transaction signers
-    const signers = [Charlie];
-    // Generate addressMap from import statements
-    const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
-    const NowWhereContract = await getContractAddress("NowWhereContract");
-    const addressMap = {
-      NonFungibleToken,
-      NFTContract,
-      NowWhereContract,
-    };
-
-    let code = await getTransactionCode({
-      name,
-      addressMap,
-    });
-    // brandId, schemaId, maxSupply,immutableData
-    const args = [2];
-    let txResult;
-    try {
-      txResult = await sendTransaction({
-        code,
-        signers,
-        args,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    console.log("tx Result", txResult);
-    expect(txResult[0].status).toBe(4);
-  });
-
-  test("test transaction to Update the Template's MUtable Data", async () => {
-    const name = "updateCompleteTemplateMutableStaticData";
-    // Import participating accounts
-    const Charlie = await getAccountAddress("Charlie");
-    // Set transaction signers
-    const signers = [Charlie];
-    // Generate addressMap from import statements
-    const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
-    const NowWhereContract = await getContractAddress("NowWhereContract");
-    const addressMap = {
-      NonFungibleToken,
-      NFTContract,
-      NowWhereContract,
-    };
-
-    let code = await getTransactionCode({
-      name,
-      addressMap,
-    });
-    // brandId, schemaId, maxSupply, immutableData
-    const args = [2];
-    let txResult;
-    try {
-      txResult = await sendTransaction({
-        code,
-        signers,
-        args,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    console.log("tx Result", txResult);
-    expect(txResult[0].status).toBe(4);
-  });
-
-  test("test transaction to Update the Template's MUtable Data", async () => {
-    const name = "updateParticularPairTemplateMutableStaticData";
-    // Import participating accounts
-    const Charlie = await getAccountAddress("Charlie");
-    // Set transaction signers
-    const signers = [Charlie];
-    // Generate addressMap from import statements
-    const NonFungibleToken = await getContractAddress("NonFungibleToken");
-    const NFTContract = await getContractAddress("NFTContract");
-    const NowWhereContract = await getContractAddress("NowWhereContract");
-    const addressMap = {
-      NonFungibleToken,
-      NFTContract,
-      NowWhereContract,
-    };
-
-    let code = await getTransactionCode({
-      name,
-      addressMap,
-    });
-    // brandId, schemaId, maxSupply,immutableData
-    const args = [2];
-    let txResult;
-    try {
-      txResult = await sendTransaction({
-        code,
-        signers,
-        args,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    console.log("tx Result", txResult);
-    expect(txResult[0].status).toBe(4);
-  });
-});
-
-describe("ScriptsToGetUpdatedData", () => {
-  test("get template data by Id", async () => {
-    const name = "getTemplateById";
+  
+  test("Get template immutable data at Id 1", async () => {
+    const name = "getTemplateImmutableData";
     const Bob = await getAccountAddress("Bob");
 
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
@@ -1625,7 +1582,8 @@ describe("ScriptsToGetUpdatedData", () => {
     console.log("result", result);
   });
 
-  test("get template mutable data by Id", async () => {
+  
+  test("Get template mutable data at Id 1", async () => {
     const name = "getTemplateMutableData";
     const Bob = await getAccountAddress("Bob");
 
@@ -1659,8 +1617,8 @@ describe("ScriptsToGetUpdatedData", () => {
     console.log("result", result);
   });
 
-  test("get template data by Id", async () => {
-    const name = "getTemplateById";
+  test("Get template immutable data at Id 3", async () => {
+    const name = "getTemplateImmutableData";
     const Bob = await getAccountAddress("Bob");
 
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
@@ -1685,7 +1643,7 @@ describe("ScriptsToGetUpdatedData", () => {
         const name = accounts[match];
         return `getAccount(${name})`;
       });
-    const args = [2];
+    const args = [3];
     const result = await executeScript({
       code,
       args,
@@ -1693,7 +1651,7 @@ describe("ScriptsToGetUpdatedData", () => {
     console.log("result", result);
   });
 
-  test("get template mutable data by Id", async () => {
+  test("Get template mutable data at Id 3", async () => {
     const name = "getTemplateMutableData";
     const Bob = await getAccountAddress("Bob");
 
@@ -1719,7 +1677,7 @@ describe("ScriptsToGetUpdatedData", () => {
         const name = accounts[match];
         return `getAccount(${name})`;
       });
-    const args = [2];
+    const args = [3];
     const result = await executeScript({
       code,
       args,
@@ -1727,3 +1685,5 @@ describe("ScriptsToGetUpdatedData", () => {
     console.log("result", result);
   });
 });
+
+

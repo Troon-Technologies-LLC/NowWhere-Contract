@@ -223,12 +223,12 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         // a method to update entire MutableData field of Template
-        pub fun updateCompleteMutableData(newMutableData: {String: AnyStruct}) {     
-                self.mutableData = newMutableData
+        pub fun updateMutableData(mutableData: {String: AnyStruct}) {     
+                self.mutableData = mutableData
         }
 
         // a method to update or add particular pair in MutableData field of Template
-        pub fun updateMutableDataForParticularKey(key: String, value: AnyStruct){
+        pub fun updateMutableAttribute(key: String, value: AnyStruct){
             pre{
                 self.mutableData?.length != nil: "Mutable data is nil, update complete mutable data of template instead!"
             }
@@ -276,7 +276,7 @@ pub contract NFTContract: NonFungibleToken {
         pub let id: UInt64
         access(contract) let data: NFTData
 
-        init(templateID: UInt64, mintNumber: UInt64, immutableData: {String:AnyStruct}?) {
+        init(templateID: UInt64, mintNumber: UInt64, immutableData: {String: AnyStruct}?) {
             NFTContract.totalSupply = NFTContract.totalSupply + 1
             self.id = NFTContract.totalSupply
             NFTContract.allNFTs[self.id] = NFTData(templateID: templateID, mintNumber: mintNumber, immutableData: immutableData)
@@ -377,8 +377,8 @@ pub contract NFTContract: NonFungibleToken {
         pub fun updateBrandData(brandId: UInt64, data: {String: String})
         pub fun createSchema(schemaName: String, format: {String: SchemaType})
         pub fun createTemplate(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData: {String: AnyStruct}, mutableData: {String: AnyStruct}?)
-        pub fun updateCompleteTemplateMutableData(templateId: UInt64, newMutableData: {String: AnyStruct})
-        pub fun updateTemplateMutableDataForParticularKey(templateId: UInt64, key: String, value: AnyStruct)
+        pub fun updateTemplateMutableData(templateId: UInt64, mutableData: {String: AnyStruct})
+        pub fun updateTemplateMutableAttribute(templateId: UInt64, key: String, value: AnyStruct)
         pub fun mintNFT(templateId: UInt64, account: Address, immutableData:{String:AnyStruct}?)
         pub fun removeTemplateById(templateId: UInt64)
         
@@ -498,7 +498,7 @@ pub contract NFTContract: NonFungibleToken {
         }
 
         //method to update the existing template's mutable data, only author of brand can update this template
-        pub fun updateCompleteTemplateMutableData(templateId: UInt64, newMutableData: {String: AnyStruct}) {
+        pub fun updateTemplateMutableData(templateId: UInt64, mutableData: {String: AnyStruct}) {
             pre{
                 // the transaction will instantly revert if
                 // the capability has not been added
@@ -513,12 +513,12 @@ pub contract NFTContract: NonFungibleToken {
                 panic("No permission to update others Template's Mutable Data")
             }
 
-            NFTContract.allTemplates[templateId]!.updateCompleteMutableData(newMutableData: newMutableData)
+            NFTContract.allTemplates[templateId]!.updateMutableData(mutableData: mutableData)
             emit TemplateUpdated(templateId: templateId)
         }
 
         //method to update or add particular key-value pair in Template's mutable data, only author of brand can update this template
-        pub fun updateTemplateMutableDataForParticularKey(templateId: UInt64, key: String, value:AnyStruct) {
+        pub fun updateTemplateMutableAttribute(templateId: UInt64, key: String, value:AnyStruct) {
             pre{
                 // the transaction will instantly revert if the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
@@ -532,7 +532,7 @@ pub contract NFTContract: NonFungibleToken {
                 panic("No permission to update others Template's Mutable Data")
             }
 
-            NFTContract.allTemplates[templateId]!.updateMutableDataForParticularKey(key: key, value: value)
+            NFTContract.allTemplates[templateId]!.updateMutableAttribute(key: key, value: value)
             emit TemplateUpdated(templateId: templateId)
         }
 
@@ -551,7 +551,7 @@ pub contract NFTContract: NonFungibleToken {
                 .getCapability(NFTContract.CollectionPublicPath)
                 .borrow<&{NFTContract.NFTContractCollectionPublic}>()
                 ?? panic("Could not get receiver reference to the NFT Collection")
-            var newNFT: @NFT <- create NFT(templateID: templateId, mintNumber: NFTContract.allTemplates[templateId]!.incrementIssuedSupply(), immutableData:immutableData)
+            var newNFT: @NFT <- create NFT(templateID: templateId, mintNumber: NFTContract.allTemplates[templateId]!.incrementIssuedSupply(), immutableData: immutableData)
             recipientCollection.deposit(token: <-newNFT)
         }
 
@@ -630,7 +630,7 @@ pub contract NFTContract: NonFungibleToken {
         return NFTContract.allTemplates[templateId]!.immutableData
     }
 
-     //method to get data at mutableData field of Template
+    //method to get data at mutableData field of Template
     pub fun getMutableData(templateId: UInt64): {String: AnyStruct}?{
         return NFTContract.allTemplates[templateId]!.mutableData
     }
