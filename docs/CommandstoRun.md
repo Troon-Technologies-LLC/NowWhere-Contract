@@ -1,4 +1,4 @@
-## How to Deploy and Test the NFT&NowWhere Contract in VSCode
+## How to Deploy and Test the NFT & NowWhere Contract in VSCode
 
 The initial step to use any smart-contract is to deploy that contract to any network e.g: mainnet, testnet or emulator.
 In our case we will deploy our contract to emulator.
@@ -55,7 +55,7 @@ You can also call scripts to fetch and verify the data, basic scripts would be
 4. Get specific schema by its schema-id by calling `scripts/getSchemaById.cdc` script.
 5. Get all templates by calling `scripts/getAllTemplates.cdc` script.
 6. Get template's mutable data by calling `scripts/getTemplateMutableData.cdc` script.
-7. Get specific template by its tamplate-id by calling `scripts/getTemplateById.cdc` script.
+7. Get specific template by its template-id by calling `scripts/getTemplateById.cdc` script.
 8. Get all nfts of an address by calling `scripts/getNFTTemplateData.cdc` script.
 9. Get specific nft-data by its nft-id by calling `scripts/getNFTDataById.cdc` script.
 

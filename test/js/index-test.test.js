@@ -40,8 +40,8 @@ describe("Replicate Playground Accounts", () => {
     const Charlie = await getAccountAddress("Charlie");
     const Dave = await getAccountAddress("Dave");
 
-    const Dani = await getAccountAddress("Dani");
-    const Fahim = await getAccountAddress("Fahim");
+    const Emily = await getAccountAddress("Emily");
+    const Finn = await getAccountAddress("Finn");
     console.log(
       "Four Playground accounts were created with following addresses"
     );
@@ -50,8 +50,8 @@ describe("Replicate Playground Accounts", () => {
     console.log("Charlie:", Charlie);
     console.log("Dave:", Dave);
 
-    console.log("Dani:", Dani);
-    console.log("Fahim:", Fahim);
+    console.log("Emily:", Emily);
+    console.log("Finn:", Finn);
     //mint the flow to the user account
     const data = await mintFlow(Bob, "42.0");
     const updatedBalance = await getFlowBalance(Bob);
@@ -387,9 +387,9 @@ describe("Transactions", () => {
   test("create user empty collection", async () => {
     const name = "createUserEmptyCollection";
     // Import participating accounts
-    const Dani = await getAccountAddress("Dani");
+    const Emily = await getAccountAddress("Emily");
     // Set transaction signers
-    const signers = [Dani];
+    const signers = [Emily];
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
@@ -423,7 +423,7 @@ describe("Transactions", () => {
 
     // Import participating accounts
     const Charlie = await getAccountAddress("Charlie");
-    const Dani = await getAccountAddress("Dani");
+    const Emily = await getAccountAddress("Emily");
 
     // Set transaction signers
     const signers = [Charlie];
@@ -443,7 +443,7 @@ describe("Transactions", () => {
       addressMap,
     });
 
-    const args = [1, 1, 4, Dani];
+    const args = [1, 1, 4, Emily];
 
     let txResult;
     try {
@@ -1009,7 +1009,6 @@ describe("Transactions", () => {
   });
 
   //update template test cases
-
   test("test transaction to Update the Template's MUtable Data", async () => {
     const name = "updateTemplateMutableAttribute";
     // Import participating accounts
@@ -1085,8 +1084,84 @@ describe("Transactions", () => {
     expect(txResult[0].status).toBe(4);
   });
 
+  test("test case of creating user's collection", async () => {
+    const name = "setupAccount";
+    // Import participating accounts
+    const Finn = await getAccountAddress("Finn");
+    // Set transaction signers
+    const signers = [Finn];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+       let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    console.log("Empty collection created for user");
+    expect(txResult[0].status).toBe(4);
+  });
+
+  test("test to mint nft", async () => {
+    const name = "mintTemplate";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    const Finn = await getAccountAddress("Finn");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [1, Finn];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    
+    console.log("tx Result", txResult);
+    console.log("NFT Minted");
+    expect(txResult[0].status).toBe(4);
+  });
 
 });
+
+
+
 describe("Scripts", () => {
   test("get user NFT", async () => {
     const name = "getUserNFT";
@@ -1448,7 +1523,7 @@ describe("Scripts", () => {
   });
   test("get all nfts  data", async () => {
     const name = "getAllNFTIds";
-    const Dani = await getAccountAddress("Dani");
+    const Emily = await getAccountAddress("Emily");
 
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
@@ -1469,12 +1544,12 @@ describe("Scripts", () => {
       .toString()
       .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
         const accounts = {
-          "0x05": Dani,
+          "0x05": Emily,
         };
         const name = accounts[match];
         return `getAccount(${name})`;
       });
-    const args = [Dani];
+    const args = [Emily];
     const result = await executeScript({
       code,
       args,
@@ -1483,7 +1558,7 @@ describe("Scripts", () => {
   });
   test("get nft template data", async () => {
     const name = "getNFTTemplateData";
-    const Dani = await getAccountAddress("Dani");
+    const Emily = await getAccountAddress("Emily");
 
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
@@ -1501,13 +1576,13 @@ describe("Scripts", () => {
       .toString()
       .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
         const accounts = {
-          "0x05": Dani,
+          "0x05": Emily,
         };
         const name = accounts[match];
         return `getAccount(${name})`;
       });
 
-    const args = [Dani];
+    const args = [Emily];
     const result = await executeScript({
       code,
       args,

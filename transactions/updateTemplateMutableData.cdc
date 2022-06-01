@@ -17,7 +17,7 @@ transaction (templateId:UInt64){
               
              }
 
-    actorResource.updateTemplateMutableData(templateId: templateId, newMutableData: mutableData)
+    actorResource.updateTemplateMutableData(templateId: templateId, mutableData: mutableData)
 
   }
 }

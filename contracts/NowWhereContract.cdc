@@ -56,10 +56,10 @@ pub contract NowWhereContract {
         // templates can be updated, if sale is not started yet
          pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
             pre{
-                (startDate==nil) || (self.startDate > getCurrentBlock().timestamp && startDate! >= getCurrentBlock().timestamp): "can't update start date"
-                (endDate==nil) || (endDate! > getCurrentBlock().timestamp): "can't update end date"
-                (templates==nil) || (templates!.keys.length != 0 && self.startDate > getCurrentBlock().timestamp) : "can't update templates"
-                !(startDate==nil && endDate==nil && templates==nil):"All values are nil"
+                (startDate == nil) || (self.startDate > getCurrentBlock().timestamp && startDate! >= getCurrentBlock().timestamp): "can't update start date"
+                (endDate == nil) || (endDate! > getCurrentBlock().timestamp): "can't update end date"
+                (templates == nil) || (templates!.keys.length != 0 && self.startDate > getCurrentBlock().timestamp) : "can't update templates"
+                !(startDate == nil && endDate == nil && templates == nil):"All values are nil"
             }
 
             if(startDate != nil && startDate! < self.endDate){
@@ -169,7 +169,7 @@ pub contract NowWhereContract {
             assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply") 
             var i: UInt64 = 0
             while i < mintNumbers {
-                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress, immutableData:immutableData)
+                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress, immutableData: immutableData)
                 i = i + 1
             }
             emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
@@ -178,7 +178,7 @@ pub contract NowWhereContract {
         pub fun purchaseNFTWithFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault, immutableData:{String:AnyStruct}?) {
             pre{
                 price > 0.0: "Price should be greater than zero"
-                receiptAddress !=nil: "invalid receipt Address"
+                receiptAddress != nil: "invalid receipt Address"
                 flowPayment.balance == price: "Your vault does not have balance to buy NFT"
                 mintNumbers > 0: "mint number must be greater than zero"
                 mintNumbers <= 10: "mint numbers must be less than ten"

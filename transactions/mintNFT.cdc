@@ -11,3 +11,4 @@ transaction(templateId: UInt64, account:Address, immutableData:{String:AnyStruct
         actorResource.mintNFT(templateId: templateId, account: account, immutableData:immutableData) 
     }
 }
+
