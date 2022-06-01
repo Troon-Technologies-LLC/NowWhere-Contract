@@ -1145,6 +1145,153 @@ describe("Transactions", () => {
       "You are not authorized to remove the template because the template is locked"
     );
   });
+
+  //update template test cases
+  test("test transaction  create template", async () => {
+    const name = "createTemplateStaticData";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [1, 1, 100];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult[0].status).toBe(4);
+  });
+
+  test("test transaction  create template", async () => {
+    const name = "createTemplateNilMutableData";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [1, 1, 100];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    expect(txResult[0].status).toBe(4);
+  });
+  test("test transaction to Update the Template's MUtable Data", async () => {
+    const name = "updateTemplateMutableAttribute";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [5];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    console.log("tx Result", txResult);
+    console.log("Mutable attribute updated for first template");
+    expect(txResult[0].status).toBe(4);
+  });
+
+  test("test transaction to Update the Template's MUtable attribute", async () => {
+    const name = "updateTemplateMutableData";
+    // Import participating accounts
+    const Charlie = await getAccountAddress("Charlie");
+    // Set transaction signers
+    const signers = [Charlie];
+    // Generate addressMap from import statements
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+    const NowWhereContract = await getContractAddress("NowWhereContract");
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+      NowWhereContract,
+    };
+
+    let code = await getTransactionCode({
+      name,
+      addressMap,
+    });
+    // brandId, schemaId, maxSupply,immutableData
+    const args = [6];
+    let txResult;
+    try {
+      txResult = await sendTransaction({
+        code,
+        signers,
+        args,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    console.log("tx Result", txResult);
+    console.log("Mutable data updated for third template");
+    expect(txResult[0].status).toBe(4);
+  });
 });
 describe("Scripts", () => {
   test("get user NFT", async () => {
@@ -1600,6 +1747,142 @@ describe("Scripts", () => {
         return `getAccount(${name})`;
       });
     const args = [1];
+    const result = await executeScript({
+      code,
+      args,
+    });
+    console.log("result", result);
+  });
+
+  test("Get template immutable data at Id 1", async () => {
+    const name = "getTemplateImmutableData";
+    const Bob = await getAccountAddress("Bob");
+
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+    };
+    let code = await getScriptCode({
+      name,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x01": Alice,
+          "0x02": Bob,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+    const args = [5];
+    const result = await executeScript({
+      code,
+      args,
+    });
+    console.log("result", result);
+  });
+
+  test("Get template mutable data at Id 1", async () => {
+    const name = "getTemplateMutableData";
+    const Bob = await getAccountAddress("Bob");
+
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+    };
+    let code = await getScriptCode({
+      name,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x01": Alice,
+          "0x02": Bob,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+    const args = [5];
+    const result = await executeScript({
+      code,
+      args,
+    });
+    console.log("result", result);
+  });
+
+  test("Get template immutable data at Id 3", async () => {
+    const name = "getTemplateImmutableData";
+    const Bob = await getAccountAddress("Bob");
+
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+    };
+    let code = await getScriptCode({
+      name,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x01": Alice,
+          "0x02": Bob,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+    const args = [6];
+    const result = await executeScript({
+      code,
+      args,
+    });
+    console.log("result", result);
+  });
+
+  test("Get template mutable data at Id 3", async () => {
+    const name = "getTemplateMutableData";
+    const Bob = await getAccountAddress("Bob");
+
+    const NonFungibleToken = await getContractAddress("NonFungibleToken");
+    const NFTContract = await getContractAddress("NFTContract");
+
+    const addressMap = {
+      NonFungibleToken,
+      NFTContract,
+    };
+    let code = await getScriptCode({
+      name,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x01": Alice,
+          "0x02": Bob,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+    const args = [6];
     const result = await executeScript({
       code,
       args,
