@@ -1,5 +1,5 @@
 import NFTContract from "../contracts/NFTContract.cdc"
-transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData:{String: AnyStruct}) {
+transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData:{String: AnyStruct}, mutableData: {String: AnyStruct}?) {
     prepare(acct: AuthAccount) {
         let actorResource = acct.getCapability
             <&{NFTContract.NFTMethodsCapability}>
@@ -16,7 +16,7 @@ transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64, immutableData:
                 "endDate" : ""             
         }
      
-        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData)
+        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData, mutableData: mutableData)
         log("ok")
     }
 }
