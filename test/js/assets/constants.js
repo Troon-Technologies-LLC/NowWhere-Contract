@@ -25,11 +25,6 @@ const accountNames = {
     xiumin: "Xiumin",
     yang: "Yang",
     zoe:"Zoe"
-    
-    
-    
-    
-
 }
 
 const contractNames = {
