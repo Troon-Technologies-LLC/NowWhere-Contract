@@ -112,7 +112,8 @@ You can also call scripts to fetch and verify the data, basic scripts would be
 
 `flow keys generate`
 
-## Create Brand 
+## Create Brand
+
 
 `flow transactions send transactions/createBrand.cdc --arg String:"test" --args-json "[{\"type\":\"String\",\"value\":\"test\"},{\"type\":\"String\",\"value\":\"abc\"}]" --network testnet --signer testnet-account`
 
