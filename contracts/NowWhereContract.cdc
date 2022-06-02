@@ -152,7 +152,7 @@ pub contract NowWhereContract {
             emit DropRemoved(dropId: dropId)
         }
 
-        pub fun purchaseNFT(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, immutableData:{String:AnyStruct}?){
+        pub fun purchaseNFT(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, immutableData:{String:AnyStruct}?) {
             pre {
                 mintNumbers > 0: "mint number must be greater than zero"
                 mintNumbers <= 10: "mint numbers must be less than ten"

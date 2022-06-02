@@ -18,10 +18,16 @@ transaction(brandId:UInt64, schemaId:UInt64, maxSupply:UInt64) {
                 "endDate" : ""             
         }
         
-        let immutableData: {String: AnyStruct} = {
+       let immutableData: {String: AnyStruct} = {
             "artist" : "Nasir And Sham",
-            "artistEmail" : "sham&nasir@gmai.com"
-            //extra
+            "artistEmail" : "sham&nasir@gmai.com",
+            "title" : "First NFT",
+            "mintType" : "MintOnSale",
+            "nftType" : "AR",
+            "rarity" : "Epic",
+            "contectType" : "Image",
+            "contectValue" : "https://troontechnologies.com/",
+            "extras" : extra        
         }
        
        
