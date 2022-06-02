@@ -132,13 +132,7 @@ pub contract NFTContract: NonFungibleToken {
     }
 
 
-    /*
-    * Brand
-    *   Brand will represent a company or author of NFTs. 
-    *   A Brand has id, name, author and data for brand. 
-    *   Brand data is basic dictionary, so it can contain any of brand data
-    */
-
+  
     /*  
     *   Method to validate template's Immutable data as per the one defined in related schema format
     *   Immutable data's keys and their value types must be according to the schema format defination
@@ -205,6 +199,14 @@ pub contract NFTContract: NonFungibleToken {
         }
             assert(isValidTemplate, message: "invalid template data. Error: ".concat(invalidKey))
     }
+
+    /*
+    * Brand
+    *   Brand will represent a company or author of NFTs. 
+    *   A Brand has id, name, author and data for brand. 
+    *   Brand data is basic dictionary, so it can contain any of brand data
+    */
+
     pub struct Brand {
         pub let brandId: UInt64
         pub let brandName: String
