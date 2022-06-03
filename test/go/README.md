@@ -5,7 +5,7 @@ smart contracts from a Go programming environment.
 
 # GOlang Version
 
-go version go1.16.5 linux/amd64
+go version go1.1.17 linux/amd64
 
 # Package Guide
 

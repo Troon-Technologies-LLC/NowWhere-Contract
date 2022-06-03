@@ -1,24 +1,30 @@
-## Technical Summary and Code Documentation
+## Technical Summary and Code Documentation For NFTContract Contract
 
 ## Instructions for creating Brand, Schema, Template and Mint Templates
 
-A common order of creating NFT would be
+A common order for creating NFT would be
 
 1. Creating new Brand with `transactions/createBrand.cdc` transaction.
 2. Creating new Schema with `transactions/createSchema.cdc` transaction.
 3. Creating new Template with `transactions/createTemplate.cdc` transaction.
-4. Create NFT receiver with `transactions/setupAccount.cdc` transaction for the end-user who will receive the NFT.
-5. Mint NFT and transfer that NFT to given address(having NFT-receiver) with `transactions/mintTemplate.cdc` transaction.
+4. Update the Template Mutable data for a specific attribute with `transactions/updateTemplateMutableAttribute` transaction using Admin Account.
+5. Update the Template whole Mutable data with `transactions/updateTemplateMutableData` transaction using Admin Account.
+6. Lock specific Template with `transactions/lockTemplate` transaction using Admin Account.
+7. Create NFT receiver with `transaction/setupAccount.cdc` transaction for the end-user who will receive the NFT.
+8. Mint NFT and transfer that NFT to given address(having NFT-receiver) with `transactions/mintTemplate.cdc` transaction.
 
 You can also call scripts to fetch and verify the data, basic scripts would be
+
 1. Get all brands ids by calling `scripts/getAllBrands.cdc` script.
-2. Get specific brand data by its brand-id by calling `scripts/getBrandById.cdc` script. 
+2. Get specific brand data by its brand-id by calling `scripts/getBrandById.cdc` script.
 3. Get all schemas by calling `scripts/getallSchema.cdc` script.
 4. Get specific schema by its schema-id by calling `scripts/getSchemaById.cdc` script.
 5. Get all templates by calling `scripts/getAllTemplates.cdc` script.
-6. Get specific template by its tamplate-id by calling `scripts/getTemplateById.cdc` script.
-7. Get all nfts of an address by calling `scripts/getNFTTemplateData.cdc` script.
-8. Get specific nft-data by its nft-id by calling `scripts/getNFTDataById.cdc` script.
+6. Get specific template mutable data by its template-id by calling `scripts/getTemplateMutableData.cdc` script.
+7. Get specific template by its template-id by calling `scripts/getTemplateById.cdc` script.
+8. Get specific template by its template-id by calling `scripts/getTemplateById.cdc` script.
+9. Get all nfts of an address by calling `scripts/getNFTTemplateData.cdc` script.
+10. Get specific nft-data by its nft-id by calling `scripts/getNFTDataById.cdc` script.
 
 ### NFTContract Events
 
@@ -47,16 +53,21 @@ You can also call scripts to fetch and verify the data, basic scripts would be
   Emitted when a new Schema will be created
 
 - Event for Template ->
-  `pub event TemplateCreated(templateId: UInt64, brandId: UInt64, schemaId: UInt64, maxSupply: UInt64)`
+- `pub event TemplateCreated(templateId:UInt64, brandId:UInt64, schemaId:UInt64, maxSupply:UInt64)`
   Emitted when a new Template will be created
 
-- Event for Remove Template ->
-  `pub event TemplateRemoved(templateId: UInt64)`
-  Emitted when a new Template will be removed
+- `pub event TemplateRemoved(templateId: UInt64)`
+  Emitted when a Template is removed
 
-- Event for Template Mint ->
+- `pub event TemplateUpdated(templateId: UInt64)`
+  Emitted when a Template is updated
+
+- `pub event TemplateLocked(templateId: UInt64)`
+  Emitted when a Template is locked
+
+- Event for NFT ->
   `pub event NFTMinted(nftId: UInt64, templateId: UInt64, mintNumber: UInt64)`
-  Emitted when a Template will be Minted and save as NFT
+  Emitted when a NFT is minted
 
 ## NFTContract Addresses
 
@@ -90,12 +101,13 @@ We will then create Template using brandId and schemaId that we created before. 
 - schemaId: UInt64 (Foreign Id of Schema)
 - maxSupply: UInt64 (maximum NFTs that could be created using that template)
 - immutableData: {String: AnyStruct} (Immutable metadata of template)
+- mutableData: {String: AnyStruct}? (Mutable metadata of template)
 
 We then have our Resource type NFT(actual asset) that represents a template owns by a user. It stores its unique Id and NFTData structure contains TemplateId and mintNumber of Template.
 
-The above transaction can only be performed by an Admin having an Admin resource that will give special capability to any user to create Brands, Schema and Template.
+The above transactions can only be performed by an Admin having an Admin resource that will give the special capability to any user to create Brands, Schema, and Template.
 
-### Deployment Contract on Emulator
+### Deployment of Contract on Emulator
 
 - Run `flow project deploy --network emulator`
   - All contracts are deployed to the emulator.

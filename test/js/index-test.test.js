@@ -745,7 +745,7 @@ describe("Transactions", () => {
   });
 
   //updating the start date, end date and templates
-  test("test transaction  Update drop", async () => {
+  test("test transaction  Update drop for start date, end date, and templates", async () => {
     const name = "updateDropStaticForTemplate";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
 
@@ -791,7 +791,7 @@ describe("Transactions", () => {
   });
 
   //updating the start date
-  test("test transaction  Update drop", async () => {
+  test("test transaction  Update drop for the start date", async () => {
     const name = "updateDropStatic";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
 
@@ -831,7 +831,7 @@ describe("Transactions", () => {
     expect(txResult[0].status).toBe(4);
   });
   //updating the end date
-  test("test transaction  Update drop", async () => {
+  test("test transaction  Update drop for the end date", async () => {
     const name = "updateDropStatic";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
 
@@ -872,7 +872,7 @@ describe("Transactions", () => {
     expect(txResult[0].status).toBe(4);
   });
   //updating with wrong params
-  test("test transaction  Update drop", async () => {
+  test("test transaction  Update drop with wrong parameters", async () => {
     const name = "updateDropStatic";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
 
@@ -913,7 +913,7 @@ describe("Transactions", () => {
     expect(txResult[1]).toMatch("All values are nil");
   });
   //updating the end date
-  test("test transaction  Update drop", async () => {
+  test("test transaction  Update drop for the wrong date", async () => {
     const name = "updateDropStatic";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
 

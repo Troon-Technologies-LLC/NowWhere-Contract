@@ -1,36 +1,42 @@
-## Technical Summary and Code Documentation
+## Technical Summary and Code Documentation NowWhere Contract
+
+- In this documentation, we will go through the whole guidelines for creating and purchasing the drop.
 
 ## Instructions for creating Brand, Schema, Template and Mint Templates
 
-A common order of creating Drop would be
+A common order for creating Drop would be
 
-- Create Admin Account with `transactions/setupAdminAccount`.
-- Owner then make this account Admin, and gives that account ability to create own Brand, Schema, Template, Drop 
-  and purchase Drop with `transactions/addAdminAccount` 
-- Create new Brand with `transactions/createBrand` using Admin Account.
-- Create new Schema with `transactions/createSchema` using Admin Account.
-- Create new Template with `transactions/createTemplate` using Admin Account.
-- Remove Template with `transactions/removeTemplate` using Admin Account.
-- Create NFT Receiver with `transactions/setupAccount` .
-- Create new Drop with `transactions/createDrop` using Admin Account.
-- update Drop with `transactions/updateDrop.cdc` using Admin Account.
-- Purchase NFT and send to any address with `transactions/purchaseDrop` using Admin Account.
-- Purchase NFT with flow and send to any address with `transactions/purchaseNFTWithFlow` using Admin Account and User Account.
-- Remove Drop `transactions/RemoveDrop.cdc` using Admin Account.
+- Create Admin Account with `transaction/setupAdminAccount` transaction.
+- The owner then makes this account Admin and gives that accountability to create its Brand, Schema, Template, Drop
+  and purchase Drop with `transactions/addAdminAccount` transaction.
+- Create new Brand with `transactions/createBrand` transaction using Admin Account.
+- Create new Schema with `transactions/createSchema` transaction using Admin Account.
+- Create new Template with `transactions/createTemplate` transaction using Admin Account.
+- Create NFT Receiver with `transaction/setupAccount` transaction.
+- Create new Drop with `transactions/createDrop` transaction using Admin Account.
+- update Drop with `transactions/updateDrop.cdc` transaction using Admin Account.
+- Purchase NFT and send to any address with `transactions/purchaseDrop` transaction using Admin Account.
+- Purchase NFT with flow and send to any address with `transactions/purchaseNFTWithFlow` transaction using Admin Account and User Account.
+- Remove Drop `transactions/RemoveDrop.cdc` transaction using Admin Account.
 
-### Nowwhere Events
+You can also call scripts to fetch and verify the data, basic scripts would be
+
+- Get all drops by calling `scripts/getAllDrops.cdc` script.
+- Get specific drop data by its drop-id by calling `scripts/getDropById.cdc` script.
+
+### NowWhere Events
 
 - Contract Initialized ->
   ` pub event ContractInitialized()`
-  This event is emitted when the `Nowwhere` will be initialized.
+  This event is emitted when the `NowWhere` will be initialized.
 
 - Event for Creation of Drop ->
   `pub event DropCreated(dropId: UInt64, creator: Address, startDate: UFix64, endDate: UFix64)`
-  Emitted when a new Drop will be created and added to the smart Contract.
+  Emitted when a new Drop will be created and added to the Smart Contract.
 
-- Event for update of Drop ->
+- Event for Updation of Drop ->
   `pub event DropUpdated(dropId: UInt64, startDate: UFix64, endDate: UFix64)`
-  Emitted when a Drop will be Updated.
+  Emitted when Drop will be updated to the Smart Contract.
 
 - Event for purchase Drop ->
   `pub event DropPurchased(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address)`
@@ -44,10 +50,10 @@ A common order of creating Drop would be
   `pub event DropRemoved(dropId:UInt64)`
   Emitted when a Drop will be Removed.
 
-## Nowwhere Addresses
+## Whitelabel Addresses
 
-
-`NowWhereContract.cdc`
+`NowWhere.cdc`: This is the main NowWhere smart contract that defines
+the core functionality of the Drop.
 
 | Network | Contract Address     |
 | ------- | -------------------- |
@@ -65,28 +71,31 @@ In drops we have the following Information:
 
 ## Instructions for Create Drops
 
-To Create a drop of specific Template/s, we have to give arguments shown above, after that our function will check that start and end time should be greater than present time, template must not be null, drop Ids should be unique. Our drop is also suporting multiple templates and you can add any details to template which can be entertain in future e.g: price, supply etc
-
+To Create a drop for specific Template/s, we have to give arguments shown above, after that our function will check that start and end time should be greater than present time, template must not be null, drop Ids should be unique. Our drop is also suporting multiple templates and you can add any details to template which can be entertain in future e.g: price, supply etc.
 
 ## Instruction of Update Drops
 
 To update a drop, Admin need to provide drop-id and the attributes that Admin want to update e.g: start-date, end-date or templates. Drop will be updated on following situations:
-1. If drop is not active (start-date is not passed), than Admin can update all details of a drop e.g: start-date, end-date and template
-2. If drop is active than, Admin can only update the end-date of drop
 
+1. If drop is not active (start-date is not passed), then Admin can update all details of a drop e.g: start-date, end-date and template
+2. If drop is active then, Admin can only update the end-date of drop.
 
 ## Instructions for Purchase Drop
+
+The above transaction can only be performed by an Admin having an Admin resource that will give the special capability to any user to purchase drop simply .
 
 To Purchase NFT with any Drop we have to give the following fields:
 
 - dropId
 - templateId
 - mintNumber(Mint Number of Template)
-- receiptAddress(Address which Address will recieve NFT)
-- immutableData optional
+- receiptAddress(Address which will recieve NFT)
+- immutableData(optional)
   Only Whitelisted Address can create Drops and Purchase NFTs with Drops.
 
 ## Instructions for Purchase Drop With Flow
+
+The above transaction can only be performed by an Admin having an Admin resource that will give the special capability to any user to purchase drop with flow payment.
 
 To Purchase NFT with any Drop using flow we have to give the following fields:
 
@@ -96,11 +105,11 @@ To Purchase NFT with any Drop using flow we have to give the following fields:
 - receiptAddress(Address which will recieve NFT)
 - price(price of drop)
 - flowPayment(flow payment vault)
-- immutableData optional
+- immutableData(optional)
 
 ## Instructions for Remove Drop
 
-We can remove old drops using this function. Those drops date should be less then public sale date and we can't delete active drops. To delete drop we have to give the following fields:
+We can remove old drops using this function. Those drops date should be ended and we can't delete active drops. To delete drop we have to give the following fields:
 
 - dropId
 
