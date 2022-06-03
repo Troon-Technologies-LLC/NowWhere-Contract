@@ -1,7 +1,7 @@
-import NFTContract from 0x1e075b24abe6eca6
-import NonFungibleToken from 0x1d7e57aa55817448
-import FungibleToken from 0xf233dcee88fe0abe
-import FlowToken from 0x1654653399040a61
+import NFTContract from 0xf8d6e0586b0a20c7
+import NonFungibleToken from 0xf8d6e0586b0a20c7
+import FungibleToken from 0xee82856bf20e2aa6
+import FlowToken from 0x0ae53cb6e3f42a79
 
 
 pub contract NowWhereContract {
@@ -54,36 +54,25 @@ pub contract NowWhereContract {
         // start-date only updated if sale is not started yet
         // end-date can updated any-way, Admin need to check if templates are soldout than no need to active that drop 
         // templates can be updated, if sale is not started yet
-        pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
+         pub fun updateDrop(startDate: UFix64?, endDate: UFix64?, templates: {UInt64: AnyStruct}?){
             pre{
-                (startDate==nil) || (startDate!=nil &&  self.startDate > getCurrentBlock().timestamp && startDate! >= getCurrentBlock().timestamp): "can't update start date"
-                (endDate==nil) || (endDate!=nil && endDate! > getCurrentBlock().timestamp): "can't update end date"
-                (templates==nil) || (templates != nil && templates!.keys.length != 0 && self.startDate > getCurrentBlock().timestamp) : "can't update templates"
-                !(startDate==nil && endDate==nil && templates==nil):"All values are nil"
-           }
-
-            var isUpdated:Bool = true;
-            var errorMessage:String = "";
+                (startDate == nil) || (self.startDate > getCurrentBlock().timestamp && startDate! >= getCurrentBlock().timestamp): "can't update start date"
+                (endDate == nil) || (endDate! > getCurrentBlock().timestamp): "can't update end date"
+                (templates == nil) || (templates!.keys.length != 0 && self.startDate > getCurrentBlock().timestamp) : "can't update templates"
+                !(startDate == nil && endDate == nil && templates == nil):"All values are nil"
+            }
 
             if(startDate != nil && startDate! < self.endDate){
                 self.startDate = startDate!
-            }else{
-                isUpdated = false;
-                errorMessage = "start-date should be greater than end-date"
             }
 
             if(endDate != nil && endDate! > self.startDate) {
                 self.endDate = endDate!
-            }else{
-                isUpdated = false;
-                errorMessage = "end-date should be greater than end-date"
             }
 
             if(templates != nil) {
                 self.templates = templates!
             }
-
-            assert(isUpdated, message: errorMessage);
             
             emit DropUpdated(dropId: self.dropId, startDate: self.startDate, endDate: self.endDate)
         }
@@ -163,7 +152,7 @@ pub contract NowWhereContract {
             emit DropRemoved(dropId: dropId)
         }
 
-        pub fun purchaseNFT(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address){
+        pub fun purchaseNFT(dropId: UInt64,templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, immutableData:{String:AnyStruct}?){
             pre {
                 mintNumbers > 0: "mint number must be greater than zero"
                 mintNumbers <= 10: "mint numbers must be less than ten"
@@ -180,16 +169,16 @@ pub contract NowWhereContract {
             assert(template.issuedSupply + mintNumbers <= template.maxSupply, message: "template reached to its max supply") 
             var i: UInt64 = 0
             while i < mintNumbers {
-                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
+                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress, immutableData: immutableData)
                 i = i + 1
             }
             emit DropPurchased(dropId: dropId,templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress)
         }
 
-        pub fun purchaseNFTWithFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault) {
+        pub fun purchaseNFTWithFlow(dropId: UInt64, templateId: UInt64, mintNumbers: UInt64, receiptAddress: Address, price: UFix64, flowPayment: @FungibleToken.Vault, immutableData:{String:AnyStruct}?) {
             pre{
                 price > 0.0: "Price should be greater than zero"
-                receiptAddress !=nil: "invalid receipt Address"
+                receiptAddress != nil: "invalid receipt Address"
                 flowPayment.balance == price: "Your vault does not have balance to buy NFT"
                 mintNumbers > 0: "mint number must be greater than zero"
                 mintNumbers <= 10: "mint numbers must be less than ten"
@@ -210,7 +199,7 @@ pub contract NowWhereContract {
             
             var i: UInt64 = 0
             while i < mintNumbers {
-                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress)
+                NowWhereContract.adminRef.borrow()!.mintNFT(templateId: templateId, account: receiptAddress, immutableData: immutableData)
                 i = i + 1
             }
             emit DropPurchasedWithFlow(dropId: dropId, templateId: templateId, mintNumbers: mintNumbers, receiptAddress: receiptAddress,price: price)

@@ -1,12 +1,13 @@
 import NFTContract from "../contracts/NFTContract.cdc"
-transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
+transaction(brandId:UInt64, schemaId:UInt64, maxSupply:UInt64) {
     prepare(acct: AuthAccount) {
+
         let actorResource = acct.getCapability
             <&{NFTContract.NFTMethodsCapability}>
             (NFTContract.NFTMethodsCapabilityPrivatePath)
             .borrow() ?? 
             panic("could not borrow a reference to the NFTMethodsCapability interface")
-     
+
         let extra: {String: AnyStruct} = {
                 "name" : "alex", // string
                 "age" : 21,// integer
@@ -17,18 +18,21 @@ transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
                 "endDate" : ""             
         }
         
-        let immutableData: {String: AnyStruct} = {
+       let immutableData: {String: AnyStruct} = {
             "artist" : "Nasir And Sham",
-            "artistEmail" : "sham&nasir@gmai.com"
-            //extra
+            "artistEmail" : "sham&nasir@gmai.com",
+            "title" : "First NFT",
+            "mintType" : "MintOnSale",
+            "nftType" : "AR",
+            "rarity" : "Epic",
+            "contectType" : "Image",
+            "contectValue" : "https://troontechnologies.com/",
+            "extras" : extra        
         }
        
-       let mutableData : {String: AnyStruct} = {   
-            "movieCategory" : "Hollywood",
-            "movieName" : "Interstellar"
-           
-        }
+       
         
-        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData, mutableData: mutableData)
+        actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData, mutableData: nil)
+        log("Template created")
     }
 }

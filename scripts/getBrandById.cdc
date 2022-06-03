@@ -1,4 +1,4 @@
-import NFTContract from "./NFTContract.cdc"
+import NFTContract from "../contracts/NFTContract.cdc"
 pub fun main(brandId:UInt64): AnyStruct{
     return NFTContract.getBrandById(brandId: brandId)
 }
