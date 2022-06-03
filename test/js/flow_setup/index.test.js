@@ -30,19 +30,16 @@ import {
 jest.setTimeout(timeoutLimit);
 
 beforeAll(async () => {
-    console.log("I am called BeforeAll -> flowSetup")
     const port = flowConfig.emulatorPort;
     await emulator.start(port);
 });
 
 afterAll(async () => {
-    console.log("I am called AfterAll -> flowSetup")
     const port = flowConfig.emulatorPort;
     await emulator.stop(port);
 });
 
 beforeEach(async () => {
-    console.log("I am called BeforeEach -> flowSetup")
     const basePath = path.resolve(__dirname, flowConfig.basePath);
     const port = flowConfig.emulatorPort;
     await init(basePath, { port });
