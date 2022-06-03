@@ -235,7 +235,7 @@ pub contract NFTContract: NonFungibleToken {
         // a method to update or add particular pair in MutableData field of Template
         pub fun updateMutableAttribute(key: String, value: AnyStruct){
             pre{
-                self.mutableData?.length != nil: "Mutable data is nil, update complete mutable data of template instead!"
+                self.mutableData != nil: "Mutable data is nil, update complete mutable data of template instead!"
             }
             self.mutableData?.insert(key: key, value)
         }
