@@ -30,17 +30,24 @@ import {
 jest.setTimeout(timeoutLimit);
 
 beforeAll(async () => {
-    const basePath = path.resolve(__dirname, flowConfig.basePath);
+    console.log("I am called BeforeAll -> setupTest")
     const port = flowConfig.emulatorPort;
-
-    await init(basePath, { port });
     await emulator.start(port);
 });
 
 afterAll(async () => {
+    console.log("I am called AfterAll -> setupTest")
     const port = flowConfig.emulatorPort;
-    await emulator.stop(port);
+    await emulator.stop();
 });
+
+beforeEach(async () => {
+    console.log("I am called BeforeEach -> flowSetup")
+    const basePath = path.resolve(__dirname, flowConfig.basePath);
+    const port = flowConfig.emulatorPort;
+    await init(basePath, { port });
+});
+
 
 describe("NFT Contract Setup", () => {
     test("Account creation", async () => {
