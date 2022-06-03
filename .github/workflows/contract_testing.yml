@@ -4,6 +4,7 @@ on:
     branches:
       - dev 
       - main 
+      - testcase-updates
 jobs:
   js-test-cases:
     runs-on: ubuntu-latest
