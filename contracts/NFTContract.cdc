@@ -674,11 +674,17 @@ pub contract NFTContract: NonFungibleToken {
 
     //method to get data at immutableData field of Template
     pub fun getImmutableData(templateId: UInt64): {String:AnyStruct} {
+        pre {
+            NFTContract.allTemplates[templateId]!= nil: "Template id does not exist"
+        }
         return NFTContract.allTemplates[templateId]!.getImmutableData()
     }
 
     //method to get data at mutableData field of Template
     pub fun getMutableData(templateId: UInt64): {String: AnyStruct}? {
+        pre {
+            NFTContract.allTemplates[templateId]!= nil: "Template id does not exist"
+        }
         return NFTContract.allTemplates[templateId]!.getMutableData()
     }
 
