@@ -30,10 +30,7 @@ import {
 jest.setTimeout(timeoutLimit);
 
 beforeAll(async () => {
-    const basePath = path.resolve(__dirname, flowConfig.basePath);
     const port = flowConfig.emulatorPort;
-
-    await init(basePath, { port });
     await emulator.start(port);
 });
 
@@ -42,7 +39,13 @@ afterAll(async () => {
     await emulator.stop(port);
 });
 
-describe("Flow for Brand", () => {
+beforeEach(async () => {
+    const basePath = path.resolve(__dirname, flowConfig.basePath);
+    const port = flowConfig.emulatorPort;
+    await init(basePath, { port });
+});
+
+describe("NFT Brand", () => {
     test("Account Creation", async () => {
         //creating 2 accounts
         const Alice = await getAccountAddress(accountNames.alice);
