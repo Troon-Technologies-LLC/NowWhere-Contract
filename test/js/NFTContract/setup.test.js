@@ -30,21 +30,17 @@ import {
 jest.setTimeout(timeoutLimit);
 
 beforeAll(async () => {
+    const basePath = path.resolve(__dirname, flowConfig.basePath);
     const port = flowConfig.emulatorPort;
+
+    await init(basePath, { port });
     await emulator.start(port);
 });
 
 afterAll(async () => {
     const port = flowConfig.emulatorPort;
-    await emulator.stop();
+    await emulator.stop(port);
 });
-
-beforeEach(async () => {
-    const basePath = path.resolve(__dirname, flowConfig.basePath);
-    const port = flowConfig.emulatorPort;
-    await init(basePath, { port });
-});
-
 
 describe("NFT Contract Setup", () => {
     test("Account creation", async () => {
@@ -109,4 +105,78 @@ describe("NFT Contract Setup", () => {
         expect(contractAddress).toEqual(Bob)
     });
 
+    test("Setting Up Admin Account", async () => {
+        const setupAdminTransaction = transactions.setupAdminAccount;
+
+        // Import participating accounts
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Charlie];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: setupAdminTransaction,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const txResult = await sendTransaction({
+            code,
+            signers
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[0]).not.toBeNull()
+        expect(txResult[1]).toBeNull()
+    });
+
+    test("Adding Admin Account", async () => {
+        const addAdminTransaction = transactions.addAdminAccount;
+
+        // Import participating accounts
+        const Bob = await getAccountAddress(accountNames.bob)
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Bob];
+
+         //generate addressMap from import statements
+         const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+         const addressMap = {
+             NFTContract,
+             NonFungibleToken,
+         };
+
+        const code = await getTransactionCode({
+            name: addAdminTransaction,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [Charlie];
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[0]).not.toBeNull()
+        expect(txResult[1]).toBeNull()
+
+    });
 });

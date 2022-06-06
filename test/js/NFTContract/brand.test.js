@@ -43,7 +43,7 @@ afterAll(async () => {
 });
 
 describe("Flow for Brand", () => {
-    test("Account Creation", async () => {
+ /*   test("Account Creation", async () => {
         //creating 2 accounts
         const Alice = await getAccountAddress(accountNames.alice);
         const Bob = await getAccountAddress(accountNames.bob);
@@ -53,7 +53,7 @@ describe("Flow for Brand", () => {
         expect(Bob).not.toBeNull()
 
     });
-
+*/
     test("Contract Deployment", async () => {
         const contractName = contractNames.nonFungibleToken
         const Alice = await getAccountAddress(accountNames.alice)
@@ -75,7 +75,7 @@ describe("Flow for Brand", () => {
 
         expect(contractAddress).toEqual(Alice)
     });
-
+    
 
     test("NFT-Contract Deployment", async () => {
         const contractName = contractNames.nftContracct
