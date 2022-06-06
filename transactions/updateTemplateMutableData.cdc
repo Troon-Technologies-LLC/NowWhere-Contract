@@ -1,3 +1,4 @@
+
 import NFTContract from "../contracts/NFTContract.cdc"
 import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
 
@@ -11,11 +12,11 @@ transaction (templateId:UInt64){
               .borrow() ?? 
               panic("could not borrow a reference to the NFTMethodsCapability interface")
 
-             let mutableData : {String: AnyStruct} = {   
-                  "qwerty" : "asd",
-                  "qqq" : "ggg"
-                
-              }
+             let mutableData : {String: AnyStruct} = {   //}
+                "Keyboard" : "Qwerty",
+                "InputType" : "AlphaNumeric"
+              
+             }
 
     actorResource.updateTemplateMutableData(templateId: templateId, mutableData: mutableData)
 

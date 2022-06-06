@@ -2,10 +2,10 @@
 
 The directories here are organized into contracts, scripts, and transactions.
 
-Contracts contain the source code for the NFTContract and Nowwhere that are deployed to Flow Blocckhain.
+Contracts contain the source code for the NFTContract and Nowwhere that are deployed to Flow BlockChain.
 
 Scripts contain read-only transactions to get information about
-the state of someones Collection or about the state of the NFTcontract and Nowwhere.
+the state of someones Collection or about the state of the NFTContract and Nowwhere.
 
 Transactions contain the transactions that various users can use
 to perform actions in the smart contract like creating Brand, Schema, Templates and Mint Templates.

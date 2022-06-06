@@ -1,17 +1,21 @@
 import NFTContract from "../contracts/NFTContract.cdc"
-transaction (brandId: UInt64, brandName: String){
+import NonFungibleToken from "../contracts/NonFungibleToken.cdc"
+
+
+transaction (templateId:UInt64){
   prepare(acct: AuthAccount) {
 
-    let actorResource = acct.getCapability
+     let actorResource = acct.getCapability
               <&{NFTContract.NFTMethodsCapability}>
               (NFTContract.NFTMethodsCapabilityPrivatePath)
               .borrow() ?? 
               panic("could not borrow a reference to the NFTMethodsCapability interface")
 
-    actorResource.updateBrandData(
-    brandId: brandId,
-    data:  {
-        "brandName": brandName
-      })
+             
+        var key = "game"
+        var value = "cricket"
+
+    actorResource.updateTemplateMutableAttribute(templateId: templateId, key: key, value: value)
+
   }
 }

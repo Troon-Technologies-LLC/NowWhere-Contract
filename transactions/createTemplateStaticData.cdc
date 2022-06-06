@@ -22,16 +22,12 @@ transaction(brandId: UInt64, schemaId: UInt64, maxSupply: UInt64) {
             "artistEmail" : "sham&nasir@gmai.com"
             //extra
         }
-       
-       
-
-           let mutableData : {String: AnyStruct} = {   
-            "mmm" : "ooo",
-            "qqq" : "rrr"
-           
+         
+        let mutableData : {String: AnyStruct} = {   
+            "movieCategory" : "Hollywood",
+            "movieName" : "Interstellar"
         }
-        
         actorResource.createTemplate(brandId: brandId, schemaId: schemaId, maxSupply: maxSupply, immutableData: immutableData, mutableData: mutableData)
-        log("Template created")
+        log("ok")
     }
 }
