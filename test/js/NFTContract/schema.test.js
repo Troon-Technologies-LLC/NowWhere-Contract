@@ -42,7 +42,7 @@ afterAll(async () => {
     await emulator.stop(port);
 });
 
-describe("Flow for Brand", () => {
+describe("Flow for Schema", () => {
     test("Account Creation", async () => {
         //creating 2 accounts
         const Alice = await getAccountAddress(accountNames.alice);

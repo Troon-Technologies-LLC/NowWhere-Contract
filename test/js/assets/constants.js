@@ -36,10 +36,23 @@ const contractNames = {
 
 const transactions = {
     mintFT: "mintFT",
+    setupAdminAccount: "setupAdminAccount",
+    addAdminAccount: "addAdminAccount",
+    createBrand: "createBrand",
+    createSchema: "createSchema",
+    createTemplate: "createTemplate",
+    createTemplateStaticData: "createTemplateStaticData",
+    createTemplateNilMutableData: "createTemplateNilMutableData",
+    updateTemplateMutableStaticData: "updateTemplateMutableStaticData"
 }
 
 const scripts = {
-    getUserBalance: "getUserBalance"
+    getUserBalance: "getUserBalance",
+    getAllBrands: "getAllBrands",
+    getBrandById: "getBrandById",
+    getBrandCount: "getBrandCount",
+    getBrandName: "getBrandName"
+    
 }
 
 const minBalance = 0.0001
