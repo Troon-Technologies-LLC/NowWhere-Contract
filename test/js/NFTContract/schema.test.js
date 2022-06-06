@@ -198,7 +198,7 @@ describe("Flow for Schema", () => {
         };
 
         const code = await getTransactionCode({
-            name: createBrand,
+            name: createSchema,
             addressMap,
         });
 
@@ -220,11 +220,11 @@ describe("Flow for Schema", () => {
 });
 
 
-describe("Brand's script for", () => {
+describe("Schema scripts for", () => {
 
-    test("getting all brands", async () => {
+    test("getting all schemas", async () => {
         
-        const GetAllBrands = scripts.getAllBrands
+        const GetallSchema = scripts.getallSchema
     
         //generate addressMap from import statements
         const NFTContract = await getContractAddress(contractNames.nftContracct, true);
@@ -236,7 +236,7 @@ describe("Brand's script for", () => {
         };
 
         let code = await getScriptCode({
-            name: GetAllBrands,
+            name: GetallSchema,
             addressMap,
         });
 
@@ -261,9 +261,9 @@ describe("Brand's script for", () => {
         console.log("result", result);
     });
 
-    test("getting brand by Id", async () => {
+    test("getting schema by Id", async () => {
         
-        const GetBrandById = scripts.getBrandById
+        const GetSchemaById = scripts.getSchemaById
     
         //generate addressMap from import statements
         const NFTContract = await getContractAddress(contractNames.nftContracct, true);
@@ -275,49 +275,7 @@ describe("Brand's script for", () => {
         };
 
         let code = await getScriptCode({
-            name: GetBrandById,
-            addressMap,
-        });
-
-        code = code
-            .toString()
-            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
-            const accounts = {
-                "0x01": Alice,
-                "0x02": Bob,
-            };
-            const name = accounts[match];
-            return `getAccount(${name})`;
-      });
-
-        const args = [1];
-
-        const result = await executeScript({
-            code,
-            args,
-        });
-
-        //check if balance is not null & expception is null
-        expect(result[0]).not.toBeNull()
-        expect(result[1]).toBeNull()
-        console.log("result", result);
-    });
-
-    test("getting brand name", async () => {
-        
-        const GetBrandName = scripts.getBrandName
-    
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        let code = await getScriptCode({
-            name: GetBrandName,
+            name: GetSchemaById,
             addressMap,
         });
 
@@ -345,9 +303,9 @@ describe("Brand's script for", () => {
         console.log("result", result);
     });
 
-    test("getting brands count", async () => {
+    test("getting schema count", async () => {
         
-        const GetBrandCount = scripts.getBrandCount
+        const GetSchemaCount = scripts.getSchemaCount
     
         //generate addressMap from import statements
         const NFTContract = await getContractAddress(contractNames.nftContracct, true);
@@ -359,7 +317,7 @@ describe("Brand's script for", () => {
         };
 
         let code = await getScriptCode({
-            name: GetBrandCount,
+            name: GetSchemaCount,
             addressMap,
         });
 
