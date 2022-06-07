@@ -273,7 +273,6 @@ describe("Brand's script for", () => {
     //check if balance is not null & expception is null
     expect(result[0]).not.toBeNull();
     expect(result[1]).toBeNull();
-    console.log("result", result);
   });
 
   test("getting brand by Id", async () => {
@@ -320,7 +319,6 @@ describe("Brand's script for", () => {
     //check if balance is not null & expception is null
     expect(result[0]).not.toBeNull();
     expect(result[1]).toBeNull();
-    console.log("result", result);
   });
 
   test("getting brand name", async () => {
@@ -367,7 +365,6 @@ describe("Brand's script for", () => {
     //check if balance is not null & expception is null
     expect(result[0]).not.toBeNull();
     expect(result[1]).toBeNull();
-    console.log("result", result);
   });
 
   test("getting brands count", async () => {
@@ -411,6 +408,5 @@ describe("Brand's script for", () => {
     //check if balance is not null & expception is null
     expect(result[0]).not.toBeNull();
     expect(result[1]).toBeNull();
-    console.log("result", result);
   });
 });

@@ -618,7 +618,6 @@ describe("NFTs scriptS for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
 
@@ -664,7 +663,6 @@ describe("NFTs scriptS for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
 
@@ -707,7 +705,6 @@ describe("NFTs scriptS for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
     test("getting NFT data", async () => {
@@ -749,7 +746,6 @@ describe("NFTs scriptS for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
     test("getting NFT template data", async () => {
@@ -795,7 +791,6 @@ describe("NFTs scriptS for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
 });
