@@ -36,7 +36,6 @@ const contractNames = {
 };
 
 const transactions = {
-  mintFT: "mintFT",
   setupAdminAccount: "setupAdminAccount",
   addAdminAccount: "addAdminAccount",
   createBrand: "createBrand",
@@ -47,6 +46,8 @@ const transactions = {
   updateTemplateMutableStaticData: "updateTemplateMutableStaticData",
   createDropStaticData: "createDropStaticData",
   setupAccount: "setupAccount",
+  mintNFTStaticData: "mintNFTStaticData",
+  mintFT: "mintFT",
   purchaseDrop: "purchaseDrop",
   addOwnerVault: "addOwnerVault",
   purchaseNFTWithFlow: "purchaseNFTWithFlow",
@@ -57,13 +58,17 @@ const transactions = {
   createUserEmptyCollection: "createUserEmptyCollection",
   mintNFTStaticData: "mintNFTStaticData",
   transferNFT: "transferNFT",
+  destroyNFT: "destroyNFT",
 };
 
 const scripts = {
   getBrandName: "getBrandName",
+  getAllBrands: "getAllBrands",
+  getBrandById: "getBrandById",
+  getBrandCount: "getBrandCount",
+  getBrandName: "getBrandName",
   getallSchema: "getallSchema",
   getSchemaById: "getSchemaById",
-  getSchemaCount: "getSchemaCount",
   getSchemaCount: "getSchemaCount",
   getAllTemplates: "getAllTemplates",
   getTemplateById: "getTemplateById",
@@ -72,13 +77,6 @@ const scripts = {
   getNFTDataById: "getNFTDataById",
   getNFTTemplateData: "getNFTTemplateData",
   getUserBalance: "getUserBalance",
-  getAllBrands: "getAllBrands",
-  getBrandById: "getBrandById",
-  getBrandCount: "getBrandCount",
-  getBrandName: "getBrandName",
-  getallSchema: "getallSchema",
-  getSchemaById: "getSchemaById",
-  getSchemaCount: "getSchemaCount",
 };
 
 const minBalance = 0.0001;
