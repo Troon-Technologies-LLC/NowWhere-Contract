@@ -50,9 +50,36 @@ const transactions = {
   purchaseDrop: "purchaseDrop",
   addOwnerVault: "addOwnerVault",
   purchaseNFTWithFlow: "purchaseNFTWithFlow",
+  mintFT: "mintFT",
+    setupAdminAccount: "setupAdminAccount",
+    addAdminAccount: "addAdminAccount",
+    createBrand: "createBrand",
+    createSchema: "createSchema",
+    createTemplate: "createTemplate",
+    createTemplateStaticData: "createTemplateStaticData",
+    createTemplateNilMutableData: "createTemplateNilMutableData",
+    updateTemplateMutableStaticData: "updateTemplateMutableStaticData",
+    removeTemplate: "removeTemplate",
+    createUserEmptyCollection: "createUserEmptyCollection",
+    mintNFTStaticData: "mintNFTStaticData",
+    transferNFT: "transferNFT"
 };
 
 const scripts = {
+
+    getBrandName: "getBrandName",
+    getallSchema: "getallSchema",
+    getSchemaById: "getSchemaById",
+    getSchemaCount: "getSchemaCount",
+
+    getSchemaCount: "getSchemaCount",
+    getAllTemplates: "getAllTemplates",
+    getTemplateById: "getTemplateById",
+    getTemplateCount: "getTemplateCount",
+    getAllNFTIds: "getAllNFTIds",
+    getNFTDataById: "getNFTDataById",
+    getNFTTemplateData: "getNFTTemplateData",
+
   getUserBalance: "getUserBalance",
   getAllBrands: "getAllBrands",
   getBrandById: "getBrandById",
