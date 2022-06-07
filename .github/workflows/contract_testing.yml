@@ -21,10 +21,12 @@ jobs:
     - name: check flow version
       run: flow version
       
-    - name: install node_modules and run test_cases
+    - name: starting flow
       working-directory: ./test/js
-      run: |
-            pwd
-            flow init
-            npm i
-            npm run test
+      run: flow init
+    - name: installing dependencies
+      working-directory: ./test/js
+      run: npm install
+    - name: Running Test
+      working-directory: ./test/js
+      run: npm run test
