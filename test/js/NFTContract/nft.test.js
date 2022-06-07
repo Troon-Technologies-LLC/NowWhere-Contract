@@ -530,7 +530,7 @@ describe("Flow for NFTs", () => {
 
     });
 
-    test("Transfering NFT", async () => {
+    test("Destroying NFT", async () => {
 
         const destroyNFT = transactions.destroyNFT;
 
