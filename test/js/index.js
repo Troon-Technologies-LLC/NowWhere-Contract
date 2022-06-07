@@ -94,10 +94,10 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
-      console.log("result:", result)
+      console.log("result:", result);
     } catch (e) {
       console.log(e);
-      console.log("errror")
+      console.log("errror");
     }
     expect(name).toBe("NFTContract");
   });
@@ -108,7 +108,7 @@ describe("Deployment", () => {
     let update = true;
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    console.log("NowWhereContract:", NFTContract)
+    console.log("NowWhereContract:", NFTContract);
     let addressMap = {
       NonFungibleToken,
       NFTContract,
@@ -121,7 +121,7 @@ describe("Deployment", () => {
         addressMap,
         update,
       });
-      console.log("NowWhereContract deploy result:", result)
+      console.log("NowWhereContract deploy result:", result);
     } catch (e) {
       console.log(e);
     }
@@ -139,8 +139,8 @@ describe("Transactions", () => {
     // Generate addressMap from import statements
     const NonFungibleToken = await getContractAddress("NonFungibleToken");
     const NFTContract = await getContractAddress("NFTContract");
-    console.log("NFTContract:", NFTContract)
-    console.log("NonFungibleToken:", NonFungibleToken)
+    console.log("NFTContract:", NFTContract);
+    console.log("NonFungibleToken:", NonFungibleToken);
     const addressMap = {
       NonFungibleToken,
       NFTContract,
@@ -343,8 +343,6 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-  
-
   test("test transaction  create drop", async () => {
     const name = "createDropStaticData";
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
@@ -453,7 +451,6 @@ describe("Transactions", () => {
     expect(txResult.errorMessage).toBe(undefined);
   });
 
-
   test("test transaction purchase drop", async () => {
     const name = "purchaseDrop";
 
@@ -488,7 +485,6 @@ describe("Transactions", () => {
         signers,
         args,
       });
-
     } catch (e) {
       console.log(e);
     }
@@ -541,7 +537,6 @@ describe("Transactions", () => {
     expect(updatedBalance1.toString()).toBe(userOne);
     expect(updatedBalance2.toString()).toBe(user2);
   });
-
 
   test("purchase drop with flow", async () => {
     const name = "purchaseNFTWithFlow";
@@ -692,7 +687,11 @@ describe("Transactions", () => {
       addressMap,
     });
     var test = 1;
-    const args = [3, currentTimeInSeconds + 10000000.0, currentTimeInSeconds + 20000000.0];
+    const args = [
+      3,
+      currentTimeInSeconds + 10000000.0,
+      currentTimeInSeconds + 20000000.0,
+    ];
 
     let txResult;
     try {
@@ -775,7 +774,7 @@ describe("Transactions", () => {
     });
     var test = 1;
     var currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
-    currentTimeInSeconds = currentTimeInSeconds + 10000000.0
+    currentTimeInSeconds = currentTimeInSeconds + 10000000.0;
     const args = [2, currentTimeInSeconds, currentTimeInSeconds + 20000000.0];
 
     let txResult;
@@ -1296,7 +1295,6 @@ describe("Scripts", () => {
   });
 });
 
-
 describe("TransactionsToUpdate", () => {
   test("test transaction to Update the Template's MUtable Data", async () => {
     const name = "updateTemplateMutableStaticData";
@@ -1371,8 +1369,6 @@ describe("TransactionsToUpdate", () => {
   });
 });
 
-
-
 describe("ScriptsToGetUpdatedData", () => {
   test("get template data by Id", async () => {
     const name = "getTemplateById";
@@ -1385,7 +1381,7 @@ describe("ScriptsToGetUpdatedData", () => {
       NonFungibleToken,
       NFTContract,
     };
-    
+
     let code = await getScriptCode({
       name,
       addressMap,

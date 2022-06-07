@@ -1,6 +1,6 @@
-import NowWhereContract from "./NowWhereContract.cdc"
+import NowWhereContract from "../contracts/NowWhereContract.cdc"
 
-transaction(DropId: UInt64,TemplateId: UInt64,MintNumber: UInt64,Creator: Address) {
+transaction(DropId: UInt64, TemplateId: UInt64, MintNumber: UInt64, Creator: Address) {
     let adminRef: &NowWhereContract.DropAdmin
     prepare(acct: AuthAccount) {
         self.adminRef = acct.borrow<&NowWhereContract.DropAdmin>(from:NowWhereContract.DropAdminStoragePath)
