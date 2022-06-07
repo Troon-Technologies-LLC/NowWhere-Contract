@@ -1131,5 +1131,95 @@ describe("Flow For Drop", () => {
     });
   });
 
-  describe("scripts", () => {});
+  describe("scripts", () => {
+    test("get all drops", async () => {
+      const getAllDrops = scripts.getAllDrops;
+
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nowWhereContract,
+      };
+
+      const code = await getScriptCode({
+        name: getAllDrops,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      const result = await executeScript({
+        code,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
+
+    test("get drop by id", async () => {
+      const getDropById = scripts.getDropById;
+
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nowWhereContract,
+      };
+
+      const code = await getScriptCode({
+        name: getDropById,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      // set transaction arguments
+      const args = [3];
+      const result = await executeScript({
+        code,
+        args,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
+
+    test("get  maximum supply", async () => {
+      const getMaxSupply = scripts.getMaxSupply;
+
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nowWhereContract,
+      };
+
+      const code = await getScriptCode({
+        name: getMaxSupply,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      // set transaction arguments
+      const args = [3];
+      const result = await executeScript({
+        code,
+        args,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
+  });
 });
