@@ -415,7 +415,6 @@ describe("Template's script for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
     test("getting template by Id", async () => {
@@ -457,7 +456,6 @@ describe("Template's script for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
     test("getting template count", async () => {
@@ -496,7 +494,6 @@ describe("Template's script for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
 });

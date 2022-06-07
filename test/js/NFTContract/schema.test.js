@@ -258,7 +258,6 @@ describe("Schema scripts for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
     test("getting schema by Id", async () => {
@@ -300,7 +299,6 @@ describe("Schema scripts for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
     test("getting schema count", async () => {
@@ -339,7 +337,6 @@ describe("Schema scripts for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
 });
