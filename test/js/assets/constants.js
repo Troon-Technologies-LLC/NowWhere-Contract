@@ -36,37 +36,6 @@ const contractNames = {
 };
 
 const transactions = {
-<<<<<<< HEAD
-    mintFT: "mintFT",
-    setupAdminAccount: "setupAdminAccount",
-    addAdminAccount: "addAdminAccount",
-    createBrand: "createBrand",
-    createSchema: "createSchema",
-    createTemplate: "createTemplate",
-    createTemplateStaticData: "createTemplateStaticData",
-    removeTemplate: "removeTemplate",
-    createUserEmptyCollection: "createUserEmptyCollection",
-    mintNFTStaticData: "mintNFTStaticData",
-    transferNFT: "transferNFT"
-}
-
-const scripts = {
-    getUserBalance: "getUserBalance",
-    getAllBrands: "getAllBrands",
-    getBrandById: "getBrandById",
-    getBrandCount: "getBrandCount",
-    getBrandName: "getBrandName",
-    getallSchema: "getallSchema",
-    getSchemaById: "getSchemaById",
-    getSchemaCount: "getSchemaCount",
-    getAllTemplates: "getAllTemplates",
-    getTemplateById: "getTemplateById",
-    getTemplateCount: "getTemplateCount",
-    getAllNFTIds: "getAllNFTIds",
-    getNFTDataById: "getNFTDataById",
-    getNFTTemplateData: "getNFTTemplateData"
-}
-=======
   mintFT: "mintFT",
   setupAdminAccount: "setupAdminAccount",
   addAdminAccount: "addAdminAccount",
@@ -93,7 +62,6 @@ const scripts = {
   getSchemaById: "getSchemaById",
   getSchemaCount: "getSchemaCount",
 };
->>>>>>> 95a7ae969de85e12c7e7bca375283fcf59bd61ea
 
 const minBalance = 0.0001;
 const testingTokenAmount = 100.0;
