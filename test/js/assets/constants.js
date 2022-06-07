@@ -51,7 +51,10 @@ const scripts = {
     getAllBrands: "getAllBrands",
     getBrandById: "getBrandById",
     getBrandCount: "getBrandCount",
-    getBrandName: "getBrandName"
+    getBrandName: "getBrandName",
+    getallSchema: "getallSchema",
+    getSchemaById: "getSchemaById",
+    getSchemaCount: "getSchemaCount"
     
 }
 

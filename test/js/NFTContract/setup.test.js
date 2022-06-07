@@ -3,14 +3,10 @@ import {
     init,
     emulator,
     getAccountAddress,
-    getFlowBalance,
-    mintFlow,
     deployContractByName,
     getContractAddress,
     getTransactionCode,
     sendTransaction,
-    getScriptCode,
-    executeScript
 
 } from "flow-js-testing";
 import { expect } from "@jest/globals";
@@ -19,11 +15,8 @@ import {
     accountNames,
     contractNames,
     transactions,
-    scripts,
     flowConfig,
     timeoutLimit,
-    minBalance,
-    testingTokenAmount
 } from '../assets/constants';
 
 
@@ -36,7 +29,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
     const port = flowConfig.emulatorPort;
-    await emulator.stop();
+    await emulator.stop(port);
 });
 
 beforeEach(async () => {
@@ -45,8 +38,7 @@ beforeEach(async () => {
     await init(basePath, { port });
 });
 
-
-describe("NFT Contract Setup", () => {
+describe(`${contractNames.nftContracct} Setup`, () => {
     test("Account creation", async () => {
         //creating accounts
         const Alice = await getAccountAddress(accountNames.alice);
@@ -59,7 +51,7 @@ describe("NFT Contract Setup", () => {
         expect(Charlie).not.toBeNull()
     });
 
-    test("Non-Fungible-Contract Deployment", async () => {
+    test(`${contractNames.nonFungibleToken} Deployment`, async () => {
         const contractName = contractNames.nonFungibleToken
         const Alice = await getAccountAddress(accountNames.alice)
         let update = true
@@ -81,7 +73,7 @@ describe("NFT Contract Setup", () => {
         expect(contractAddress).toEqual(Alice)
     });
 
-    test("NFT-Contract Deployment", async () => {
+    test(`${contractNames.nftContracct} Deployment`, async () => {
         const contractName = contractNames.nftContracct
         const Bob = await getAccountAddress(accountNames.bob)
         let update = true
@@ -109,4 +101,81 @@ describe("NFT Contract Setup", () => {
         expect(contractAddress).toEqual(Bob)
     });
 
+    test("Admin Account Setup", async () => {
+        const setupAdminTransaction = transactions.setupAdminAccount;
+
+        // Create new account for Admin
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Charlie];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: setupAdminTransaction,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const txResult = await sendTransaction({
+            code,
+            signers
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[0]).not.toBeNull()
+        expect(txResult[1]).toBeNull()
+
+
+        //Need to check if setup-admin transaction done its job or not ?
+    });
+
+    test("Adding Admin Account", async () => {
+        const addAdminTransaction = transactions.addAdminAccount;
+
+        // Import participating accounts
+        const Bob = await getAccountAddress(accountNames.bob)
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Bob];
+
+         //generate addressMap from import statements
+         const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+         const addressMap = {
+             NFTContract,
+             NonFungibleToken,
+         };
+
+        const code = await getTransactionCode({
+            name: addAdminTransaction,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [Charlie];
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[0]).not.toBeNull()
+        expect(txResult[1]).toBeNull()
+
+    });
 });

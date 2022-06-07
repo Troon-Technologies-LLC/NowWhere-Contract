@@ -56,7 +56,7 @@ describe("NFT Brand", () => {
         expect(Bob).not.toBeNull()
 
     });
-
+    
     test("Contract Deployment", async () => {
         const contractName = contractNames.nonFungibleToken
         const Alice = await getAccountAddress(accountNames.alice)
@@ -78,7 +78,7 @@ describe("NFT Brand", () => {
 
         expect(contractAddress).toEqual(Alice)
     });
-
+    
 
     test("NFT-Contract Deployment", async () => {
         const contractName = contractNames.nftContracct

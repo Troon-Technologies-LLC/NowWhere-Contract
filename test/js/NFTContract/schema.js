@@ -179,8 +179,8 @@ describe("Flow for Schema", () => {
 
     });
 
-    test("Creating Brand", async () => {
-        const createBrand = transactions.createBrand;
+    test("Creating Schema", async () => {
+        const createSchema = transactions.createSchema;
 
         // Import participating accounts
         const Charlie = await getAccountAddress(accountNames.charlie)
@@ -204,7 +204,7 @@ describe("Flow for Schema", () => {
 
         expect(code).not.toBeNull()
 
-        const args = ["BreakOut", {"Shoe":"ShoeZ-1"}];
+        const args = ["firstSchema"];
 
         const txResult = await sendTransaction({
             code,

@@ -24,6 +24,5 @@ transaction() {
         signer.save( <- collection, to: NFTContract.CollectionStoragePath)
         // create a public capability for the Collection
         signer.link<&{NFTContract.NFTContractCollectionPublic}>(NFTContract.CollectionPublicPath, target:NFTContract.CollectionStoragePath)
-        log("ok")
     }
 }
