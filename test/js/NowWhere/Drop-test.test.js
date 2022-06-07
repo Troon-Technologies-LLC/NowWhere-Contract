@@ -270,6 +270,42 @@ describe("Flow For Drop", () => {
       expect(txResult[1]).toBeNull();
     });
 
+    test("getting brand by Id", async () => {
+      const getBrandById = scripts.getBrandById;
+
+      //generate addressMap from import statements
+      const nonFungibleToken = await getContractAddress(
+        contractNames.nonFungibleToken,
+        true
+      );
+      const nftContract = await getContractAddress(
+        contractNames.nftContract,
+        true
+      );
+
+      const addressMap = {
+        nonFungibleToken,
+        nftContract,
+      };
+
+      let code = await getScriptCode({
+        name: getBrandById,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      const args = [1];
+
+      const result = await executeScript({
+        code,
+        args,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
     test("create schema", async () => {
       const createSchema = transactions.createSchema;
 
@@ -315,6 +351,42 @@ describe("Flow For Drop", () => {
       expect(txResult[1]).toBeNull();
     });
 
+    test("getting schema by Id", async () => {
+      const getSchemaById = scripts.getSchemaById;
+
+      //generate addressMap from import statements
+      const nonFungibleToken = await getContractAddress(
+        contractNames.nonFungibleToken,
+        true
+      );
+      const nftContract = await getContractAddress(
+        contractNames.nftContract,
+        true
+      );
+
+      const addressMap = {
+        nonFungibleToken,
+        nftContract,
+      };
+
+      let code = await getScriptCode({
+        name: getSchemaById,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      const args = [1];
+
+      const result = await executeScript({
+        code,
+        args,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
     test("create template", async () => {
       const createTemplate = transactions.createTemplateStaticData;
 
@@ -360,6 +432,40 @@ describe("Flow For Drop", () => {
       expect(txResult[1]).toBeNull();
     });
 
+    test("getting template by Id", async () => {
+      const getTemplateById = scripts.getTemplateById;
+
+      //generate addressMap from import statements
+      const nonFungibleToken = await getContractAddress(
+        contractNames.nonFungibleToken,
+        true
+      );
+      const nftContract = await getContractAddress(
+        contractNames.nftContract,
+        true
+      );
+
+      const addressMap = {
+        nonFungibleToken,
+        nftContract,
+      };
+
+      let code = await getScriptCode({
+        name: getTemplateById,
+        addressMap,
+      });
+
+      const args = [1];
+
+      const result = await executeScript({
+        code,
+        args,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
     test("create Drop", async () => {
       const createDrop = transactions.createDropStaticData;
 
@@ -872,6 +978,37 @@ describe("Flow For Drop", () => {
       expect(txResult[1]).toBeNull();
     });
 
+    test("get drop by id", async () => {
+      const getDropById = scripts.getDropById;
+
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nowWhereContract,
+      };
+
+      const code = await getScriptCode({
+        name: getDropById,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      // set transaction arguments
+      const args = [1];
+      const result = await executeScript({
+        code,
+        args,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
+
     test("test transaction Update drop for start date, end date, and templates", async () => {
       const updateDrop = transactions.updateDropStaticForTemplate;
 
@@ -1228,9 +1365,7 @@ describe("Flow For Drop", () => {
       expect(txResult[0]).toBeNull();
       expect(txResult[1]).not.toBeNull();
     });
-  });
 
-  describe("scripts", () => {
     test("get all drops", async () => {
       const getAllDrops = scripts.getAllDrops;
 
