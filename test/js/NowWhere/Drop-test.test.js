@@ -662,7 +662,6 @@ describe("Flow For Drop", () => {
         signers,
       });
 
-      console.log("purchase drop with flow", txResult);
       //check if result instance is not null & expception is null
       expect(txResult[0]).not.toBeNull();
       expect(txResult[1]).toBeNull();
