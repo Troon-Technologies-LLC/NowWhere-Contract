@@ -151,7 +151,7 @@ describe("Flow for Template", () => {
         const signers = [Bob];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -189,7 +189,7 @@ describe("Flow for Template", () => {
         const signers = [Charlie];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -228,7 +228,7 @@ describe("Flow for Template", () => {
         const signers = [Charlie];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -267,7 +267,7 @@ describe("Flow for Template", () => {
         const signers = [Charlie];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -306,7 +306,7 @@ describe("Flow for Template", () => {
         const signers = [Charlie];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -345,7 +345,7 @@ describe("Flow for Template", () => {
         const signers = [Charlie];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -384,7 +384,7 @@ describe("Template's script for", () => {
         const GetAllTemplates = scripts.getAllTemplates
     
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -423,7 +423,7 @@ describe("Template's script for", () => {
         const GetTemplateById = scripts.getTemplateById
     
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -465,7 +465,7 @@ describe("Template's script for", () => {
         const GetTemplateCount = scripts.getTemplateCount
     
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {

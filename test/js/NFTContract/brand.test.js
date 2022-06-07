@@ -154,7 +154,7 @@ describe("Flow for Brand", () => {
 
     //generate addressMap from import statements
     const NFTContract = await getContractAddress(
-      contractNames.nftContracct,
+      contractNames.nftContract,
       true
     );
     const NonFungibleToken = await getContractAddress(
@@ -197,7 +197,7 @@ describe("Flow for Brand", () => {
 
     //generate addressMap from import statements
     const NFTContract = await getContractAddress(
-      contractNames.nftContracct,
+      contractNames.nftContract,
       true
     );
     const NonFungibleToken = await getContractAddress(
@@ -237,7 +237,7 @@ describe("Brand's script for", () => {
 
     //generate addressMap from import statements
     const NFTContract = await getContractAddress(
-      contractNames.nftContracct,
+      contractNames.nftContract,
       true
     );
     const NonFungibleToken = await getContractAddress(
@@ -281,7 +281,7 @@ describe("Brand's script for", () => {
 
     //generate addressMap from import statements
     const NFTContract = await getContractAddress(
-      contractNames.nftContracct,
+      contractNames.nftContract,
       true
     );
     const NonFungibleToken = await getContractAddress(
@@ -328,7 +328,7 @@ describe("Brand's script for", () => {
 
     //generate addressMap from import statements
     const NFTContract = await getContractAddress(
-      contractNames.nftContracct,
+      contractNames.nftContract,
       true
     );
     const NonFungibleToken = await getContractAddress(
@@ -375,7 +375,7 @@ describe("Brand's script for", () => {
 
     //generate addressMap from import statements
     const NFTContract = await getContractAddress(
-      contractNames.nftContracct,
+      contractNames.nftContract,
       true
     );
     const NonFungibleToken = await getContractAddress(

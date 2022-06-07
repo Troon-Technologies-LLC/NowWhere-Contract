@@ -115,7 +115,7 @@ describe("NFT Contract Setup", () => {
         const signers = [Charlie];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
 
         const addressMap = {
@@ -151,7 +151,7 @@ describe("NFT Contract Setup", () => {
         const signers = [Bob];
 
          //generate addressMap from import statements
-         const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+         const NFTContract = await getContractAddress(contractNames.nftContract, true);
          const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
          const addressMap = {
