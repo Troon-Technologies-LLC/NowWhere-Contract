@@ -75,7 +75,8 @@ describe("Flow For Drop", () => {
       let update = true;
 
       let nonFungibleToken = await getContractAddress(
-        contractNames.nonFungibleToken
+        contractNames.nonFungibleToken,
+        true
       );
 
       let addressMap = {
@@ -105,10 +106,14 @@ describe("Flow For Drop", () => {
       let update = true;
 
       let nonFungibleToken = await getContractAddress(
-        contractNames.nonFungibleToken
+        contractNames.nonFungibleToken,
+        true
       );
 
-      let nftContract = await getContractAddress(contractNames.nftContract);
+      let nftContract = await getContractAddress(
+        contractNames.nftContract,
+        true
+      );
 
       let addressMap = {
         nonFungibleToken,
