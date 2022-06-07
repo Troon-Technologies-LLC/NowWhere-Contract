@@ -28,10 +28,7 @@ import {
 jest.setTimeout(timeoutLimit);
 
 beforeAll(async () => {
-  const basePath = path.resolve(__dirname, flowConfig.basePath);
   const port = flowConfig.emulatorPort;
-
-  await init(basePath, { port });
   await emulator.start(port);
 });
 
@@ -41,23 +38,35 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-    const basePath = path.resolve(__dirname, flowConfig.basePath);
-    const port = flowConfig.emulatorPort;
-    await init(basePath, { port });
-  });
+  const basePath = path.resolve(__dirname, flowConfig.basePath);
+  const port = flowConfig.emulatorPort;
+  await init(basePath, { port });
+});
 
 describe("Flow for Brand", () => {
+<<<<<<< HEAD
      test("Account Creation", async () => {
         //creating 2 accounts
         const Alice = await getAccountAddress(accountNames.alice);
         const Bob = await getAccountAddress(accountNames.bob);
+=======
+  test("Account Creation", async () => {
+    //creating 2 accounts
+    const Alice = await getAccountAddress(accountNames.alice);
+    const Bob = await getAccountAddress(accountNames.bob);
+>>>>>>> 4491784d1fc51e27371e49176f3b78dc750c6ef8
 
-        //check if accounts are created successfully
-        expect(Alice).not.toBeNull()
-        expect(Bob).not.toBeNull()
+    //check if accounts are created successfully
+    expect(Alice).not.toBeNull()
+    expect(Bob).not.toBeNull()
 
+  });
+
+<<<<<<< HEAD
     });
 
+=======
+>>>>>>> 4491784d1fc51e27371e49176f3b78dc750c6ef8
   test("Contract Deployment", async () => {
     const contractName = contractNames.nonFungibleToken;
     const Alice = await getAccountAddress(accountNames.alice);
@@ -374,8 +383,16 @@ describe("Flow for Brand", () => {
   test("Negative TestCase => Creating Brand by incorect signer", async () => {
     const createBrand = transactions.createBrand;
 
+<<<<<<< HEAD
     // Import participating accounts
     const Bob = await getAccountAddress(accountNames.bob);
+=======
+    //check if balance is not null & expception is null
+    expect(result[0]).not.toBeNull();
+    expect(result[1]).toBeNull();
+  });
+
+>>>>>>> 4491784d1fc51e27371e49176f3b78dc750c6ef8
 
     // Set transaction signers
     const signers = [Bob];

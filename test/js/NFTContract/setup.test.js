@@ -3,14 +3,10 @@ import {
     init,
     emulator,
     getAccountAddress,
-    getFlowBalance,
-    mintFlow,
     deployContractByName,
     getContractAddress,
     getTransactionCode,
     sendTransaction,
-    getScriptCode,
-    executeScript
 
 } from "flow-js-testing";
 import { expect } from "@jest/globals";
@@ -19,21 +15,15 @@ import {
     accountNames,
     contractNames,
     transactions,
-    scripts,
     flowConfig,
     timeoutLimit,
-    minBalance,
-    testingTokenAmount
 } from '../assets/constants';
 
 
 jest.setTimeout(timeoutLimit);
 
 beforeAll(async () => {
-    const basePath = path.resolve(__dirname, flowConfig.basePath);
     const port = flowConfig.emulatorPort;
-
-    await init(basePath, { port });
     await emulator.start(port);
 });
 
@@ -48,7 +38,7 @@ beforeEach(async () => {
     await init(basePath, { port });
 });
 
-describe("NFT Contract Setup", () => {
+describe(`${contractNames.nftContracct} Setup`, () => {
     test("Account creation", async () => {
         //creating accounts
         const Alice = await getAccountAddress(accountNames.alice);
@@ -61,7 +51,7 @@ describe("NFT Contract Setup", () => {
         expect(Charlie).not.toBeNull()
     });
 
-    test("Non-Fungible-Contract Deployment", async () => {
+    test(`${contractNames.nonFungibleToken} Deployment`, async () => {
         const contractName = contractNames.nonFungibleToken
         const Alice = await getAccountAddress(accountNames.alice)
         let update = true
@@ -83,8 +73,8 @@ describe("NFT Contract Setup", () => {
         expect(contractAddress).toEqual(Alice)
     });
 
-    test("NFT-Contract Deployment", async () => {
-        const contractName = contractNames.nftContract
+    test(`${contractNames.nftContracct} Deployment`, async () => {
+        const contractName = contractNames.nftContracct
         const Bob = await getAccountAddress(accountNames.bob)
         let update = true
 
@@ -111,10 +101,10 @@ describe("NFT Contract Setup", () => {
         expect(contractAddress).toEqual(Bob)
     });
 
-    test("Setting Up Admin Account", async () => {
+    test("Admin Account Setup", async () => {
         const setupAdminTransaction = transactions.setupAdminAccount;
 
-        // Import participating accounts
+        // Create new account for Admin
         const Charlie = await getAccountAddress(accountNames.charlie)
 
         // Set transaction signers
@@ -144,6 +134,9 @@ describe("NFT Contract Setup", () => {
         //check if result instance is not null & expception is null
         expect(txResult[0]).not.toBeNull()
         expect(txResult[1]).toBeNull()
+
+
+        //Need to check if setup-admin transaction done its job or not ?
     });
 
     test("Adding Admin Account", async () => {
@@ -156,14 +149,14 @@ describe("NFT Contract Setup", () => {
         // Set transaction signers
         const signers = [Bob];
 
-         //generate addressMap from import statements
-         const NFTContract = await getContractAddress(contractNames.nftContract, true);
-         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-         const addressMap = {
-             NFTContract,
-             NonFungibleToken,
-         };
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
 
         const code = await getTransactionCode({
             name: addAdminTransaction,
@@ -188,46 +181,47 @@ describe("NFT Contract Setup", () => {
 
     test("Negative TestCase => Adding incorrect Admin Account", async () => {
         const addAdminTransaction = transactions.addAdminAccount;
-    
+
         // Import participating accounts
         const Bob = await getAccountAddress(accountNames.bob);
         const Donald = await getAccountAddress(accountNames.donald);
-    
+
         // Set transaction signers
         const signers = [Bob];
-    
+
         //generate addressMap from import statements
         const NFTContract = await getContractAddress(
-          contractNames.nftContract,
-          true
+            contractNames.nftContract,
+            true
         );
         const NonFungibleToken = await getContractAddress(
-          contractNames.nonFungibleToken,
-          true
+            contractNames.nonFungibleToken,
+            true
         );
-    
+
         const addressMap = {
-          NFTContract,
-          NonFungibleToken,
+            NFTContract,
+            NonFungibleToken,
         };
         const code = await getTransactionCode({
-          name: addAdminTransaction,
-          addressMap,
+            name: addAdminTransaction,
+            addressMap,
         });
-    
+
         expect(code).not.toBeNull();
-    
+
         const args = [Donald];
-    
+
         const txResult = await sendTransaction({
-          code,
-          signers,
-          args,
+            code,
+            signers,
+            args,
         });
-    
+
         //check if result instance is not null & expception is null
         expect(txResult[1]).not.toBeNull();
         expect(txResult[0]).toBeNull();
+<<<<<<< HEAD
       });
 
       test("Negative TestCase => Adding Admin Account via incorrect super Admin", async () => {
@@ -273,5 +267,8 @@ describe("NFT Contract Setup", () => {
         expect(txResult[1]).not.toBeNull();
         expect(txResult[0]).toBeNull();
       });
+=======
+    });
+>>>>>>> 4491784d1fc51e27371e49176f3b78dc750c6ef8
 });
 
