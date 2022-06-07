@@ -1079,7 +1079,57 @@ describe("Flow For Drop", () => {
       expect(txResult[1]).not.toBeNull();
     });
 
-    test("test transaction Update drop for the wrong date", async () => {
+    test("test transaction Update drop for the wrong start date", async () => {
+      const updateDrop = transactions.updateDropStatic;
+
+      // Import participant accounts
+      const Charlie = await getAccountAddress(accountNames.charlie);
+
+      //set transaction singer account
+      const signers = [Charlie];
+
+      //generate addressMap from import statements
+      const nonFungibleToken = await getContractAddress(
+        contractNames.nonFungibleToken,
+        true
+      );
+      const nftContract = await getContractAddress(
+        contractNames.nftContract,
+        true
+      );
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nonFungibleToken,
+        nftContract,
+        nowWhereContract,
+      };
+
+      const code = await getTransactionCode({
+        name: updateDrop,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      const currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+      // set transaction arguments
+      const args = [3, currentTimeInSeconds - 20000000.0, null];
+
+      const txResult = await sendTransaction({
+        code,
+        args,
+        signers,
+      });
+
+      //check if result instance is not null & expception is null
+      expect(txResult[0]).toBeNull();
+      expect(txResult[1]).not.toBeNull();
+    });
+    test("test transaction Update drop for the wrong end date", async () => {
       const updateDrop = transactions.updateDropStatic;
 
       // Import participant accounts
