@@ -7,7 +7,8 @@ transaction(DropId: UInt64, StartDate: UFix64?,EndDate: UFix64?){
         ??panic("could not borrow admin reference")
     }
     execute{
-        self.adminRef.updateDrop(dropId: DropId, startDate: StartDate, endDate: EndDate, templates: nil)
+        let template : {UInt64:AnyStruct} = {2:"3"}
+        self.adminRef.updateDrop(dropId: DropId, startDate: StartDate, endDate: EndDate, templates: template)
         
     }
 }
