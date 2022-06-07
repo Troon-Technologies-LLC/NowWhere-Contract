@@ -43,7 +43,7 @@ beforeEach(async () => {
   await init(basePath, { port });
 });
 
-describe("NFT Brand", () => {
+describe("Flow for Brand", () => {
   test("Account Creation", async () => {
     //creating 2 accounts
     const Alice = await getAccountAddress(accountNames.alice);
