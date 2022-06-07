@@ -653,8 +653,6 @@ describe("Flow For Drop", () => {
 
       expect(code).not.toBeNull();
 
-      const emmaBalance = await getFlowBalance(Emma);
-      console.log("bob balance", emmaBalance);
       // set transaction arguments
       const args = [1, 1, 1, Emma, 10.0];
 
