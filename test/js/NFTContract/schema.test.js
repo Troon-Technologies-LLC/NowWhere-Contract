@@ -42,6 +42,12 @@ afterAll(async () => {
     await emulator.stop(port);
 });
 
+beforeEach(async () => {
+    const basePath = path.resolve(__dirname, flowConfig.basePath);
+    const port = flowConfig.emulatorPort;
+    await init(basePath, { port });
+});
+
 describe("Flow for Schema", () => {
     test("Account Creation", async () => {
         //creating 2 accounts

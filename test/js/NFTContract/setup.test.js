@@ -42,6 +42,12 @@ afterAll(async () => {
     await emulator.stop(port);
 });
 
+beforeEach(async () => {
+    const basePath = path.resolve(__dirname, flowConfig.basePath);
+    const port = flowConfig.emulatorPort;
+    await init(basePath, { port });
+});
+
 describe("NFT Contract Setup", () => {
     test("Account creation", async () => {
         //creating accounts
