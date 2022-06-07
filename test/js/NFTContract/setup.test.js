@@ -78,7 +78,7 @@ describe("NFT Contract Setup", () => {
     });
 
     test("NFT-Contract Deployment", async () => {
-        const contractName = contractNames.nftContracct
+        const contractName = contractNames.nftContract
         const Bob = await getAccountAddress(accountNames.bob)
         let update = true
 
