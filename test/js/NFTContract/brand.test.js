@@ -186,6 +186,50 @@ describe("Flow for Brand", () => {
     expect(txResult[1]).toBeNull();
   });
 
+  test("Adding Admin Account via incorrect super Admin", async () => {
+    const addAdminTransaction = transactions.addAdminAccount;
+
+    // Import participating accounts
+    const Bob = await getAccountAddress(accountNames.bob);
+    const Charlie = await getAccountAddress(accountNames.charlie);
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    //generate addressMap from import statements
+    const NFTContract = await getContractAddress(
+      contractNames.nftContract,
+      true
+    );
+    const NonFungibleToken = await getContractAddress(
+      contractNames.nonFungibleToken,
+      true
+    );
+
+    const addressMap = {
+      NFTContract,
+      NonFungibleToken,
+    };
+    const code = await getTransactionCode({
+      name: addAdminTransaction,
+      addressMap,
+    });
+
+    expect(code).not.toBeNull();
+
+    const args = [Bob];
+
+    const txResult = await sendTransaction({
+      code,
+      signers,
+      args,
+    });
+
+    //check if result instance is not null & expception is null
+    expect(txResult[1]).not.toBeNull();
+    expect(txResult[0]).toBeNull();
+  });
+
   test("Creating Brand", async () => {
     const createBrand = transactions.createBrand;
 
@@ -228,6 +272,94 @@ describe("Flow for Brand", () => {
     //check if result instance is not null & expception is null
     expect(txResult[0]).not.toBeNull();
     expect(txResult[1]).toBeNull();
+  });
+
+  test("Creating Brand by incorect data", async () => {
+    const createBrand = transactions.createBrand;
+
+    // Import participating accounts
+    const Charlie = await getAccountAddress(accountNames.charlie);
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    //generate addressMap from import statements
+    const NFTContract = await getContractAddress(
+      contractNames.nftContract,
+      true
+    );
+    const NonFungibleToken = await getContractAddress(
+      contractNames.nonFungibleToken,
+      true
+    );
+
+    const addressMap = {
+      NFTContract,
+      NonFungibleToken,
+    };
+
+    const code = await getTransactionCode({
+      name: createBrand,
+      addressMap,
+    });
+
+    expect(code).not.toBeNull();
+
+    const args = [5, { Shoe: "ShoeZ-1" }];
+
+    const txResult = await sendTransaction({
+      code,
+      signers,
+      args,
+    });
+
+    //check if result instance is not null & expception is null
+    expect(txResult[1]).not.toBeNull();
+    expect(txResult[0]).toBeNull();
+  });
+
+  test("Creating Brand by incorect signer", async () => {
+    const createBrand = transactions.createBrand;
+
+    // Import participating accounts
+    const Bob = await getAccountAddress(accountNames.bob);
+
+    // Set transaction signers
+    const signers = [Bob];
+
+    //generate addressMap from import statements
+    const NFTContract = await getContractAddress(
+      contractNames.nftContract,
+      true
+    );
+    const NonFungibleToken = await getContractAddress(
+      contractNames.nonFungibleToken,
+      true
+    );
+
+    const addressMap = {
+      NFTContract,
+      NonFungibleToken,
+    };
+
+    const code = await getTransactionCode({
+      name: createBrand,
+      addressMap,
+    });
+
+    expect(code).not.toBeNull();
+
+    const args = ["Breakout", { Shoe: "ShoeZ-1" }];
+
+    const txResult = await sendTransaction({
+      code,
+      signers,
+      args,
+    });
+
+    //check if result instance is not null & expception is null
+    expect(txResult[1]).not.toBeNull();
+    expect(txResult[0]).toBeNull();
   });
 });
 
@@ -274,6 +406,7 @@ describe("Brand's script for", () => {
     expect(result[0]).not.toBeNull();
     expect(result[1]).toBeNull();
   });
+  
 
   test("getting brand by Id", async () => {
     const GetBrandById = scripts.getBrandById;
@@ -321,6 +454,52 @@ describe("Brand's script for", () => {
     expect(result[1]).toBeNull();
   });
 
+  test("getting brand by an invalid Id", async () => {
+    const GetBrandById = scripts.getBrandById;
+
+    //generate addressMap from import statements
+    const NFTContract = await getContractAddress(
+      contractNames.nftContract,
+      true
+    );
+    const NonFungibleToken = await getContractAddress(
+      contractNames.nonFungibleToken,
+      true
+    );
+
+    const addressMap = {
+      NFTContract,
+      NonFungibleToken,
+    };
+
+    let code = await getScriptCode({
+      name: GetBrandById,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x01": Alice,
+          "0x02": Bob,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+
+    const args = [6];
+
+    const result = await executeScript({
+      code,
+      args,
+    });
+
+    //check if balance is not null & expception is null
+    expect(result[1]).not.toBeNull();
+    expect(result[0]).toBeNull();
+  });
+
   test("getting brand name", async () => {
     const GetBrandName = scripts.getBrandName;
 
@@ -365,6 +544,52 @@ describe("Brand's script for", () => {
     //check if balance is not null & expception is null
     expect(result[0]).not.toBeNull();
     expect(result[1]).toBeNull();
+  });
+
+  test("getting brand name at invalid Id", async () => {
+    const GetBrandName = scripts.getBrandName;
+
+    //generate addressMap from import statements
+    const NFTContract = await getContractAddress(
+      contractNames.nftContract,
+      true
+    );
+    const NonFungibleToken = await getContractAddress(
+      contractNames.nonFungibleToken,
+      true
+    );
+
+    const addressMap = {
+      NFTContract,
+      NonFungibleToken,
+    };
+
+    let code = await getScriptCode({
+      name: GetBrandName,
+      addressMap,
+    });
+
+    code = code
+      .toString()
+      .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+        const accounts = {
+          "0x01": Alice,
+          "0x02": Bob,
+        };
+        const name = accounts[match];
+        return `getAccount(${name})`;
+      });
+
+    const args = [6];
+
+    const result = await executeScript({
+      code,
+      args,
+    });
+
+    //check if balance is not null & expception is null
+    expect(result[1]).not.toBeNull();
+    expect(result[0]).toBeNull();
   });
 
   test("getting brands count", async () => {
