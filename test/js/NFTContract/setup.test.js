@@ -111,7 +111,7 @@ describe(`${contractNames.nftContracct} Setup`, () => {
         const signers = [Charlie];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
 
         const addressMap = {
@@ -149,14 +149,14 @@ describe(`${contractNames.nftContracct} Setup`, () => {
         // Set transaction signers
         const signers = [Bob];
 
-         //generate addressMap from import statements
-         const NFTContract = await getContractAddress(contractNames.nftContracct, true);
-         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-         const addressMap = {
-             NFTContract,
-             NonFungibleToken,
-         };
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
 
         const code = await getTransactionCode({
             name: addAdminTransaction,
@@ -177,5 +177,50 @@ describe(`${contractNames.nftContracct} Setup`, () => {
         expect(txResult[0]).not.toBeNull()
         expect(txResult[1]).toBeNull()
 
+    });
+
+    test("Adding incorrect Admin Account", async () => {
+        const addAdminTransaction = transactions.addAdminAccount;
+
+        // Import participating accounts
+        const Bob = await getAccountAddress(accountNames.bob);
+        const Charlie = await getAccountAddress(accountNames.charlie);
+        const Donald = await getAccountAddress(accountNames.donald);
+
+        // Set transaction signers
+        const signers = [Bob];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(
+            contractNames.nftContract,
+            true
+        );
+        const NonFungibleToken = await getContractAddress(
+            contractNames.nonFungibleToken,
+            true
+        );
+
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+        const code = await getTransactionCode({
+            name: addAdminTransaction,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull();
+
+        const args = [Donald];
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args,
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull();
+        expect(txResult[0]).toBeNull();
     });
 });

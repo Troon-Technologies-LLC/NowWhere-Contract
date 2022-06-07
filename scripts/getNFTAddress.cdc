@@ -11,3 +11,4 @@ pub fun main(address: Address) : [UInt64] {
                             ??panic("could not borrow receiver reference ")
     return  acct1Capability.getIDs()
 }
+

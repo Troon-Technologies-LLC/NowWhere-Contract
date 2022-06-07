@@ -78,7 +78,7 @@ describe("Flow for Schema", () => {
 
 
     test("NFT-Contract Deployment", async () => {
-        const contractName = contractNames.nftContracct
+        const contractName = contractNames.nftContract
         const Bob = await getAccountAddress(accountNames.bob)
         let update = true
 
@@ -151,7 +151,7 @@ describe("Flow for Schema", () => {
         const signers = [Bob];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -189,7 +189,7 @@ describe("Flow for Schema", () => {
         const signers = [Charlie];
 
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -198,7 +198,7 @@ describe("Flow for Schema", () => {
         };
 
         const code = await getTransactionCode({
-            name: createBrand,
+            name: createSchema,
             addressMap,
         });
 
@@ -217,17 +217,95 @@ describe("Flow for Schema", () => {
         expect(txResult[1]).toBeNull()
 
     });
+
+    test("Creating Schema by invalid signer", async () => {
+        const createSchema = transactions.createSchema;
+
+        // Import participating accounts
+        const Emma = await getAccountAddress(accountNames.emma)
+
+        // Set transaction signers
+        const signers = [Emma];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: createSchema,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = ["firstSchema"];
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
+
+    });
+
+    test("Creating Schema by invalid argument", async () => {
+        const createSchema = transactions.createSchema;
+
+        // Import participating accounts
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Charlie];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: createSchema,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [25];
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
+
+    });
 });
 
 
-describe("Brand's script for", () => {
+describe("Schema scripts for", () => {
 
-    test("getting all brands", async () => {
+    test("getting all schemas", async () => {
         
-        const GetAllBrands = scripts.getAllBrands
+        const GetallSchema = scripts.getallSchema
     
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -236,7 +314,7 @@ describe("Brand's script for", () => {
         };
 
         let code = await getScriptCode({
-            name: GetAllBrands,
+            name: GetallSchema,
             addressMap,
         });
 
@@ -258,15 +336,14 @@ describe("Brand's script for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
-    test("getting brand by Id", async () => {
+    test("getting schema by Id", async () => {
         
-        const GetBrandById = scripts.getBrandById
+        const GetSchemaById = scripts.getSchemaById
     
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -275,7 +352,7 @@ describe("Brand's script for", () => {
         };
 
         let code = await getScriptCode({
-            name: GetBrandById,
+            name: GetSchemaById,
             addressMap,
         });
 
@@ -300,15 +377,14 @@ describe("Brand's script for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
-    test("getting brand name", async () => {
+    test("getting schema by invalid Id", async () => {
         
-        const GetBrandName = scripts.getBrandName
+        const GetSchemaById = scripts.getSchemaById
     
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -317,7 +393,7 @@ describe("Brand's script for", () => {
         };
 
         let code = await getScriptCode({
-            name: GetBrandName,
+            name: GetSchemaById,
             addressMap,
         });
 
@@ -332,7 +408,7 @@ describe("Brand's script for", () => {
             return `getAccount(${name})`;
       });
 
-        const args = [1];
+        const args = [6];
 
         const result = await executeScript({
             code,
@@ -340,17 +416,16 @@ describe("Brand's script for", () => {
         });
 
         //check if balance is not null & expception is null
-        expect(result[0]).not.toBeNull()
-        expect(result[1]).toBeNull()
-        console.log("result", result);
+        expect(result[1]).not.toBeNull()
+        expect(result[0]).toBeNull()
     });
 
-    test("getting brands count", async () => {
+    test("getting schema count", async () => {
         
-        const GetBrandCount = scripts.getBrandCount
+        const GetSchemaCount = scripts.getSchemaCount
     
         //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContracct, true);
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
         const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
  
         const addressMap = {
@@ -359,7 +434,7 @@ describe("Brand's script for", () => {
         };
 
         let code = await getScriptCode({
-            name: GetBrandCount,
+            name: GetSchemaCount,
             addressMap,
         });
 
@@ -381,7 +456,6 @@ describe("Brand's script for", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
-        console.log("result", result);
     });
 
 });
