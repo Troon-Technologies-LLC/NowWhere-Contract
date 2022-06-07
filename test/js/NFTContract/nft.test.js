@@ -495,6 +495,51 @@ describe("Flow for NFTs", () => {
 
     });
 
+    test("getting all NFTs of an account", async () => {
+        
+        const GetAllNFTIds = scripts.getAllNFTIds
+
+        // Import participating accounts
+        const Donald = await getAccountAddress(accountNames.donald)
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetAllNFTIds,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+      const args = [Donald];
+
+        const result = await executeScript({
+            code,
+            args,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[0]).not.toBeNull()
+        expect(result[1]).toBeNull()
+    });
+
+
     test("Minting NFT by invalid signer", async () => {
         const createTemplate = transactions.mintNFTStaticData;
 
@@ -657,6 +702,95 @@ describe("Flow for NFTs", () => {
 
     });
 
+    test("getting all NFTs of an account", async () => {
+        
+        const GetAllNFTIds = scripts.getAllNFTIds
+
+        // Import participating accounts
+        const Donald = await getAccountAddress(accountNames.donald)
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetAllNFTIds,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+      const args = [Donald];
+
+        const result = await executeScript({
+            code,
+            args,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[0]).not.toBeNull()
+        expect(result[1]).toBeNull()
+    });
+
+    test("getting all NFTs of an account", async () => {
+        
+        const GetAllNFTIds = scripts.getAllNFTIds
+
+        // Import participating accounts
+        const Emma = await getAccountAddress(accountNames.emma)
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetAllNFTIds,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+      const args = [Emma];
+
+        const result = await executeScript({
+            code,
+            args,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[0]).not.toBeNull()
+        expect(result[1]).toBeNull()
+    });
+
+
     test("Transfering nonexistent NFT", async () => {
 
         const transferNFT = transactions.transferNFT;
@@ -779,6 +913,51 @@ describe("Flow for NFTs", () => {
 
     });
 
+    test("getting all NFTs of an account", async () => {
+        
+        const GetAllNFTIds = scripts.getAllNFTIds
+
+        // Import participating accounts
+        const Donald = await getAccountAddress(accountNames.donald)
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetAllNFTIds,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+      const args = [Donald];
+
+        const result = await executeScript({
+            code,
+            args,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[0]).not.toBeNull()
+        expect(result[1]).toBeNull()
+    });
+
+
     test("Destroying non existent NFT", async () => {
 
         const destroyNFT = transactions.destroyNFT;
@@ -857,99 +1036,6 @@ describe("Flow for NFTs", () => {
         expect(txResult[1]).not.toBeNull()
         expect(txResult[0]).toBeNull()
 
-    });
-});
-
-
-describe("NFTs scriptS for", () => {
-
-    test("getting all NFTs", async () => {
-        
-        const GetAllNFTIds = scripts.getAllNFTIds
-
-        // Import participating accounts
-        const Donald = await getAccountAddress(accountNames.donald)
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        let code = await getScriptCode({
-            name: GetAllNFTIds,
-            addressMap,
-        });
-
-        code = code
-            .toString()
-            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
-            const accounts = {
-                "0x01": Alice,
-                "0x02": Bob,
-            };
-            const name = accounts[match];
-            return `getAccount(${name})`;
-      });
-
-      const args = [Donald];
-
-        const result = await executeScript({
-            code,
-            args,
-        });
-
-        //check if balance is not null & expception is null
-        expect(result[0]).not.toBeNull()
-        expect(result[1]).toBeNull()
-    });
-
-
-    test("getting all NFTs", async () => {
-        
-        const GetAllNFTIds = scripts.getAllNFTIds
-
-        // Import participating accounts
-        const Emma = await getAccountAddress(accountNames.emma)
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        let code = await getScriptCode({
-            name: GetAllNFTIds,
-            addressMap,
-        });
-
-        code = code
-            .toString()
-            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
-            const accounts = {
-                "0x01": Alice,
-                "0x02": Bob,
-            };
-            const name = accounts[match];
-            return `getAccount(${name})`;
-      });
-
-      const args = [Emma];
-
-        const result = await executeScript({
-            code,
-            args,
-        });
-
-        //check if balance is not null & expception is null
-        expect(result[0]).not.toBeNull()
-        expect(result[1]).toBeNull()
     });
 
     test("getting NFTs of user with no collection", async () => {
@@ -1037,7 +1123,7 @@ describe("NFTs scriptS for", () => {
         expect(result[1]).toBeNull()
     });
 
-    test("getting NFT data", async () => {
+    test("getting NFT data of destroyed NFT", async () => {
         
         const GetNFTDataById = scripts.getNFTDataById
 
@@ -1067,6 +1153,47 @@ describe("NFTs scriptS for", () => {
       });
 
       const args = [2];
+
+        const result = await executeScript({
+            code,
+            args,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[0]).not.toBeNull()
+        expect(result[1]).toBeNull()
+    });
+
+    test("getting NFT data", async () => {
+        
+        const GetNFTDataById = scripts.getNFTDataById
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetNFTDataById,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+      const args = [3];
 
         const result = await executeScript({
             code,
@@ -1208,6 +1335,7 @@ describe("NFTs scriptS for", () => {
         expect(result[1]).not.toBeNull()
         expect(result[0]).toBeNull()
     });
+
 
 });
 

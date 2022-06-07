@@ -47,7 +47,7 @@ beforeEach(async () => {
   });
 
 describe("Flow for Brand", () => {
-  /*   test("Account Creation", async () => {
+     test("Account Creation", async () => {
         //creating 2 accounts
         const Alice = await getAccountAddress(accountNames.alice);
         const Bob = await getAccountAddress(accountNames.bob);
@@ -57,7 +57,7 @@ describe("Flow for Brand", () => {
         expect(Bob).not.toBeNull()
 
     });
-*/
+
   test("Contract Deployment", async () => {
     const contractName = contractNames.nonFungibleToken;
     const Alice = await getAccountAddress(accountNames.alice);
@@ -192,50 +192,6 @@ describe("Flow for Brand", () => {
     expect(txResult[1]).toBeNull();
   });
 
-  test("Adding Admin Account via incorrect super Admin", async () => {
-    const addAdminTransaction = transactions.addAdminAccount;
-
-    // Import participating accounts
-    const Bob = await getAccountAddress(accountNames.bob);
-    const Charlie = await getAccountAddress(accountNames.charlie);
-
-    // Set transaction signers
-    const signers = [Charlie];
-
-    //generate addressMap from import statements
-    const NFTContract = await getContractAddress(
-      contractNames.nftContract,
-      true
-    );
-    const NonFungibleToken = await getContractAddress(
-      contractNames.nonFungibleToken,
-      true
-    );
-
-    const addressMap = {
-      NFTContract,
-      NonFungibleToken,
-    };
-    const code = await getTransactionCode({
-      name: addAdminTransaction,
-      addressMap,
-    });
-
-    expect(code).not.toBeNull();
-
-    const args = [Bob];
-
-    const txResult = await sendTransaction({
-      code,
-      signers,
-      args,
-    });
-
-    //check if result instance is not null & expception is null
-    expect(txResult[1]).not.toBeNull();
-    expect(txResult[0]).toBeNull();
-  });
-
   test("Creating Brand", async () => {
     const createBrand = transactions.createBrand;
 
@@ -280,96 +236,6 @@ describe("Flow for Brand", () => {
     expect(txResult[1]).toBeNull();
   });
 
-  test("Creating Brand by incorect data", async () => {
-    const createBrand = transactions.createBrand;
-
-    // Import participating accounts
-    const Charlie = await getAccountAddress(accountNames.charlie);
-
-    // Set transaction signers
-    const signers = [Charlie];
-
-    //generate addressMap from import statements
-    const NFTContract = await getContractAddress(
-      contractNames.nftContract,
-      true
-    );
-    const NonFungibleToken = await getContractAddress(
-      contractNames.nonFungibleToken,
-      true
-    );
-
-    const addressMap = {
-      NFTContract,
-      NonFungibleToken,
-    };
-
-    const code = await getTransactionCode({
-      name: createBrand,
-      addressMap,
-    });
-
-    expect(code).not.toBeNull();
-
-    const args = [5, { Shoe: "ShoeZ-1" }];
-
-    const txResult = await sendTransaction({
-      code,
-      signers,
-      args,
-    });
-
-    //check if result instance is not null & expception is null
-    expect(txResult[1]).not.toBeNull();
-    expect(txResult[0]).toBeNull();
-  });
-
-  test("Creating Brand by incorect signer", async () => {
-    const createBrand = transactions.createBrand;
-
-    // Import participating accounts
-    const Bob = await getAccountAddress(accountNames.bob);
-
-    // Set transaction signers
-    const signers = [Bob];
-
-    //generate addressMap from import statements
-    const NFTContract = await getContractAddress(
-      contractNames.nftContract,
-      true
-    );
-    const NonFungibleToken = await getContractAddress(
-      contractNames.nonFungibleToken,
-      true
-    );
-
-    const addressMap = {
-      NFTContract,
-      NonFungibleToken,
-    };
-
-    const code = await getTransactionCode({
-      name: createBrand,
-      addressMap,
-    });
-
-    expect(code).not.toBeNull();
-
-    const args = ["Breakout", { Shoe: "ShoeZ-1" }];
-
-    const txResult = await sendTransaction({
-      code,
-      signers,
-      args,
-    });
-
-    //check if result instance is not null & expception is null
-    expect(txResult[1]).not.toBeNull();
-    expect(txResult[0]).toBeNull();
-  });
-});
-
-describe("Brand's script for", () => {
   test("getting all brands", async () => {
     const GetAllBrands = scripts.getAllBrands;
 
@@ -460,7 +326,96 @@ describe("Brand's script for", () => {
     expect(result[1]).toBeNull();
   });
 
-  test("getting brand by an invalid Id", async () => {
+
+  test("Negative TestCase => Creating Brand by incorect data", async () => {
+    const createBrand = transactions.createBrand;
+
+    // Import participating accounts
+    const Charlie = await getAccountAddress(accountNames.charlie);
+
+    // Set transaction signers
+    const signers = [Charlie];
+
+    //generate addressMap from import statements
+    const NFTContract = await getContractAddress(
+      contractNames.nftContract,
+      true
+    );
+    const NonFungibleToken = await getContractAddress(
+      contractNames.nonFungibleToken,
+      true
+    );
+
+    const addressMap = {
+      NFTContract,
+      NonFungibleToken,
+    };
+
+    const code = await getTransactionCode({
+      name: createBrand,
+      addressMap,
+    });
+
+    expect(code).not.toBeNull();
+
+    const args = [5, { Shoe: "ShoeZ-1" }];
+
+    const txResult = await sendTransaction({
+      code,
+      signers,
+      args,
+    });
+
+    //check if result instance is not null & expception is null
+    expect(txResult[1]).not.toBeNull();
+    expect(txResult[0]).toBeNull();
+  });
+
+  test("Negative TestCase => Creating Brand by incorect signer", async () => {
+    const createBrand = transactions.createBrand;
+
+    // Import participating accounts
+    const Bob = await getAccountAddress(accountNames.bob);
+
+    // Set transaction signers
+    const signers = [Bob];
+
+    //generate addressMap from import statements
+    const NFTContract = await getContractAddress(
+      contractNames.nftContract,
+      true
+    );
+    const NonFungibleToken = await getContractAddress(
+      contractNames.nonFungibleToken,
+      true
+    );
+
+    const addressMap = {
+      NFTContract,
+      NonFungibleToken,
+    };
+
+    const code = await getTransactionCode({
+      name: createBrand,
+      addressMap,
+    });
+
+    expect(code).not.toBeNull();
+
+    const args = ["Breakout", { Shoe: "ShoeZ-1" }];
+
+    const txResult = await sendTransaction({
+      code,
+      signers,
+      args,
+    });
+
+    //check if result instance is not null & expception is null
+    expect(txResult[1]).not.toBeNull();
+    expect(txResult[0]).toBeNull();
+  });
+
+  test("Negative TestCase => getting brand by an invalid Id", async () => {
     const GetBrandById = scripts.getBrandById;
 
     //generate addressMap from import statements
@@ -552,7 +507,7 @@ describe("Brand's script for", () => {
     expect(result[1]).toBeNull();
   });
 
-  test("getting brand name at invalid Id", async () => {
+  test("Negative TestCase => getting brand name at invalid Id", async () => {
     const GetBrandName = scripts.getBrandName;
 
     //generate addressMap from import statements
@@ -640,4 +595,5 @@ describe("Brand's script for", () => {
     expect(result[0]).not.toBeNull();
     expect(result[1]).toBeNull();
   });
+
 });

@@ -224,88 +224,6 @@ describe("Flow for Schema", () => {
 
     });
 
-    test("Creating Schema by invalid signer", async () => {
-        const createSchema = transactions.createSchema;
-
-        // Import participating accounts
-        const Emma = await getAccountAddress(accountNames.emma)
-
-        // Set transaction signers
-        const signers = [Emma];
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        const code = await getTransactionCode({
-            name: createSchema,
-            addressMap,
-        });
-
-        expect(code).not.toBeNull()
-
-        const args = ["firstSchema"];
-
-        const txResult = await sendTransaction({
-            code,
-            signers,
-            args
-        });
-
-        //check if result instance is not null & expception is null
-        expect(txResult[1]).not.toBeNull()
-        expect(txResult[0]).toBeNull()
-
-    });
-
-    test("Creating Schema by invalid argument", async () => {
-        const createSchema = transactions.createSchema;
-
-        // Import participating accounts
-        const Charlie = await getAccountAddress(accountNames.charlie)
-
-        // Set transaction signers
-        const signers = [Charlie];
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        const code = await getTransactionCode({
-            name: createSchema,
-            addressMap,
-        });
-
-        expect(code).not.toBeNull()
-
-        const args = [25];
-
-        const txResult = await sendTransaction({
-            code,
-            signers,
-            args
-        });
-
-        //check if result instance is not null & expception is null
-        expect(txResult[1]).not.toBeNull()
-        expect(txResult[0]).toBeNull()
-
-    });
-});
-
-
-describe("Schema scripts for", () => {
-
     test("getting all schemas", async () => {
         
         const GetallSchema = scripts.getallSchema
@@ -385,7 +303,86 @@ describe("Schema scripts for", () => {
         expect(result[1]).toBeNull()
     });
 
-    test("getting schema by invalid Id", async () => {
+    test("Negative TestCase => Creating Schema by invalid signer", async () => {
+        const createSchema = transactions.createSchema;
+
+        // Import participating accounts
+        const Emma = await getAccountAddress(accountNames.emma)
+
+        // Set transaction signers
+        const signers = [Emma];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: createSchema,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = ["firstSchema"];
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
+
+    });
+
+    test("Negative TestCase => Creating Schema by invalid argument", async () => {
+        const createSchema = transactions.createSchema;
+
+        // Import participating accounts
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Charlie];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: createSchema,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [25];
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
+
+    });
+
+
+    test("Negative TestCase => getting schema by invalid Id", async () => {
         
         const GetSchemaById = scripts.getSchemaById
     
@@ -465,4 +462,5 @@ describe("Schema scripts for", () => {
     });
 
 });
+
 

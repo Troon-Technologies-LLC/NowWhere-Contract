@@ -186,12 +186,11 @@ describe("NFT Contract Setup", () => {
 
     });
 
-    test("Adding incorrect Admin Account", async () => {
+    test("Negative TestCase => Adding incorrect Admin Account", async () => {
         const addAdminTransaction = transactions.addAdminAccount;
     
         // Import participating accounts
         const Bob = await getAccountAddress(accountNames.bob);
-        const Charlie = await getAccountAddress(accountNames.charlie);
         const Donald = await getAccountAddress(accountNames.donald);
     
         // Set transaction signers
@@ -230,4 +229,49 @@ describe("NFT Contract Setup", () => {
         expect(txResult[1]).not.toBeNull();
         expect(txResult[0]).toBeNull();
       });
+
+      test("Negative TestCase => Adding Admin Account via incorrect super Admin", async () => {
+        const addAdminTransaction = transactions.addAdminAccount;
+    
+        // Import participating accounts
+        const Bob = await getAccountAddress(accountNames.bob);
+        const Charlie = await getAccountAddress(accountNames.charlie);
+    
+        // Set transaction signers
+        const signers = [Charlie];
+    
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(
+          contractNames.nftContract,
+          true
+        );
+        const NonFungibleToken = await getContractAddress(
+          contractNames.nonFungibleToken,
+          true
+        );
+    
+        const addressMap = {
+          NFTContract,
+          NonFungibleToken,
+        };
+        const code = await getTransactionCode({
+          name: addAdminTransaction,
+          addressMap,
+        });
+    
+        expect(code).not.toBeNull();
+    
+        const args = [Bob];
+    
+        const txResult = await sendTransaction({
+          code,
+          signers,
+          args,
+        });
+    
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull();
+        expect(txResult[0]).toBeNull();
+      });
 });
+

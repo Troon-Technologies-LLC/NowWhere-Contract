@@ -302,6 +302,48 @@ describe("Flow for Template", () => {
 
     });
 
+    test("getting template by Id", async () => {
+        
+        const GetTemplateById = scripts.getTemplateById
+    
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetTemplateById,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+        const args = [1];
+
+        const result = await executeScript({
+            code,
+            args,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[0]).not.toBeNull()
+        expect(result[1]).toBeNull()
+    });
+
+
     test("Creating second Template", async () => {
         const createTemplate = transactions.createTemplateStaticData;
 
@@ -339,245 +381,6 @@ describe("Flow for Template", () => {
         expect(txResult[0]).not.toBeNull()
         expect(txResult[1]).toBeNull()
 
-    });
-
-    test("Removing Template", async () => {
-        const removeTemplate = transactions.removeTemplate;
-
-        // Import participating accounts
-        const Charlie = await getAccountAddress(accountNames.charlie)
-
-        // Set transaction signers
-        const signers = [Charlie];
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        const code = await getTransactionCode({
-            name: removeTemplate,
-            addressMap,
-        });
-
-        expect(code).not.toBeNull()
-
-        const args = [1];  
-
-        const txResult = await sendTransaction({
-            code,
-            signers,
-            args
-        });
-
-        //check if result instance is not null & expception is null
-        expect(txResult[0]).not.toBeNull()
-        expect(txResult[1]).toBeNull()
-
-    });
-
-    test("Creating Template with invalid arguments", async () => {
-        const createTemplate = transactions.createTemplateStaticData;
-
-        // Import participating accounts
-        const Charlie = await getAccountAddress(accountNames.charlie)
-
-        // Set transaction signers
-        const signers = [Charlie];
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        const code = await getTransactionCode({
-            name: createTemplate,
-            addressMap,
-        });
-
-        expect(code).not.toBeNull()
-
-        const args = [12, 1, 500/*, {"artist":"Nasir And Sham"}, {"artistEmail":"sham&nasir@gmai.com"}*/];  
-
-        const txResult = await sendTransaction({
-            code,
-            signers,
-            args
-        });
-
-        //check if result instance is not null & expception is null
-        expect(txResult[1]).not.toBeNull()
-        expect(txResult[0]).toBeNull()
-
-    });
-
-    test("Creating Template with invalid signer", async () => {
-        const createTemplate = transactions.createTemplateStaticData;
-
-        // Import participating accounts
-        const Frank = await getAccountAddress(accountNames.frank)
-
-        // Set transaction signers
-        const signers = [Frank];
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        const code = await getTransactionCode({
-            name: createTemplate,
-            addressMap,
-        });
-
-        expect(code).not.toBeNull()
-
-        const args = [1, 1, 500/*, {"artist":"Nasir And Sham"}, {"artistEmail":"sham&nasir@gmai.com"}*/];  
-
-        const txResult = await sendTransaction({
-            code,
-            signers,
-            args
-        });
-
-        //check if result instance is not null & expception is null
-        expect(txResult[1]).not.toBeNull()
-        expect(txResult[0]).toBeNull()
-
-    });
-
-    test("Removing Template by invalid signer", async () => {
-        const removeTemplate = transactions.removeTemplate;
-
-        // Import participating accounts
-        const George = await getAccountAddress(accountNames.george)
-
-        // Set transaction signers
-        const signers = [George];
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        const code = await getTransactionCode({
-            name: removeTemplate,
-            addressMap,
-        });
-
-        expect(code).not.toBeNull()
-
-        const args = [6];  
-
-        const txResult = await sendTransaction({
-            code,
-            signers,
-            args
-        });
-
-        //check if result instance is not null & expception is null
-        expect(txResult[1]).not.toBeNull()
-        expect(txResult[0]).toBeNull()
-
-    });
-
-
-    test("Removing nonexistent Template", async () => {
-        const removeTemplate = transactions.removeTemplate;
-
-        // Import participating accounts
-        const Charlie = await getAccountAddress(accountNames.charlie)
-
-        // Set transaction signers
-        const signers = [Charlie];
-
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        const code = await getTransactionCode({
-            name: removeTemplate,
-            addressMap,
-        });
-
-        expect(code).not.toBeNull()
-
-        const args = [6];  
-
-        const txResult = await sendTransaction({
-            code,
-            signers,
-            args
-        });
-
-        //check if result instance is not null & expception is null
-        expect(txResult[1]).not.toBeNull()
-        expect(txResult[0]).toBeNull()
-
-    });
-
-});
-
-
-describe("Template's script for", () => {
-
-    test("getting all templates", async () => {
-        
-        const GetAllTemplates = scripts.getAllTemplates
-    
-        //generate addressMap from import statements
-        const NFTContract = await getContractAddress(contractNames.nftContract, true);
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
- 
-        const addressMap = {
-            NFTContract,
-            NonFungibleToken,
-        };
-
-        let code = await getScriptCode({
-            name: GetAllTemplates,
-            addressMap,
-        });
-
-        code = code
-            .toString()
-            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
-            const accounts = {
-                "0x01": Alice,
-                "0x02": Bob,
-            };
-            const name = accounts[match];
-            return `getAccount(${name})`;
-      });
-
-        const result = await executeScript({
-            code,
-        });
-
-        //check if balance is not null & expception is null
-        expect(result[0]).not.toBeNull()
-        expect(result[1]).toBeNull()
     });
 
     test("getting template by Id", async () => {
@@ -621,9 +424,9 @@ describe("Template's script for", () => {
         expect(result[1]).toBeNull()
     });
 
-    test("getting template by invalid Id", async () => {
+    test("getting all templates", async () => {
         
-        const GetTemplateById = scripts.getTemplateById
+        const GetAllTemplates = scripts.getAllTemplates
     
         //generate addressMap from import statements
         const NFTContract = await getContractAddress(contractNames.nftContract, true);
@@ -635,7 +438,7 @@ describe("Template's script for", () => {
         };
 
         let code = await getScriptCode({
-            name: GetTemplateById,
+            name: GetAllTemplates,
             addressMap,
         });
 
@@ -650,16 +453,13 @@ describe("Template's script for", () => {
             return `getAccount(${name})`;
       });
 
-        const args = [6];
-
         const result = await executeScript({
             code,
-            args,
         });
 
         //check if balance is not null & expception is null
-        expect(result[1]).not.toBeNull()
-        expect(result[0]).toBeNull()
+        expect(result[0]).not.toBeNull()
+        expect(result[1]).toBeNull()
     });
 
     test("getting template count", async () => {
@@ -700,5 +500,282 @@ describe("Template's script for", () => {
         expect(result[1]).toBeNull()
     });
 
-});
+    test("Removing Template", async () => {
+        const removeTemplate = transactions.removeTemplate;
 
+        // Import participating accounts
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Charlie];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: removeTemplate,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [1];  
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[0]).not.toBeNull()
+        expect(txResult[1]).toBeNull()
+
+    });
+
+    test("Negative TestCase => getting removed template by Id", async () => {
+        
+        const GetTemplateById = scripts.getTemplateById
+    
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetTemplateById,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+        const args = [1];
+
+        const result = await executeScript({
+            code,
+            args,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[1]).not.toBeNull()
+        expect(result[0]).toBeNull()
+    });
+
+    test("Negative TestCase => Creating Template with invalid arguments", async () => {
+        const createTemplate = transactions.createTemplateStaticData;
+
+        // Import participating accounts
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Charlie];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: createTemplate,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [12, 1, 500/*, {"artist":"Nasir And Sham"}, {"artistEmail":"sham&nasir@gmai.com"}*/];  
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
+
+    });
+
+    test("Negative TestCase => Creating Template with invalid signer", async () => {
+        const createTemplate = transactions.createTemplateStaticData;
+
+        // Import participating accounts
+        const Frank = await getAccountAddress(accountNames.frank)
+
+        // Set transaction signers
+        const signers = [Frank];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: createTemplate,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [1, 1, 500/*, {"artist":"Nasir And Sham"}, {"artistEmail":"sham&nasir@gmai.com"}*/];  
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
+
+    });
+
+    test("Negative TestCase => Removing Template by invalid signer", async () => {
+        const removeTemplate = transactions.removeTemplate;
+
+        // Import participating accounts
+        const George = await getAccountAddress(accountNames.george)
+
+        // Set transaction signers
+        const signers = [George];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: removeTemplate,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [6];  
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
+
+    });
+
+
+    test("Negative TestCase => Removing nonexistent Template", async () => {
+        const removeTemplate = transactions.removeTemplate;
+
+        // Import participating accounts
+        const Charlie = await getAccountAddress(accountNames.charlie)
+
+        // Set transaction signers
+        const signers = [Charlie];
+
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        const code = await getTransactionCode({
+            name: removeTemplate,
+            addressMap,
+        });
+
+        expect(code).not.toBeNull()
+
+        const args = [6];  
+
+        const txResult = await sendTransaction({
+            code,
+            signers,
+            args
+        });
+
+        //check if result instance is not null & expception is null
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
+
+    });
+
+    test("Negative TestCase => getting template by invalid Id", async () => {
+        
+        const GetTemplateById = scripts.getTemplateById
+    
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetTemplateById,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+        const args = [6];
+
+        const result = await executeScript({
+            code,
+            args,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[1]).not.toBeNull()
+        expect(result[0]).toBeNull()
+    });
+
+});
