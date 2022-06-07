@@ -1079,7 +1079,57 @@ describe("Flow For Drop", () => {
       expect(txResult[1]).not.toBeNull();
     });
 
-    test("test transaction Update drop for the wrong date", async () => {
+    test("test transaction Update drop for the wrong start date", async () => {
+      const updateDrop = transactions.updateDropStatic;
+
+      // Import participant accounts
+      const Charlie = await getAccountAddress(accountNames.charlie);
+
+      //set transaction singer account
+      const signers = [Charlie];
+
+      //generate addressMap from import statements
+      const nonFungibleToken = await getContractAddress(
+        contractNames.nonFungibleToken,
+        true
+      );
+      const nftContract = await getContractAddress(
+        contractNames.nftContract,
+        true
+      );
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nonFungibleToken,
+        nftContract,
+        nowWhereContract,
+      };
+
+      const code = await getTransactionCode({
+        name: updateDrop,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      const currentTimeInSeconds = Math.floor(Date.now() / 1000); //unix timestamp in seconds
+      // set transaction arguments
+      const args = [3, currentTimeInSeconds - 20000000.0, null];
+
+      const txResult = await sendTransaction({
+        code,
+        args,
+        signers,
+      });
+
+      //check if result instance is not null & expception is null
+      expect(txResult[0]).toBeNull();
+      expect(txResult[1]).not.toBeNull();
+    });
+    test("test transaction Update drop for the wrong end date", async () => {
       const updateDrop = transactions.updateDropStatic;
 
       // Import participant accounts
@@ -1131,5 +1181,95 @@ describe("Flow For Drop", () => {
     });
   });
 
-  describe("scripts", () => {});
+  describe("scripts", () => {
+    test("get all drops", async () => {
+      const getAllDrops = scripts.getAllDrops;
+
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nowWhereContract,
+      };
+
+      const code = await getScriptCode({
+        name: getAllDrops,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      const result = await executeScript({
+        code,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
+
+    test("get drop by id", async () => {
+      const getDropById = scripts.getDropById;
+
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nowWhereContract,
+      };
+
+      const code = await getScriptCode({
+        name: getDropById,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      // set transaction arguments
+      const args = [3];
+      const result = await executeScript({
+        code,
+        args,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
+
+    test("get  maximum supply", async () => {
+      const getMaxSupply = scripts.getMaxSupply;
+
+      const nowWhereContract = await getContractAddress(
+        contractNames.nowWhereContract,
+        true
+      );
+
+      const addressMap = {
+        nowWhereContract,
+      };
+
+      const code = await getScriptCode({
+        name: getMaxSupply,
+        addressMap,
+      });
+
+      expect(code).not.toBeNull();
+
+      // set transaction arguments
+      const args = [3];
+      const result = await executeScript({
+        code,
+        args,
+      });
+
+      //check if balance is not null & expception is null
+      expect(result[0]).not.toBeNull();
+      expect(result[1]).toBeNull();
+    });
+  });
 });

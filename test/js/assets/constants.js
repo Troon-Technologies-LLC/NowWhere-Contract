@@ -77,6 +77,9 @@ const scripts = {
   getNFTDataById: "getNFTDataById",
   getNFTTemplateData: "getNFTTemplateData",
   getUserBalance: "getUserBalance",
+  getAllDrops: "getAllDrops",
+  getDropById: "getDropById",
+  getMaxSupply: "getMaxSupply",
 };
 
 const minBalance = 0.0001;
