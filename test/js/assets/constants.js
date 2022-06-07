@@ -42,8 +42,10 @@ const transactions = {
     createSchema: "createSchema",
     createTemplate: "createTemplate",
     createTemplateStaticData: "createTemplateStaticData",
-    createTemplateNilMutableData: "createTemplateNilMutableData",
-    updateTemplateMutableStaticData: "updateTemplateMutableStaticData"
+    removeTemplate: "removeTemplate",
+    createUserEmptyCollection: "createUserEmptyCollection",
+    mintNFTStaticData: "mintNFTStaticData",
+    transferNFT: "transferNFT"
 }
 
 const scripts = {
@@ -54,8 +56,13 @@ const scripts = {
     getBrandName: "getBrandName",
     getallSchema: "getallSchema",
     getSchemaById: "getSchemaById",
-    getSchemaCount: "getSchemaCount"
-    
+    getSchemaCount: "getSchemaCount",
+    getAllTemplates: "getAllTemplates",
+    getTemplateById: "getTemplateById",
+    getTemplateCount: "getTemplateCount",
+    getAllNFTIds: "getAllNFTIds",
+    getNFTDataById: "getNFTDataById",
+    getNFTTemplateData: "getNFTTemplateData"
 }
 
 const minBalance = 0.0001
