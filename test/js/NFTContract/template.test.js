@@ -341,6 +341,7 @@ describe("Flow for Template", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+        console.log("result", result);
     });
 
 
@@ -422,6 +423,7 @@ describe("Flow for Template", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+        console.log("result", result);
     });
 
     test("Creating third Template with Nil mutable data", async () => {
@@ -502,6 +504,7 @@ describe("Flow for Template", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+        console.log("result", result);
     });
 
     test("getting all templates", async () => {
@@ -578,6 +581,7 @@ describe("Flow for Template", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+        console.log("result", result);
     });
 
     test("Removing Template", async () => {
@@ -617,6 +621,45 @@ describe("Flow for Template", () => {
         expect(txResult[0]).not.toBeNull()
         expect(txResult[1]).toBeNull()
 
+    });
+
+    test("getting template count", async () => {
+        
+        const GetTemplateCount = scripts.getTemplateCount
+    
+        //generate addressMap from import statements
+        const NFTContract = await getContractAddress(contractNames.nftContract, true);
+        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken, true);
+ 
+        const addressMap = {
+            NFTContract,
+            NonFungibleToken,
+        };
+
+        let code = await getScriptCode({
+            name: GetTemplateCount,
+            addressMap,
+        });
+
+        code = code
+            .toString()
+            .replace(/(?:getAccount\(\s*)(0x.*)(?:\s*\))/g, (_, match) => {
+            const accounts = {
+                "0x01": Alice,
+                "0x02": Bob,
+            };
+            const name = accounts[match];
+            return `getAccount(${name})`;
+      });
+
+        const result = await executeScript({
+            code,
+        });
+
+        //check if balance is not null & expception is null
+        expect(result[0]).not.toBeNull()
+        expect(result[1]).toBeNull()
+        console.log("result", result);
     });
 
     test("Negative TestCase => getting removed template by Id", async () => {
@@ -859,7 +902,7 @@ describe("Flow for Template", () => {
     });
 
     test("Updating Template's mutable data", async () => {
-        const updateTemplateMutableStaticData = transactions.updateTemplateMutableStaticData;
+        const updateTemplateMutableAttribute = transactions.updateTemplateMutableAttribute;
 
         // Import participating accounts
         const Charlie = await getAccountAddress(accountNames.charlie)
@@ -877,7 +920,7 @@ describe("Flow for Template", () => {
         };
 
         const code = await getTransactionCode({
-            name: updateTemplateMutableStaticData,
+            name: updateTemplateMutableAttribute,
             addressMap,
         });
 
@@ -936,10 +979,11 @@ describe("Flow for Template", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+        console.log("result", result);
     });
 
-    test("Updating Template, having nill mutable data", async () => {
-        const updateTemplateMutableStaticData = transactions.updateTemplateMutableStaticData;
+    test("Negative TestCase => Updating Template attribute, having nill mutable data", async () => {
+        const updateTemplateMutableAttribute = transactions.updateTemplateMutableAttribute;
 
         // Import participating accounts
         const Charlie = await getAccountAddress(accountNames.charlie)
@@ -957,7 +1001,7 @@ describe("Flow for Template", () => {
         };
 
         const code = await getTransactionCode({
-            name: updateTemplateMutableStaticData,
+            name: updateTemplateMutableAttribute,
             addressMap,
         });
 
@@ -972,8 +1016,8 @@ describe("Flow for Template", () => {
         });
 
         //check if result instance is not null & expception is null
-        expect(txResult[0]).not.toBeNull()
-        expect(txResult[1]).toBeNull()
+        expect(txResult[1]).not.toBeNull()
+        expect(txResult[0]).toBeNull()
 
     });
 
