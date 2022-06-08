@@ -44,17 +44,11 @@ beforeEach(async () => {
 });
 
 describe("Flow for Brand", () => {
-<<<<<<< HEAD
-     test("Account Creation", async () => {
-        //creating 2 accounts
-        const Alice = await getAccountAddress(accountNames.alice);
-        const Bob = await getAccountAddress(accountNames.bob);
-=======
+ 
   test("Account Creation", async () => {
     //creating 2 accounts
     const Alice = await getAccountAddress(accountNames.alice);
     const Bob = await getAccountAddress(accountNames.bob);
->>>>>>> 4491784d1fc51e27371e49176f3b78dc750c6ef8
 
     //check if accounts are created successfully
     expect(Alice).not.toBeNull()
@@ -62,11 +56,6 @@ describe("Flow for Brand", () => {
 
   });
 
-<<<<<<< HEAD
-    });
-
-=======
->>>>>>> 4491784d1fc51e27371e49176f3b78dc750c6ef8
   test("Contract Deployment", async () => {
     const contractName = contractNames.nonFungibleToken;
     const Alice = await getAccountAddress(accountNames.alice);
@@ -383,16 +372,8 @@ describe("Flow for Brand", () => {
   test("Negative TestCase => Creating Brand by incorect signer", async () => {
     const createBrand = transactions.createBrand;
 
-<<<<<<< HEAD
     // Import participating accounts
     const Bob = await getAccountAddress(accountNames.bob);
-=======
-    //check if balance is not null & expception is null
-    expect(result[0]).not.toBeNull();
-    expect(result[1]).toBeNull();
-  });
-
->>>>>>> 4491784d1fc51e27371e49176f3b78dc750c6ef8
 
     // Set transaction signers
     const signers = [Bob];

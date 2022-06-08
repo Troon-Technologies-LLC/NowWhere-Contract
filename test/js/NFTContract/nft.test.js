@@ -537,10 +537,11 @@ describe("Flow for NFTs", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+       // console.log("result", result);
     });
 
 
-    test("Minting NFT by invalid signer", async () => {
+    test("Negative TestCase => Minting NFT by invalid signer", async () => {
         const createTemplate = transactions.mintNFTStaticData;
 
         // Import participating accounts
@@ -580,7 +581,7 @@ describe("Flow for NFTs", () => {
 
     });
 
-    test("Minting NFT with invalid template Id", async () => {
+    test("Negative TestCase => Minting NFT with invalid template Id", async () => {
         const createTemplate = transactions.mintNFTStaticData;
 
         // Import participating accounts
@@ -620,7 +621,7 @@ describe("Flow for NFTs", () => {
 
     });
 
-    test("Minting NFT for user with no collection", async () => {
+    test("Negative TestCase => Minting NFT for user with no collection", async () => {
         const createTemplate = transactions.mintNFTStaticData;
 
         // Import participating accounts
@@ -744,6 +745,7 @@ describe("Flow for NFTs", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+     
     });
 
     test("getting all NFTs of an account", async () => {
@@ -788,10 +790,11 @@ describe("Flow for NFTs", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+       
     });
 
 
-    test("Transfering nonexistent NFT", async () => {
+    test("Negative TestCase => Transfering nonexistent NFT", async () => {
 
         const transferNFT = transactions.transferNFT;
 
@@ -832,7 +835,7 @@ describe("Flow for NFTs", () => {
 
     });
 
-    test("Transfering NFT to user with no collection", async () => {
+    test("Negative TestCase => Transfering NFT to user with no collection", async () => {
 
         const transferNFT = transactions.transferNFT;
 
@@ -955,10 +958,11 @@ describe("Flow for NFTs", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+       
     });
 
 
-    test("Destroying non existent NFT", async () => {
+    test("Negative TestCase => Destroying non existent NFT", async () => {
 
         const destroyNFT = transactions.destroyNFT;
 
@@ -998,7 +1002,7 @@ describe("Flow for NFTs", () => {
 
     });
 
-    test("Destroying an unowned NFT", async () => {
+    test("Negative TestCase => Destroying an unowned NFT", async () => {
 
         const destroyNFT = transactions.destroyNFT;
 
@@ -1038,7 +1042,7 @@ describe("Flow for NFTs", () => {
 
     });
 
-    test("getting NFTs of user with no collection", async () => {
+    test("Negative TestCase => getting NFTs of user with no collection", async () => {
         
         const GetAllNFTIds = scripts.getAllNFTIds
 
@@ -1162,6 +1166,7 @@ describe("Flow for NFTs", () => {
         //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull()
         expect(result[1]).toBeNull()
+        
     });
 
     test("getting NFT data", async () => {
@@ -1205,7 +1210,7 @@ describe("Flow for NFTs", () => {
         expect(result[1]).toBeNull()
     });
 
-    test("getting data of nonexistent NFT", async () => {
+    test("Negative TestCase => getting data of nonexistent NFT", async () => {
         
         const GetNFTDataById = scripts.getNFTDataById
 
@@ -1244,6 +1249,7 @@ describe("Flow for NFTs", () => {
         //check if balance is not null & expception is null
         expect(result[1]).not.toBeNull()
         expect(result[0]).toBeNull()
+
     });
 
     test("getting NFT template data", async () => {
@@ -1291,7 +1297,7 @@ describe("Flow for NFTs", () => {
         expect(result[1]).toBeNull()
     });
 
-    test("getting NFT template data of user with no collection", async () => {
+    test("Negative TestCase => getting NFT template data of user with no collection", async () => {
         
         const GetAllNFTIds = scripts.getNFTTemplateData
 

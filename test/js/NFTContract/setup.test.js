@@ -38,7 +38,7 @@ beforeEach(async () => {
     await init(basePath, { port });
 });
 
-describe(`${contractNames.nftContracct} Setup`, () => {
+describe(`${contractNames.nftContract} Setup`, () => {
     test("Account creation", async () => {
         //creating accounts
         const Alice = await getAccountAddress(accountNames.alice);
@@ -51,55 +51,57 @@ describe(`${contractNames.nftContracct} Setup`, () => {
         expect(Charlie).not.toBeNull()
     });
 
-    test(`${contractNames.nonFungibleToken} Deployment`, async () => {
-        const contractName = contractNames.nonFungibleToken
-        const Alice = await getAccountAddress(accountNames.alice)
-        let update = true
-
+    test("Contract Deployment", async () => {
+        const contractName = contractNames.nonFungibleToken;
+        const Alice = await getAccountAddress(accountNames.alice);
+        let update = true;
+    
         //deploying contract to Alice accouont
         let result = await deployContractByName({
-            name: contractName,
-            to: Alice,
-            update,
+          name: contractName,
+          to: Alice,
+          update,
         });
-
-        //check if result instance is not null & expception is null
+    
+        //check if balance is not null & expception is null
         expect(result[0]).not.toBeNull();
         expect(result[1]).toBeNull();
-
+    
         //fetch contract address
-        let contractAddress = await getContractAddress(contractName)
-
-        expect(contractAddress).toEqual(Alice)
-    });
-
-    test(`${contractNames.nftContracct} Deployment`, async () => {
-        const contractName = contractNames.nftContracct
-        const Bob = await getAccountAddress(accountNames.bob)
-        let update = true
-
-        const NonFungibleToken = await getContractAddress(contractNames.nonFungibleToken);
+        let contractAddress = await getContractAddress(contractName);
+    
+        expect(contractAddress).toEqual(Alice);
+      });
+    
+      test("NFT-Contract Deployment", async () => {
+        const contractName = contractNames.nftContract;
+        const Bob = await getAccountAddress(accountNames.bob);
+        let update = true;
+    
+        const NonFungibleToken = await getContractAddress(
+          contractNames.nonFungibleToken
+        );
         const addressMap = {
-            NonFungibleToken,
+          NonFungibleToken,
         };
-
+    
         //deploying contract to Bob accouont
         let result = await deployContractByName({
-            name: contractName,
-            to: Bob,
-            update,
-            addressMap
+          name: contractName,
+          to: Bob,
+          update,
+          addressMap,
         });
-
+    
         //check if result instance is not null & expception is null
         expect(result[0]).not.toBeNull();
         expect(result[1]).toBeNull();
-
+    
         //fetch contract address
-        let contractAddress = await getContractAddress(contractName)
-
-        expect(contractAddress).toEqual(Bob)
-    });
+        let contractAddress = await getContractAddress(contractName);
+    
+        expect(contractAddress).toEqual(Bob);
+      });
 
     test("Admin Account Setup", async () => {
         const setupAdminTransaction = transactions.setupAdminAccount;
@@ -221,7 +223,6 @@ describe(`${contractNames.nftContracct} Setup`, () => {
         //check if result instance is not null & expception is null
         expect(txResult[1]).not.toBeNull();
         expect(txResult[0]).toBeNull();
-<<<<<<< HEAD
       });
 
       test("Negative TestCase => Adding Admin Account via incorrect super Admin", async () => {
@@ -267,8 +268,7 @@ describe(`${contractNames.nftContracct} Setup`, () => {
         expect(txResult[1]).not.toBeNull();
         expect(txResult[0]).toBeNull();
       });
-=======
-    });
->>>>>>> 4491784d1fc51e27371e49176f3b78dc750c6ef8
+
 });
+
 
