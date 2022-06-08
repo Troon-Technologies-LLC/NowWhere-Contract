@@ -1,5 +1,4 @@
 import NFTContract from "../contracts/NFTContract.cdc"
-import NonFungibleToken from "./NonFungibleToken.cdc"
 
 pub fun main(address: Address) : {UInt64: AnyStruct}{
     let account1 = getAccount(address)
