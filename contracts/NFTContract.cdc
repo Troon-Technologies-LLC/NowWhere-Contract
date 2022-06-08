@@ -214,7 +214,7 @@ pub contract NFTContract: NonFungibleToken {
         // a method to get update MutableData field of Template
         pub fun updateMutableData(newMutableData: {String:AnyStruct}) {
             
-            if(self.mutableData?.length == nil){
+            if(self.mutableData == nil){
                 self.mutableData = newMutableData
             }
             else {
