@@ -494,8 +494,7 @@ pub contract NFTContract: NonFungibleToken {
                 // the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
                 NFTContract.whiteListedAccounts.contains(self.owner!.address): "you are not authorized for this action"
-                NFTContract.allTemplates[templateId] != nil: "brand Id does not exists"
-                
+                NFTContract.allTemplates[templateId] != nil: "brand Id does not exists"        
             }
 
             let oldTemplate = NFTContract.allTemplates[templateId]
@@ -513,8 +512,7 @@ pub contract NFTContract: NonFungibleToken {
                 // the transaction will instantly revert if the capability has not been added
                 self.capability != nil: "I don't have the special capability :("
                 NFTContract.whiteListedAccounts.contains(self.owner!.address): "you are not authorized for this action"
-                NFTContract.allTemplates[templateId] != nil: "Template Id does not exists"
-                
+                NFTContract.allTemplates[templateId] != nil: "Template Id does not exists"   
             }
 
             let oldTemplate = NFTContract.allTemplates[templateId]
