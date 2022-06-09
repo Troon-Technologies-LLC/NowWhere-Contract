@@ -1,4 +1,4 @@
-import NowWhereContract from "./NowWhereContract.cdc"
+import NowWhereContract from "../contracts/NowWhereContract.cdc"
 import FungibleToken from 0xee82856bf20e2aa6 // emulator address
 import FlowToken from 0x0ae53cb6e3f42a79  // emulator address
 
@@ -11,15 +11,17 @@ transaction(DropId: UInt64, TemplateId: UInt64, MintNumber: UInt64, receiptAddre
     prepare(providerAccount: AuthAccount, tokenRecipientAccount:AuthAccount) {
         self.adminRef = providerAccount.borrow<&NowWhereContract.DropAdmin>(from:NowWhereContract.DropAdminStoragePath)
         ??panic("could not borrow admin reference")
- 
-         let vaultRef = tokenRecipientAccount.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
+        let vaultRef = tokenRecipientAccount.borrow<&FlowToken.Vault>(from: /storage/flowTokenVault)
                 ?? panic("Could not borrow buyer vault reference")
         self.temporaryVault <- vaultRef.withdraw(amount: Price)
     }
   
     execute{
-      
-      let dropResponse = self.adminRef.purchaseNFTWithFlow(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: receiptAddress, price:Price,flowPayment: <- self.temporaryVault)
+
+      let immutableData:{String:AnyStruct}?={
+        "name":"Nasir"
+      }
+      let dropResponse = self.adminRef.purchaseNFTWithFlow(dropId: DropId, templateId: TemplateId, mintNumbers: MintNumber, receiptAddress: receiptAddress, price:Price,flowPayment: <- self.temporaryVault, immutableData:immutableData)
       
       log(dropResponse)
     }

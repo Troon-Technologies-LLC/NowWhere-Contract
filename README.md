@@ -2,13 +2,14 @@
 
 ## Summary of NowWhereContract
 
-NowWhereContract is a drop contract that is used for the purpose to release or sell a non-fungible token. We can create a Drop(A drop refers to the exact start date time and end date time) for sale in this Contract. In Drops, we have Template/s having NFTs for sale which users can purchase. To purchase Drop users can use Stripe Payment method(Fiat) or Flow Payment method(Crypto) and we have also implemented multisignature functionality for Flow payment to add user signature for payment verification and admin signature for confirmation of user payment. As new brands and businesses begin to take advantage of this technology you will see even more drops.
+NowWhereContract contract is used to release or sell non-fungible tokens for there users. In NowWhereContract, we are managing drops. Drop is like an event, which has start and end dates with the NFT template/s, which will be for sale in that drop.
+We can create a Drop by providing a unique drop-id, start and end dates and template/s. To purchase a Drop users can use off-chain Payment method(Fiat) supported by the NowWhere platform or Flow Tokens too. There is multisignature functionality for Flow payment to add user signature for payment withdraw and admin signature for confirmation of user payment and purchasing of a Drop. As new brands and businesses begin to take advantage of this technology you will see even more drops.
 
 ## Summary of NFTContract
 
-NFTContract is a Non Fungible Token (NFT) standard for Flow blockchain.
+NFTContract is an uper layer of Non Fungible Token (NFT interface) standard for Flow blockchain.
 It offers a powerful set while keeping unnecessary complexity to a minimum and focus on efficiency.
-Our Contract consists of different parts like Brand, Schema, Templates and NFTs, which serve different purposes and often reference each other.
+NFTContract consists of different parts like Brand, Schema, Templates and NFTs, which serve different purposes and often reference each other. 
 
 For more details of NFTContract use this link:
 [see Documentation](https://github.com/Troon-Technologies-LLC/Troon-NFT-Contract)

@@ -1,10 +1,9 @@
-import NFTContract from "./NFTContract.cdc"
-import NonFungibleToken from "./NonFungibleToken.cdc"
+import NFTContract from "../contracts/NFTContract.cdc"
 
 pub fun main(address: Address) : {UInt64: AnyStruct}{
     let account1 = getAccount(address)
     let acct1Capability =  account1.getCapability(NFTContract.CollectionPublicPath)
-                            .borrow<&{NonFungibleToken.CollectionPublic}>()
+                            .borrow<&{NFTContract.NFTContractCollectionPublic}>()
                             ??panic("could not borrow receiver reference ")
     var nftIds =   acct1Capability.getIDs()
     var dict : {UInt64: AnyStruct} = {}

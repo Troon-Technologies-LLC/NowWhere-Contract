@@ -4,26 +4,29 @@ on:
     branches:
       - dev 
       - main 
+      - testcase-updates
 jobs:
   js-test-cases:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
     steps:    
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
+    
+    - name: Environment Setup
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}    
+        node-version: 12.x
+        
     - name: install flow cli
       run: sh -ci "$(curl -fsSL https://storage.googleapis.com/flow-cli/install.sh)"
     - name: check flow version
       run: flow version
-    - name: install node_modules and run test_cases
+      
+    - name: starting flow
       working-directory: ./test/js
-      run: |
-            pwd
-            flow init
-            npm i
-            npm run test
+      run: flow init
+    - name: installing dependencies
+      working-directory: ./test/js
+      run: npm install
+    - name: Running Test
+      working-directory: ./test/js
+      run: npm run test

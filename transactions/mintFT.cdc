@@ -1,6 +1,6 @@
 import FungibleToken from 0xee82856bf20e2aa6
 import FlowToken from 0x0ae53cb6e3f42a79    
-transaction(recipient: Address) {
+transaction(recipient: Address, amount:UFix64) {
     // recipient: Address, amount: UFix64
     let tokenAdmin: &FlowToken.Administrator
     let tokenReceiver: &{FungibleToken.Receiver}
@@ -17,8 +17,8 @@ transaction(recipient: Address) {
     }
 
     execute {
-        let minter <- self.tokenAdmin.createNewMinter(allowedAmount: 1000.0)
-        let mintedVault <- minter.mintTokens(amount: 1000.0)
+        let minter <- self.tokenAdmin.createNewMinter(allowedAmount: amount as UFix64)
+        let mintedVault <- minter.mintTokens(amount: amount as UFix64)
 
         self.tokenReceiver.deposit(from: <-mintedVault)
 
